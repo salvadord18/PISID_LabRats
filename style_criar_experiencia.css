@@ -1,0 +1,111 @@
+body, html {
+    margin: 0;
+    font-family: "Roboto Mono", monospace;
+    background-color: #f4f4f4; /* Cor de fundo para todo o corpo */
+    padding-top: 140px; /* Espaço no topo para não ficar sob a barra de navegação */
+}
+
+.header {
+    width: 100%;
+    background-color: #8C52FF;
+    color: #ffffff;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+
+.logo {
+    width: 120px; /* Ajuste o tamanho conforme necessário */
+    height: auto;
+    margin-right: 20px;
+}
+
+.header h1 {
+    flex-grow: 1;
+    margin: 0;
+    font-size: 2em;
+    text-align: center;
+}
+
+.navigation {
+    /* Estilos da navegação se houver, senão, remover este bloco */
+}
+
+/* Estilos do formulário de criação de experiência */
+.form-container {
+    width: 100%;
+    max-width: 800px; /* Ajuste conforme o layout desejado */
+    margin: 0 auto; /* Centraliza o formulário na página */
+    padding: 40px; /* Espaçamento interno */
+    background-color: #ffffff; /* Fundo branco para o formulário */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombra suave para destacar */
+    border-radius: 8px; /* Bordas arredondadas */
+    text-align: center; /* Centraliza o texto */
+}
+
+.form-container h2 {
+    color: #333;
+    margin-bottom: 20px; /* Espaço abaixo do título */
+}
+
+.form-container p {
+    color: #666;
+    margin-bottom: 30px; /* Espaço abaixo do parágrafo */
+}
+
+.form-field {
+    margin-bottom: 20px;
+}
+
+.form-field input,
+.form-field textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+.form-field textarea {
+    height: 150px; /* Altura ajustável conforme necessário */
+    resize: vertical; /* Permite ao usuário ajustar verticalmente se necessário */
+}
+
+.submit-btn {
+    background-color: #8C52FF;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    width: 200px; /* Largura fixa para o botão */
+    display: inline-block; /* Permite o alinhamento central */
+    font-family: "Roboto Mono", monospace;
+}
+
+.submit-btn:hover {
+    background-color: #7a45d6;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .form-container {
+        padding: 20px;
+        margin: 20px; /* Dá um pouco de espaço nas laterais */
+    }
+
+    .submit-btn {
+        width: 100%; /* Botão de submissão em tela cheia para telas menores */
+    }
+
+    /* Ajuste o padding-top do body se o cabeçalho mudar de tamanho em telas menores */
+    body, html {
+        padding-top: 100px; /* Ajuste conforme necessário */
+    }
+}

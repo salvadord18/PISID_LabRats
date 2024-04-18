@@ -1,0 +1,72 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: "Roboto Mono", monospace;
+    overflow: hidden; /* Evita a rolagem */
+}
+
+h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: #8C52FF;
+    font-family: "Roboto Mono", monospace;
+    text-align: center;
+}
+
+.split-screen {
+    display: flex; /* Cria um layout flexível com duas colunas */
+    height: 100vh; /* 100% da altura da viewport */
+}
+
+.left-side {
+    background-color: #8C52FF; /* Cor de fundo do lado esquerdo */
+    flex-basis: 50%; /* Ocupa 50% da tela */
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+}
+
+.right-side {
+    flex-basis: 50%; /* Ocupa 50% da tela */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px; /* Espaçamento interno */
+    background-color: #ffffff; /* Cor de fundo do lado direito */
+}
+
+.logo {
+    width: 80%; /* Ajuste para o tamanho do seu logo */
+    max-width: 400px; /* Ajuste conforme a necessidade */
+    height: auto;
+}
+
+.login-content {
+    width: 100%; /* Ajuste para o tamanho do formulário */
+    max-width: 300px; /* Ajuste conforme a necessidade */
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px; /* Espaço entre os inputs */
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+}
+
+.login-btn {
+    width: 100%; /* Faz o botão ocupar todo o espaço disponível */
+    padding: 10px;
+    border: none;
+    border-radius: 5px; /* Bordas arredondadas */
+    background-color: #8C52FF; /* Cor de fundo do botão */
+    color: #ffffff; /* Cor do texto do botão */
+    cursor: pointer; /* Muda o cursor para indicar clicabilidade */
+    font-size: 1em;
+    font-family: "Roboto Mono", monospace;
+}

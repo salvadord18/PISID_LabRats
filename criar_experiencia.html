@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LabRats | Criar Experiência</title>
+    <link rel="stylesheet" href="style_criar_experiencia.css">
+</head>
+<body>
+    <header class="header">
+        <img src="/icons/logo2.png" alt="Lab Rats Logo" class="logo">
+        <h1>Criar experiência</h1>
+    </header>
+    <main class="main-content">
+        <section class="create-experience-section">
+            <h2>Criar experiência</h2>
+            <p>Por favor, responda ao seguinte formulário para criar uma nova experiência:</p>
+            <form action="process_create_experience.php" method="POST">
+                <!-- Exemplo de campo do formulário -->
+                <div class="form-field">
+                    <label for="experience-description">Descrição da experiência:</label>
+                    <input type="text" id="experience-description" name="experience_description" required>
+                </div>
+                <!-- Adicione outros campos conforme necessário -->
+                <div class="form-actions">
+                    <button type="submit" class="submit-btn">CRIAR EXPERIÊNCIA</button>
+                </div>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

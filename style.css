@@ -1,0 +1,68 @@
+body, html {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #ffffff; /* Cor de fundo do resto da página */
+    padding-top: 100px; /* Adiciona espaço no topo para não ficar sob a barra de navegação */
+}
+
+.header {
+    width: 100%;
+    background-color: #8C52FF;
+    color: #ffffff;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    position: fixed; /* Fixa o cabeçalho no topo */
+    top: 0; /* Posição no topo */
+    left: 0; /* Alinha à esquerda */
+    z-index: 1000; /* Garante que o cabeçalho fique sobre os outros elementos */
+}
+
+.logo {
+    width: 120px; /* Tamanho maior do logo */
+    height: auto; /* Mantém a proporção do logo */
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 2em;
+    font-family: "Roboto Mono", monospace;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.navigation {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Alinha os itens à esquerda */
+    padding: 0 20px; /* Espaçamento nas laterais */
+    position: relative; /* Posicionamento relativo */
+    top: 60px; /* Espaço abaixo do cabeçalho */
+}
+
+.navigation ul {
+    list-style: none;
+    padding: 0;
+}
+
+.navigation li {
+    margin-bottom: 15px; /* Espaço entre os itens */
+}
+
+.nav-item {
+    color: #8C52FF; /* Cor do texto para preto */
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    font-size: 1.8em; /* Tamanho maior do texto */
+    font-family: "Roboto Mono", monospace;
+}
+
+.icon {
+    width: 60px; /* Tamanho maior do ícone */
+    height: 60px; /* Tamanho maior do ícone */
+    margin-right: 20px; /* Espaço maior entre o ícone e o texto */
+    margin-left: 25px;
+}
