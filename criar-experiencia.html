@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LabRats | Criar Experiência</title>
+    <link rel="stylesheet" href="style_criar-experiencia.css">
+</head>
+<body>
+    <header class="header">
+        <img src="/icons/logo2.png" alt="Lab Rats Logo" class="logo">
+        <h1>Criar experiência</h1>
+    </header>
+    <main class="main-content">
+        <section class="create-experience-section">
+            <p>Por favor, responda ao seguinte formulário para criar uma nova experiência:</p>
+            <form action="process_create_experience.php" method="POST">
+                <!-- Exemplo de campo do formulário -->
+                <div class="form-field">
+                    <label for="experience-description">Descrição da experiência:</label>
+                    <input type="text" id="experience-description" name="experience_description" required>
+                </div>
+                <div class="form-field">
+                    <label for="experience-rats">Número de ratos da experiência:</label>
+                    <input type="integer" id="experience-rats" name="experience-rats" required>
+                </div>
+                <div class="form-field">
+                    <label for="experience-rats-limit">Limite de ratos por sala:</label>
+                    <input type="integer" id="experience-rats-limit" name="experience-rats-limit" required>
+                </div>
+                <div class="form-field">
+                    <label for="experience-seconds">Segundos sem movimento:</label>
+                    <input type="integer" id="experience-seconds" name="experience-seconds" required>
+                </div>
+                <div class="form-field">
+                    <label for="experience-temperature">Temperatura ideal:</label>
+                    <input type="integer" id="experience-temperature" name="experience-temperature" required>
+                </div>
+                <div class="form-field">
+                    <label for="experience-max-temperature">Variação da temperatura máxima:</label>
+                    <input type="integer" id="experience-max-temperature" name="experience-max-temperature" required>
+                </div>
+                <div class="form-field">
+                    <label for="experience-outliers">Número máximo de outliers:</label>
+                    <input type="integer" id="experience-outliers" name="experience-outliers" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="submit-btn">CRIAR EXPERIÊNCIA</button>
+                </div>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

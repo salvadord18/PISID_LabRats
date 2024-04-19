@@ -1,7 +1,7 @@
 body, html {
     margin: 0;
     font-family: "Roboto Mono", monospace;
-    background-color: #f4f4f4; /* Cor de fundo para todo o corpo */
+    background-color: #ffffff; /* Cor de fundo para todo o corpo */
     padding-top: 140px; /* Espaço no topo para não ficar sob a barra de navegação */
 }
 
@@ -30,6 +30,15 @@ body, html {
     margin: 0;
     font-size: 2em;
     text-align: center;
+}
+
+p {
+    color: #8C52FF;
+    text-align: center;
+}
+
+label {
+    color: #8C52FF;
 }
 
 .navigation {
@@ -73,7 +82,7 @@ body, html {
 
 .form-field textarea {
     height: 150px; /* Altura ajustável conforme necessário */
-    resize: vertical; /* Permite ao usuário ajustar verticalmente se necessário */
+    resize: vertical; /* Permite ao utilizador ajustar verticalmente se necessário */
 }
 
 .submit-btn {

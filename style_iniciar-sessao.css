@@ -20,7 +20,7 @@ h2 {
 
 .left-side {
     background-color: #8C52FF; /* Cor de fundo do lado esquerdo */
-    flex-basis: 50%; /* Ocupa 50% da tela */
+    flex-basis: 61%; /* Ocupa 50% do ecrã */
     display: flex;
     justify-content: center; /* Centraliza horizontalmente */
     align-items: center; /* Centraliza verticalmente */

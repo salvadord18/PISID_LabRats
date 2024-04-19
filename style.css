@@ -1,6 +1,6 @@
 body, html {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: "Roboto Mono", monospace;
     background-color: #ffffff; /* Cor de fundo do resto da página */
     padding-top: 100px; /* Adiciona espaço no topo para não ficar sob a barra de navegação */
 }
@@ -9,14 +9,14 @@ body, html {
     width: 100%;
     background-color: #8C52FF;
     color: #ffffff;
-    padding: 10px 20px;
+    padding: 20px;
     display: flex;
     align-items: center;
     box-sizing: border-box;
-    position: fixed; /* Fixa o cabeçalho no topo */
-    top: 0; /* Posição no topo */
-    left: 0; /* Alinha à esquerda */
-    z-index: 1000; /* Garante que o cabeçalho fique sobre os outros elementos */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
 }
 
 .logo {
