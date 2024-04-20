@@ -40,6 +40,11 @@ body, html {
     visibility: hidden;
 }
 
+span {
+    color: #8C52FF;
+    font-family: "Roboto Mono", monospace;
+}
+
 .navigation {
     padding: 0 20px; /* Espaçamento nas laterais */
     position: relative; /* Posicionamento relativo */
@@ -56,7 +61,7 @@ body, html {
 }
 
 .nav-item {
-    color: #8C52FF; /* Cor do texto para preto */
+    color: #8C52FF;
     text-decoration: none;
     display: flex;
     align-items: center;
