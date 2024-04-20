@@ -57,16 +57,23 @@ h2 {
     margin-bottom: 20px; /* Espaço entre os inputs */
     border: 1px solid #dddddd;
     border-radius: 5px;
+    font-family: "Roboto Mono", monospace;
+}
+
+.form-group input,
+.login-btn {
+    box-sizing: border-box; /* Inclui padding e border na largura total */
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    font-family: "Roboto Mono", monospace;
 }
 
 .login-btn {
-    width: 100%; /* Faz o botão ocupar todo o espaço disponível */
-    padding: 10px;
     border: none;
-    border-radius: 5px; /* Bordas arredondadas */
-    background-color: #8C52FF; /* Cor de fundo do botão */
-    color: #ffffff; /* Cor do texto do botão */
-    cursor: pointer; /* Muda o cursor para indicar clicabilidade */
-    font-size: 1em;
-    font-family: "Roboto Mono", monospace;
+    background-color: #8C52FF;
+    color: #ffffff;
+    cursor: pointer;
 }

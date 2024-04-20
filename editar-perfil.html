@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil do utilizador | LabRats</title>
-    <link rel="stylesheet" href="style_perfil.css">
+    <title>Editar perfil | LabRats</title>
+    <link rel="stylesheet" href="style_editar-perfil.css">
     <link rel="icon" href="icons/icon3.png" type="image/x-icon">
 </head>
 
@@ -14,34 +14,33 @@
         <a href="inicio.html">
             <img src="/icons/logo2.png" alt="Lab Rats Logo" class="logo">
         </a>
-        <h1>Perfil do utilizador</h1>
+        <h1>Editar perfil</h1>
     </header>
     <main class="profile-container">
         <main class="main-content">
-            <form action="editar-perfil.html" method="POST" class="create-experience-form">
+            <form action="process_edit_profile.php" method="POST" class="create-experience-form">
                 <div class="form-row">
                     <div class="form-field">
                         <label for="nome">Nome:</label>
-                        <input type="text" id="nome" name="nome" value="Filipa Romão" disabled>
+                        <input type="text" id="nome" name="nome" value="Filipa Romão">
                     </div>
                     <div class="form-field">
                             <label for="email">E-mail:</label>
-                            <input type="email" id="email" name="email" value="pips.roma@gmail.com" disabled>
+                            <input type="email" id="email" name="email" value="pips.roma@gmail.com">
                     </div>
                     <div class="form-field">
                             <label for="telefone">Telefone:</label>
-                            <input type="integer" id="telefone" name="telefone" value="925039551" disabled>
+                            <input type="integer" id="telefone" name="telefone" value="925039551">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-field">
                         <label for="password">Palavra-passe:</label>
-                        <input type="password" id="password" name="password" value="********" disabled>
+                        <input type="password" id="password" name="password" value="********">
                     </div>
                 </div>
                 <div class="profile-actions">
-                    <button type="submit" id="edit" class="edit-btn">EDITAR PERFIL</button>
-                    <button type="button" id="logout" class="logout-btn">TERMINAR SESSÃO</button>
+                    <button type="submit" id="save" class="save-btn">GUARDAR ALTERAÇÕES</button>
                 </div>
                 <button type="button" onclick="window.history.back();" class="back-btn" aria-label="Voltar"></button>
         </main>

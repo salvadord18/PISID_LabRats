@@ -40,15 +40,6 @@ body, html {
     visibility: hidden;
 }
 
-p {
-    color: #8C52FF;
-    text-align: center;
-}
-
-label {
-    color: #8C52FF;
-}
-
 .main-content {
     /* Adiciona margens em torno de todo o conteúdo principal */
     max-width: 1350px; /* ou a largura que desejar */
@@ -84,11 +75,13 @@ label {
 /* Estilos unificados para todos os campos de input */
 .form-field input,
 .form-field textarea {
+    color: #8C52FF; /* Cinzento claro para texto de campos desativados */
     padding: 15px;
     border: 1px solid #ccc; /* A borda pode ser removida se desejar campos sem bordas como na imagem */
     background-color: #EFEFEF; /* Cor de fundo dos campos de input */
     border-radius: 20px; /* Borda arredondada para os campos */
     font-size: 1em; /* Tamanho da fonte para os campos */
+    font-family: "Roboto Mono", monospace;
 }
 
 /* Ajuste a altura da textarea se necessário */
@@ -118,7 +111,14 @@ label {
     }
 }
 
-.submit-btn {
+.profile-actions {
+    display: flex; /* Usa flexbox para organizar os botões lado a lado */
+    justify-content: center; /* Centraliza os botões na horizontal */
+    margin: 20px auto; /* Mantém a margem para centralizar o contêiner */
+    gap: 20px; /* Espaço entre os botões */
+}
+
+.save-btn {
     width: 200px; /* Largura fixa para o botão */
     padding: 15px;
     margin-top: 20px; /* Espaço acima do botão */
@@ -130,13 +130,33 @@ label {
     align-self: center; /* Centraliza o botão */
     font-size: 1em;
     display: block; /* Faz o botão ser um bloco para aplicar margin */
-    margin-left: auto; /* Alinha o botão à direita */
-    margin-right: auto; /* Alinha o botão à direita */
+    margin-left: 0;
+    margin-right: 0;
     font-family: "Roboto Mono", monospace;
 }
 
-.submit-btn:hover {
+.save-btn:hover {
     background-color: #7a45d6;
+}
+
+.profile-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Define uma largura específica para os botões se não quiseres que cresçam com o conteúdo */
+.edit-btn, .logout-btn {
+    padding: 15px 30px; /* Ajusta o padding para controlar o tamanho dos botões */
+    margin-top: 20px; /* Espaço acima dos botões */
+    font-size: 1em; /* Tamanho da fonte dentro do botão */
+    flex: none; /* Impede que os botões cresçam além do padding */
+}
+
+/* Se ainda achares que os botões estão grandes, podes definir uma largura fixa */
+.edit-btn, .logout-btn {
+    width: 200px; /* Ou a largura que achar melhor */
 }
 
 .back-btn {

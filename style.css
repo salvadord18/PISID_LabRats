@@ -1,8 +1,8 @@
 body, html {
     margin: 0;
     font-family: "Roboto Mono", monospace;
-    background-color: #ffffff; /* Cor de fundo do resto da página */
-    padding-top: 100px; /* Adiciona espaço no topo para não ficar sob a barra de navegação */
+    background-color: #ffffff; /* Cor de fundo para todo o corpo */
+    padding-top: 140px; /* Espaço no topo para não ficar sob a barra de navegação */
 }
 
 .header {
@@ -20,26 +20,30 @@ body, html {
 }
 
 .logo {
-    width: 120px; /* Tamanho maior do logo */
-    height: auto; /* Mantém a proporção do logo */
+    margin-right: 20px; /* Espaço entre o logo e o título */
+    width: 120px;
+    height: auto;
 }
 
 .header h1 {
+    flex-grow: 1;
     margin: 0;
     font-size: 2em;
-    font-family: "Roboto Mono", monospace;
-    text-align: center;
-    flex-grow: 1;
+    text-align: center; /* Centraliza o texto no espaço restante */
+}
+
+.header::after {
+    content: "";
+    margin-right: 20px; /* Equilibra o espaço do lado esquerdo */
+    width: 120px; /* Mesmo tamanho do logotipo */
+    flex: 0 0 auto;
+    visibility: hidden;
 }
 
 .navigation {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* Alinha os itens à esquerda */
     padding: 0 20px; /* Espaçamento nas laterais */
     position: relative; /* Posicionamento relativo */
-    top: 60px; /* Espaço abaixo do cabeçalho */
+    top: 10px; /* Espaço abaixo do cabeçalho */
 }
 
 .navigation ul {
