@@ -47,7 +47,7 @@ $conn->close();
                 <div class="form-row">
                     <div class="form-field">
                         <label for="nome-utilizador">Nome de utilizador:</label>
-                        <input type="text" id="nome-utilizador" name="nome-utilizador" value="<?php echo htmlspecialchars($user['NomeUtilizador'] ?? ''); ?>">
+                        <input type="text" id="nome-utilizador" name="nome-utilizador" style="color: #b3b3b3;" value="<?php echo htmlspecialchars($user['NomeUtilizador'] ?? ''); ?>" disabled>
                     </div>
                     <div class="form-field">
                             <label for="email">E-mail:</label>
