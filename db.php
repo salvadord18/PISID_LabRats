@@ -11,5 +11,5 @@ $conn = new mysqli($servername, $username, $password, $database);
 if ($conn->connect_error) {
     die("Falha na ligação: " . $conn->connect_error);
 }
-echo "Ligação bem-sucedida!";
+// echo "Ligação bem-sucedida!";
 ?>

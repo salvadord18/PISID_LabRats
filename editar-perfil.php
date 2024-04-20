@@ -1,3 +1,28 @@
+<?php
+session_start();
+include 'db.php'; // Inclui o script de ligação à base de dados
+
+$userId = $_SESSION['user_id'] ?? null; // Obtém o ID do utilizador da sessão
+
+if ($userId) {
+    $query = "SELECT NomeUtilizador, EmailUtilizador, TelefoneUtilizador FROM utilizador WHERE Utilizador_ID = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc() ?? null;
+    if (!$user) {
+        //echo "Nenhum utilizador encontrado.";
+        exit();
+    }
+    $stmt->close();
+} else {
+    //echo "Utilizador não identificado.";
+    exit();
+}
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="pt">
 

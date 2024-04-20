@@ -193,7 +193,7 @@ body, html {
     opacity: 0; /* Botão é inicialmente invisível */
     transition: opacity 0.3s ease; /* Suaviza a transição da opacidade */
     z-index: 20; /* Garante que o botão fique acima de outros elementos */
-    background-image: url('/icons/voltar.png');
+    background-image: url('/labrats/icons/voltar.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: 60%; /* Ajusta para o tamanho desejado */

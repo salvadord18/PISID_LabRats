@@ -15,10 +15,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
-        
+
+        // Imprime os valores para debug
+        echo "Password recebida: " . $password . "<br>";
+        echo "Telefone esperado: " . $user['TelefoneUtilizador'] . "<br>";
+
         // Verifica se o 'telefone' corresponde
-        if ($password === $user['TelefoneUtilizador']) {
-            // O 'password' está correto, então inicia a sessão
+        if ($password === (string)$user['TelefoneUtilizador']) {
+            // A palavra-passe está correta, então inicia a sessão
             $_SESSION['user_id'] = $user['Utilizador_ID'];
             $_SESSION['email'] = $email;  // Armazenar o email na sessão pode ser útil
             header("Location: inicio.html"); // Redireciona para a página inicial
