@@ -22,15 +22,15 @@
                 <div class="form-row">
                     <div class="form-field">
                         <label for="nome">Nome:</label>
-                        <input type="text" id="nome" name="nome" value="Filipa Romão" disabled>
+                        <input type="text" id="nome" name="nome" value="<?php echo htmlspecialchars($utilizador['NomeUtilizador']); ?>" disabled>
                     </div>
                     <div class="form-field">
                             <label for="email">E-mail:</label>
-                            <input type="email" id="email" name="email" value="pips.roma@gmail.com" disabled>
+                            <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($utilizador['EmailUtilizador']); ?>" disabled>
                     </div>
                     <div class="form-field">
                             <label for="telefone">Telefone:</label>
-                            <input type="integer" id="telefone" name="telefone" value="925039551" disabled>
+                            <input type="integer" id="telefone" name="telefone" value="<?php echo htmlspecialchars($utilizador['TelefoneUtilizador']); ?>" disabled>
                     </div>
                 </div>
                 <div class="form-row">
@@ -46,5 +46,4 @@
                 <button type="button" onclick="window.history.back();" class="back-btn" aria-label="Voltar"></button>
         </main>
 </body>
-
 </html>
