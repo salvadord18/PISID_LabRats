@@ -1,0 +1,132 @@
+body, html {
+    margin: 0;
+    font-family: "Roboto Mono", monospace;
+    background-color: #ffffff; /* Cor de fundo para todo o corpo */
+    padding-top: 140px; /* Espaço no topo para não ficar sob a barra de navegação */
+}
+
+.header {
+    width: 100%;
+    background-color: #8C52FF;
+    color: #ffffff;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+
+.logo {
+    margin-right: 20px; /* Espaço entre o logo e o título */
+    width: 120px;
+    height: auto;
+}
+
+.header h1 {
+    flex-grow: 1;
+    margin: 0;
+    font-size: 2em;
+    text-align: center; /* Centraliza o texto no espaço restante */
+}
+
+.header::after {
+    content: "";
+    margin-right: 20px; /* Equilibra o espaço do lado esquerdo */
+    width: 120px; /* Mesmo tamanho do logotipo */
+    flex: 0 0 auto;
+    visibility: hidden;
+}
+
+p {
+    color: #8C52FF;
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.experiencia-container {
+    width: 33.333%; /* Define a largura para um terço da largura do viewport */
+    margin-left: 30px;
+    margin-top: -60px !important;
+    background-color: #EFEFEF; /* Define a cor de fundo da caixa */
+    border-radius: 20px; /* Arredonda os cantos da caixa */
+    padding: 15px; /* Adiciona algum padding interno */
+    display: flex; /* Usa flexbox para alinhar os ícones e o texto */
+    align-items: center; /* Centraliza os itens verticalmente */
+    justify-content: space-between; /* Espaçamento entre os itens dentro da caixa */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Adiciona uma sombra para um efeito 3D leve */
+    margin-top: 20px; /* Espaço acima da caixa */
+    color: #8C52FF;
+}
+
+.view-experience-btn {
+    padding: 10px 15px; /* Ajuste conforme necessário */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: transparent; /* Remove a cor de fundo para mostrar apenas a imagem */
+    background-image: url('/labrats/icons/view.png');
+    background-size: contain; /* Garante que a imagem se ajuste dentro do botão */
+    background-repeat: no-repeat;
+    background-position: center; /* Centraliza a imagem no botão */
+    display: inline-block; /* Usa inline-block se quiser colocar texto também */
+    width: 10px; /* Largura do botão */
+    height: 10px; /* Altura do botão, ajuste conforme o tamanho da sua imagem */
+    line-height: 10px; /* Centraliza verticalmente o texto, se houver */
+    text-align: center; /* Centraliza horizontalmente o texto, se houver */
+}
+
+.experiencia-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #EFEFEF;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    /* Restante dos estilos... */
+}
+
+
+.experiencia-nome {
+    margin: 0; /* Remove a margem padrão */
+    flex-grow: 1; /* Faz com que o texto ocupe o espaço disponível */
+}
+
+.button-container {
+    position: fixed; /* Posicionamento fixo na página */
+    bottom: 20px; /* 20px da parte inferior da página */
+    right: 20px; /* 20px da parte direita da página */
+    display: flex; /* Usa flexbox para o layout dos botões */
+    align-items: center; /* Centraliza verticalmente */
+    gap: 10px; /* Espaço entre os botões */
+    z-index: 20; /* Garante que o botão fique acima de outros elementos */
+}
+
+.action-btn {
+    width: 50px;
+    height: 50px;
+    background-color: #8C52FF;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 0; /* Inicia invisível */
+    transition: opacity 0.3s ease; /* Suaviza a transição da opacidade */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 60%;
+}
+
+.action-btn:hover {
+    opacity: 1; /* Aparece quando o rato está sobre ele */
+}
+
+.create-btn {
+    background-image: url('/labrats/icons/criar.png');
+}
+
+.back-btn {
+    background-image: url('/labrats/icons/voltar.png');
+}

@@ -203,15 +203,6 @@ body, html {
     opacity: 1; /* Botão se torna visível quando o cursor está sobre ele */
 }
 
-.back-btn:before { /* Cria o ícone de seta */
-    color: white; /* Cor do ícone */
-    font-size: 24px; /* Tamanho do ícone */
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%); /* Centraliza o ícone no botão */
-}
-
 /* Opcional: esconde o botão quando não estiver focado para evitar interação acidental */
 .back-btn:focus {
     opacity: 1;
