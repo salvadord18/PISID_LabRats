@@ -1,3 +1,5 @@
+package CloudToMongo;
+
 import com.mongodb.*;
 import com.mongodb.util.JSON;
 import org.eclipse.paho.client.mqttv3.*;
@@ -9,21 +11,6 @@ import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.util.Properties;
 import java.util.Random;
-
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.MqttCallback;
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
-
-import com.mongodb.*;
-import com.mongodb.util.JSON;
-
-import java.util.*;
-import java.io.*;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
 
 public class CloudToMongoSensoresTemp implements MqttCallback {
     MqttClient mqttclient;

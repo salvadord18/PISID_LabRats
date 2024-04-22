@@ -1,3 +1,5 @@
+package CloudToMongo;
+
 import com.mongodb.*;
 import com.mongodb.util.JSON;
 import org.eclipse.paho.client.mqttv3.*;
@@ -10,21 +12,6 @@ import java.io.FileInputStream;
 import java.util.Properties;
 import java.util.Random;
 
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.MqttCallback;
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
-
-import com.mongodb.*;
-import com.mongodb.util.JSON;
-
-import java.util.*;
-import java.io.*;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-
 public class CloudToMongoSensoresPortas implements MqttCallback {
     MqttClient mqttclient;
     static MongoClient mongoClient;
@@ -35,7 +22,6 @@ public class CloudToMongoSensoresPortas implements MqttCallback {
     static String mongo_address = new String();
     static String cloud_server = new String();
     static String cloud_topic_maze = new String();
-    static String cloud_topic_temp = new String();
     static String mongo_host = new String();
     static String mongo_replica = new String();
     static String mongo_database = new String();
