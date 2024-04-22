@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'db.php'; // Asegura que este ficheiro contém a conexão com a base de dados
+include 'db.php'; // Assegura que este ficheiro contém a ligação à base de dados
 
 // Verifica se os dados foram submetidos
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($password === (string)$user['TelefoneUtilizador']) {
             // A palavra-passe está correta, então inicia a sessão
             $_SESSION['user_id'] = $user['Utilizador_ID'];
-            $_SESSION['email'] = $email;  // Armazenar o email na sessão pode ser útil
+            $_SESSION['email'] = $email;  // Armazenar o e-mail na sessão pode ser útil
             header("Location: inicio.html"); // Redireciona para a página inicial
             exit();
         } else {

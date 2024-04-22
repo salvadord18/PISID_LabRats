@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'db.php'; // Este ficheiro deverá conter as informações de conexão à base de dados
+include 'db.php'; // Este ficheiro deverá conter as informações de ligação à base de dados
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Apanha os dados do formulário
