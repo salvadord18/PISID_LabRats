@@ -44,12 +44,13 @@ p {
     color: #8C52FF;
     text-align: center;
     font-size: 1.2em;
+    margin-bottom: 10px;
 }
 
 .experiencia-container {
     width: 33.333%; /* Define a largura para um terço da largura do viewport */
     margin-left: 30px;
-    margin-top: -60px !important;
+    margin-top: -60px;
     background-color: #EFEFEF; /* Define a cor de fundo da caixa */
     border-radius: 20px; /* Arredonda os cantos da caixa */
     padding: 15px; /* Adiciona algum padding interno */
@@ -57,7 +58,6 @@ p {
     align-items: center; /* Centraliza os itens verticalmente */
     justify-content: space-between; /* Espaçamento entre os itens dentro da caixa */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Adiciona uma sombra para um efeito 3D leve */
-    margin-top: 20px; /* Espaço acima da caixa */
     color: #8C52FF;
 }
 
@@ -86,7 +86,6 @@ p {
     padding: 10px;
     border-radius: 10px;
     margin-bottom: 10px;
-    /* Restante dos estilos... */
 }
 
 
@@ -119,6 +118,23 @@ p {
     background-size: 60%;
 }
 
+.experiencia-buttons {
+    margin-left: 30px;
+    margin-top: -50px;
+    right: -150px;
+    transform: translateX(37%);
+}
+
+.substancias-odores-btn, .labirinto-btn, .alertas-btn, .analise-btn {
+    /* Estilos comuns para os botões de ação */
+    background-size: cover;
+    width: 50px;
+    height: 50px;
+    margin-left: 8px; /* Espaço entre os botões */
+    border: none;
+    cursor: pointer;
+}
+
 .action-btn:hover {
     opacity: 1; /* Aparece quando o rato está sobre ele */
 }
@@ -129,4 +145,20 @@ p {
 
 .back-btn {
     background-image: url('/labrats/icons/voltar.png');
+}
+
+.substancias-odores-btn {
+    background-image: url('/labrats/icons/substancias_odores.png');
+}
+
+.labirinto-btn {
+    background-image: url('/labrats/icons/labirinto.png');
+}
+
+.alertas-btn {
+    background-image: url('/labrats/icons/alertas.png');
+}
+
+.analise-btn {
+    background-image: url('/labrats/icons/analise.png');
 }

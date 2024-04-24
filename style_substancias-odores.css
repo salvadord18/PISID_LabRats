@@ -1,0 +1,220 @@
+body, html {
+    margin: 0;
+    font-family: "Roboto Mono", monospace;
+    background-color: #ffffff; /* Cor de fundo para todo o corpo */
+    padding-top: 140px; /* Espaço no topo para não ficar sob a barra de navegação */
+}
+
+.header {
+    width: 100%;
+    background-color: #8C52FF;
+    color: #ffffff;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+
+.logo {
+    margin-right: 20px; /* Espaço entre o logo e o título */
+    width: 120px;
+    height: auto;
+}
+
+.header h1 {
+    flex-grow: 1;
+    margin: 0;
+    font-size: 2em;
+    text-align: center; /* Centraliza o texto no espaço restante */
+}
+
+.header::after {
+    content: "";
+    margin-right: 20px; /* Equilibra o espaço do lado esquerdo */
+    width: 120px; /* Mesmo tamanho do logotipo */
+    flex: 0 0 auto;
+    visibility: hidden;
+}
+
+.substancia-section-container {
+    margin-left: 30px;
+    margin-top: 160px;
+}
+
+.substancia-section-title {
+    color: #8C52FF;
+    font-size: 1em;
+    margin-top: -240px;
+}
+
+.substancia-container {
+    width: 300px;
+    background-color: #EFEFEF;
+    border-radius: 20px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    color: #8C52FF;
+    margin-bottom: 10px;
+}
+
+.eliminar-substancia-btn {
+    padding: 10px 15px; /* Ajuste conforme necessário */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: transparent; /* Remove a cor de fundo para mostrar apenas a imagem */
+    background-image: url('/labrats/icons/eliminar.png');
+    background-size: contain; /* Garante que a imagem se ajuste dentro do botão */
+    background-repeat: no-repeat;
+    background-position: center; /* Centraliza a imagem no botão */
+    display: inline-block; /* Usa inline-block se quiser colocar texto também */
+    width: 10px; /* Largura do botão */
+    height: 10px; /* Altura do botão, ajuste conforme o tamanho da sua imagem */
+    line-height: 10px; /* Centraliza verticalmente o texto, se houver */
+    text-align: center; /* Centraliza horizontalmente o texto, se houver */
+}
+
+.rats-number-section-container {
+    margin-left: 400px;
+    margin-top: -95.5px;
+}
+
+.rats-number-section-title {
+    color: #8C52FF;
+    font-size: 1em;
+    margin-top: 10px;
+}
+
+.rats-number-container {
+    width: 92px;
+    background-color: #EFEFEF;
+    border-radius: 20px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    color: #8C52FF;
+    margin-bottom: 10px; /* Espaço depois da caixa da substância */
+}
+
+.odor-section-container {
+    margin-left: 880px;
+    margin-top: 158px;
+}
+
+.odor-section-title {
+    color: #8C52FF;
+    font-size: 1em;
+    margin-top: -240px;
+}
+
+.odor-container {
+    width: 300px;
+    background-color: #EFEFEF;
+    border-radius: 20px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    color: #8C52FF;
+    margin-bottom: 10px; /* Espaço depois da caixa da substância */
+}
+
+.eliminar-odor-btn {
+    padding: 10px 15px; /* Ajuste conforme necessário */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: transparent; /* Remove a cor de fundo para mostrar apenas a imagem */
+    background-image: url('/labrats/icons/eliminar.png');
+    background-size: contain; /* Garante que a imagem se ajuste dentro do botão */
+    background-repeat: no-repeat;
+    background-position: center; /* Centraliza a imagem no botão */
+    display: inline-block; /* Usa inline-block se quiser colocar texto também */
+    width: 10px; /* Largura do botão */
+    height: 10px; /* Altura do botão, ajuste conforme o tamanho da sua imagem */
+    line-height: 10px; /* Centraliza verticalmente o texto, se houver */
+    text-align: center; /* Centraliza horizontalmente o texto, se houver */
+}
+
+.room-section-container {
+    margin-left: 1250px;
+    margin-top: -95.5px;
+}
+
+.room-section-title {
+    color: #8C52FF;
+    font-size: 1em;
+    margin-top: 10px;
+}
+
+.room-container {
+    width: 92px;
+    background-color: #EFEFEF;
+    border-radius: 20px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    color: #8C52FF;
+    margin-bottom: 10px; /* Espaço depois da caixa da substância */
+}
+
+.submit-btn {
+    width: 200px; /* Largura fixa para o botão */
+    padding: 15px;
+    margin-top: 320px; /* Espaço acima do botão */
+    background-color: #8C52FF;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    align-self: center; /* Centraliza o botão */
+    font-size: 1em;
+    display: block; /* Faz o botão ser um bloco para aplicar margin */
+    margin-left: auto; /* Alinha o botão à direita */
+    margin-right: auto; /* Alinha o botão à direita */
+    font-family: "Roboto Mono", monospace;
+}
+
+.submit-btn:hover {
+    background-color: #7a45d6;
+}
+
+.back-btn {
+    position: fixed; /* Ou absolute, dependendo de como está estruturada tua página */
+    bottom: 20px; /* Ajusta conforme necessário para posicionar o botão */
+    right: 20px; /* Ajusta conforme necessário para posicionar o botão */
+    width: 50px; /* Tamanho do botão */
+    height: 50px; /* Tamanho do botão */
+    background-color: #8C52FF; /* Cor de fundo do botão */
+    border: none;
+    border-radius: 50%; /* Torna o botão circular */
+    cursor: pointer;
+    opacity: 0; /* Botão é inicialmente invisível */
+    transition: opacity 0.3s ease; /* Suaviza a transição da opacidade */
+    z-index: 20; /* Garante que o botão fique acima de outros elementos */
+    background-image: url('/labrats/icons/voltar.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 60%; /* Ajusta para o tamanho desejado */
+}
+
+.back-btn:hover {
+    opacity: 1; /* Botão se torna visível quando o cursor está sobre ele */
+}
+
+/* Opcional: esconde o botão quando não estiver focado para evitar interação acidental */
+.back-btn:focus {
+    opacity: 1;
+}
