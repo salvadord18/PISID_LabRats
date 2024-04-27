@@ -20,13 +20,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bind_param("isiiiddi", $utilizadorID, $descricao, $numeroRatos, $limiteRatosSala, $segundosSemMovimento, $temperaturaIdeal, $variacaoTemperaturaMaxima, $numeroOutliersMaximo);
         $stmt->execute();
         if ($stmt->affected_rows > 0) {
-            echo "Experiência criada com sucesso.";
+            echo "<script>alert('Experiência criada com sucesso.'); window.location.href='experiencias.php';</script>";
         } else {
-            echo "Erro ao criar a experiência: " . $stmt->error;
+            echo "<script>alert('Erro ao criar a experiência: " . addslashes($stmt->error) . "'); window.history.back();</script>";
         }
         $stmt->close();
     } else {
-        echo "Erro ao preparar a consulta: " . $conn->error;
+        echo "<script>alert('Erro ao preparar a consulta: " . addslashes($conn->error) . "'); window.history.back();</script>";
     }
     $conn->close();
 }

@@ -29,13 +29,13 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil do utilizador | LabRats</title>
-    <link rel="stylesheet" href="style_perfil.css">
+    <link rel="stylesheet" href="/labrats/css/style_perfil.css">
     <link rel="icon" href="/labrats/icons/icon3.png" type="image/x-icon">
 </head>
 
 <body>
     <header class="header">
-        <a href="inicio.html">
+        <a href="/labrats/inicio.html">
             <img src="/labrats/icons/logo2.png" alt="Lab Rats Logo" class="logo">
         </a>
         <h1>Perfil do utilizador</h1>
@@ -63,10 +63,10 @@ $conn->close();
                     </div>
                 </div>
                 <div class="profile-actions">
-                <form action="editar-perfil.php" method="post">
+                <form action="/labrats/editar-perfil.php" method="post">
                     <button id="edit" class="edit-btn">EDITAR PERFIL</button>
                 </form>
-                    <form action="terminar-sessao.php" method="post">
+                    <form action="/labrats/terminar-sessao.php" method="post">
                         <button type="submit" class="logout-btn">TERMINAR SESSÃO</button>
                     </form>
                 </div>

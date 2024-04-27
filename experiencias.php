@@ -6,7 +6,7 @@ $userId = $_SESSION['user_id'] ?? null;
 
 // Se não houver um utilizador com sessão iniciada, redirecionar para a página de login.
 if (!$userId) {
-    header("Location: login.php");
+    header("Location: iniciar-sessao.php");
     exit();
 }
 
@@ -29,12 +29,12 @@ $conn->close();
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Experiências | LabRats</title>
-    <link rel="stylesheet" href="style_experiencias.css">
+    <link rel="stylesheet" href="/labrats/css/style_experiencias.css">
     <link rel="icon" href="/labrats/icons/icon3.png" type="image/x-icon">
 </head>
 <body>
     <header class="header">
-        <a href="inicio.html">
+        <a href="/labrats/inicio.html">
             <img src="/labrats/icons/logo2.png" alt="Lab Rats Logo" class="logo">
         </a>
         <h1>Experiências</h1>
@@ -44,13 +44,18 @@ $conn->close();
             <p>Não tem experiências criadas.</p>
         <?php else: ?>
             <?php foreach ($experiencias as $experiencia): ?>
-        <div class="experiencia-item">
-        <span class="experiencia-nome">Experiencia_<?php echo htmlspecialchars($experiencia['Experiencia_ID']); ?></span>
-            <i class="icon-olho" onclick="verDetalhes(<?php echo $experiencia['Experiencia_ID']; ?>)"></i>
-            <i class="icon-editar" onclick="editarExperiencia(<?php echo $experiencia['Experiencia_ID']; ?>)"></i>
-            <i class="icon-eliminar" onclick="eliminarExperiencia(<?php echo $experiencia['Experiencia_ID']; ?>)"></i>
-    <!-- Adiciona mais ícones conforme necessário -->
-</div>
+                <div class="experiencias-container">
+        <div class="experiencia-container">
+            <span class="experiencia-nome">Experiencia_<?php echo htmlspecialchars($experiencia['Experiencia_ID']); ?></span>
+            <button class="view-experience-btn" onclick="location.href='visualizar-experiencia.html';"></button>
+        </div>
+        <div class="experiencia-buttons">
+            <button class="substancias-odores-btn" onclick="location.href='substancias-odores.html';"></button>
+            <button class="labirinto-btn" onclick="location.href='labirinto.html';"></button>
+            <button class="alertas-btn" onclick="location.href='alertas-experiencia.html';"></button>
+            <button class="analise-btn" onclick="location.href='analise.html';"></button>
+        </div>
+    </div>
 <?php endforeach; ?>
         <?php endif; ?>
         <div class="button-container">
