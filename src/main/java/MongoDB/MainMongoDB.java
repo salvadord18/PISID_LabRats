@@ -1,5 +1,6 @@
 package MongoDB;
 
+import MongoDB.entities.Experiencia;
 import MongoDB.mappers.ExperienciaMapper;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
@@ -47,14 +48,18 @@ public class MainMongoDB {
             var s = mysqlDb.createStatement();
 
              //****  Exemplo de como ir buscar informação às tabelas e mapea-las ****
-//            var result = s.executeQuery("select * from experiencia;");
-//            var experiencias = ExperienciaMapper.mapList(result);
-
+            var result = s.executeQuery("select * from experiencia;");
+            var experiencias = ExperienciaMapper.mapList(result);
+            for(Experiencia experiencia : experiencias){
+                System.out.println("Experiencia " + "Data_Hora: " + experiencia.getDataHora() + " Id:" + experiencia.getId());
+            }
             var mongoDb = mongoClient.getDB(mongo_database);
             var threadFetchMongoToSql = ProcessarTemperatura.builder()
                     .mongoDb(mongoDb)
                     .sqlDb(mysqlDb)
                     .build();
+
+//            threadFetchMongoToSql.start();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
