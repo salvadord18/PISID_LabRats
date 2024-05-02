@@ -6,7 +6,7 @@ $userId = $_SESSION['user_id'] ?? null;
 
 // Se não houver um utilizador com sessão iniciada, redirecionar para a página de login.
 if (!$userId) {
-    header("Location: iniciar-sessao.php");
+    header("Location: /labrats/app/iniciar-sessao.php");
     exit();
 }
 
@@ -34,7 +34,7 @@ $conn->close();
 </head>
 <body>
     <header class="header">
-        <a href="/labrats/inicio.html">
+        <a href="/labrats/app/inicio.html">
             <img src="/labrats/icons/logo2.png" alt="Lab Rats Logo" class="logo">
         </a>
         <h1>Experiências</h1>
@@ -50,16 +50,16 @@ $conn->close();
             <button class="view-experience-btn" onclick="location.href='visualizar-experiencia.html';"></button>
         </div>
         <div class="experiencia-buttons">
-            <button class="substancias-odores-btn" onclick="location.href='substancias-odores.html';"></button>
-            <button class="labirinto-btn" onclick="location.href='labirinto.html';"></button>
-            <button class="alertas-btn" onclick="location.href='alertas-experiencia.html';"></button>
-            <button class="analise-btn" onclick="location.href='analise.html';"></button>
+            <button class="substancias-odores-btn" onclick="location.href='/labrats/app/substancias-odores.html';"></button>
+            <button class="labirinto-btn" onclick="location.href='/labrats/app/labirinto.html';"></button>
+            <button class="alertas-btn" onclick="location.href='/labrats/app/alertas-experiencia.html';"></button>
+            <button class="analise-btn" onclick="location.href='/labrats/app/analise.html';"></button>
         </div>
     </div>
 <?php endforeach; ?>
         <?php endif; ?>
         <div class="button-container">
-            <button type="button" onclick="location.href='criar-experiencia.html';" class="action-btn create-btn" aria-label="Adicionar experiência"></button>
+            <button type="button" onclick="location.href='/labrats/app/criar-experiencia.html';" class="action-btn create-btn" aria-label="Adicionar experiência"></button>
             <button type="button" onclick="window.history.back();" class="action-btn back-btn" aria-label="Voltar"></button>
         </div>
     </main>

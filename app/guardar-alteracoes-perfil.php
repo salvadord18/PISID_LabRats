@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['user_id'])) {
     }
     $stmt->close();
     $conn->close();
-    header("Location: perfil.php"); // Redireciona de volta para a página de perfil
+    header("Location: /labrats/app/perfil.php"); // Redireciona de volta para a página de perfil
     exit();
 } else {
     echo "Acesso não autorizado.";
