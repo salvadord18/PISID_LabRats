@@ -2,6 +2,7 @@ package MongoDB;
 
 import MongoDB.entities.Experiencia;
 import MongoDB.mappers.ExperienciaMapper;
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 
@@ -9,11 +10,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.Properties;
 
 public class MainMongoDB {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         Properties p = new Properties();
         p.load(new FileInputStream("cloudToMongo.ini"));
         var mongo_address = p.getProperty("mongo_address");
@@ -47,19 +49,30 @@ public class MainMongoDB {
              var mongoClient = new MongoClient(bru)) {
             var s = mysqlDb.createStatement();
 
-             //****  Exemplo de como ir buscar informação às tabelas e mapea-las ****
-            var result = s.executeQuery("select * from experiencia;");
-            var experiencias = ExperienciaMapper.mapList(result);
-            for(Experiencia experiencia : experiencias){
-                System.out.println("Experiencia " + "Data_Hora: " + experiencia.getDataHora() + " Id:" + experiencia.getId());
-            }
-            var mongoDb = mongoClient.getDB(mongo_database);
-            var threadFetchMongoToSql = ProcessarTemperatura.builder()
-                    .mongoDb(mongoDb)
-                    .sqlDb(mysqlDb)
-                    .build();
+            //****  Exemplo de como ir buscar informação às tabelas e mapea-las ****
+//            var result = s.executeQuery("select * from experiencia;");
+//            var experiencias = ExperienciaMapper.mapList(result);
+//            for (Experiencia experiencia : experiencias) {
+//                System.out.println("Experiencia " + "Data_Hora: " + experiencia.getDataHora() + " Id:" + experiencia.getId());
+//            }
 
-//            threadFetchMongoToSql.start();
+            var mongoDb = mongoClient.getDB(mongo_database);
+
+//            var collection = mongoDb.getCollection("Sensor_Temperatura").find();
+//            var iterator = collection.iterator();
+//            collection.toArray()
+//            iterator.forEachRemaining(System.out::println);
+
+            var fetchMongo = new ProcessarTemperatura(mongoDb);
+            var threadFetchToSql = new EnviarDadosMysql(mysqlDb);
+
+
+            fetchMongo.start();
+            threadFetchToSql.start();
+
+            fetchMongo.join();
+            threadFetchToSql.join();
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
