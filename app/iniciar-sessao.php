@@ -2,36 +2,24 @@
 session_start();
 include 'db.php'; // Assegura que este ficheiro contém a ligação à base de dados
 
-// Verifica se os dados foram submetidos
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST['email'];
-    $password = $_POST['password']; // Vamos assumir que este é o campo 'telefone' para teste
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-    // Prepara uma consulta para evitar injeções SQL
-    $stmt = $conn->prepare("SELECT Utilizador_ID, TelefoneUtilizador FROM utilizador WHERE EmailUtilizador = ? AND EstadoRegisto = 'A'");
-    $stmt->bind_param("s", $email);
+    // Chama o procedimento armazenado
+    $stmt = $conn->prepare("CALL IniciarSessao(?, ?)");
+    $stmt->bind_param("ss", $username, $password);
     $stmt->execute();
     $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
 
-    if ($result->num_rows > 0) {
-        $user = $result->fetch_assoc();
-
-        // Imprime os valores para debug
-        echo "Password recebida: " . $password . "<br>";
-        echo "Telefone esperado: " . $user['TelefoneUtilizador'] . "<br>";
-
-        // Verifica se o 'telefone' corresponde
-        if ($password === (string)$user['TelefoneUtilizador']) {
-            // A palavra-passe está correta, então inicia a sessão
-            $_SESSION['user_id'] = $user['Utilizador_ID'];
-            $_SESSION['email'] = $email;  // Armazenar o e-mail na sessão pode ser útil
-            header("Location: inicio.html"); // Redireciona para a página inicial
-            exit();
-        } else {
-            echo "Número de telefone inválido como password.";
-        }
+    if ($row['IsValid']) {
+        // Se IsValid for 1, utilizador e palavra-passe estão corretos
+        $_SESSION['username'] = $username; // Armazenar o nome de utilizador na sessão
+        header("Location: /labrats/app/inicio.html"); // Redireciona para a página inicial
+        exit();
     } else {
-        echo "Nenhum utilizador encontrado com esse e-mail ou o registo não está ativo.";
+        echo "Nome de utilizador ou palavra-passe incorretos.";
     }
     $stmt->close();
 }
