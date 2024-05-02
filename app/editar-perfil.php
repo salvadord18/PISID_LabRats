@@ -2,23 +2,22 @@
 session_start();
 include 'db.php'; // Inclui o script de ligação à base de dados
 
-$userId = $_SESSION['user_id'] ?? null; // Obtém o ID do utilizador da sessão
+$username = $_SESSION['username'] ?? null; // Obtém o nome de utilizador da sessão
 
-if ($userId) {
-    $query = "SELECT NomeUtilizador, EmailUtilizador, TelefoneUtilizador FROM utilizador WHERE Utilizador_ID = ?";
+if ($username) {
+    $query = "SELECT Utilizador_ID, NomeUtilizador, EmailUtilizador, TelefoneUtilizador FROM utilizador WHERE NomeUtilizador = ?";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("i", $userId);
+    $stmt->bind_param("s", $username); // 's' indica que o parâmetro é uma string
     $stmt->execute();
     $result = $stmt->get_result();
-    $user = $result->fetch_assoc() ?? null;
-    if (!$user) {
-        //echo "Nenhum utilizador encontrado.";
-        exit();
+    if ($user = $result->fetch_assoc()) {
+        // Dados recuperados com sucesso
+    } else {
+       echo "Nenhum utilizador encontrado.";
     }
     $stmt->close();
 } else {
-    //echo "Utilizador não identificado.";
-    exit();
+    echo "Utilizador não identificado.";
 }
 $conn->close();
 ?>
@@ -58,12 +57,12 @@ $conn->close();
                             <input type="integer" id="telefone" name="telefone" value="<?php echo htmlspecialchars($user['TelefoneUtilizador'] ?? ''); ?>">
                     </div>
                 </div>
-                <div class="form-row">
+                <!--<div class="form-row">
                     <div class="form-field">
                         <label for="password">Palavra-passe:</label>
                         <input type="password" id="password" name="password" value="********">
                     </div>
-                </div>
+                </div>-->
                 <div class="profile-actions">
                     <button type="submit" id="save" class="save-btn">GUARDAR ALTERAÇÕES</button>
                 </div>

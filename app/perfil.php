@@ -2,22 +2,22 @@
 session_start();
 include 'db.php'; // Inclui o script de ligação à base de dados
 
-$userId = $_SESSION['user_id'] ?? null; // Obtém o ID do utilizador da sessão
+$username = $_SESSION['username'] ?? null; // Obtém o nome de utilizador da sessão
 
-if ($userId) {
-    $query = "SELECT NomeUtilizador, EmailUtilizador, TelefoneUtilizador FROM utilizador WHERE Utilizador_ID = ?";
+if ($username) {
+    $query = "SELECT Utilizador_ID, NomeUtilizador, EmailUtilizador, TelefoneUtilizador FROM utilizador WHERE NomeUtilizador = ?";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("i", $userId);
+    $stmt->bind_param("s", $username); // 's' indica que o parâmetro é uma string
     $stmt->execute();
     $result = $stmt->get_result();
     if ($user = $result->fetch_assoc()) {
-        // Dados foram recuperados com sucesso
+        // Dados recuperados com sucesso
     } else {
-       // echo "Nenhum utilizador encontrado.";
+       echo "Nenhum utilizador encontrado.";
     }
     $stmt->close();
 } else {
-    //echo "Utilizador não identificado.";
+    echo "Utilizador não identificado.";
 }
 $conn->close();
 ?>
@@ -35,7 +35,7 @@ $conn->close();
 
 <body>
     <header class="header">
-        <a href="/labrats/inicio.html">
+        <a href="/labrats/app/inicio.html">
             <img src="/labrats/icons/logo2.png" alt="Lab Rats Logo" class="logo">
         </a>
         <h1>Perfil do utilizador</h1>
@@ -56,12 +56,12 @@ $conn->close();
                             <input type="integer" id="telefone" name="telefone" value="<?php echo htmlspecialchars($user['TelefoneUtilizador'] ?? ''); ?>" disabled>
                     </div>
                 </div>
-                <div class="form-row">
+                <!--<div class="form-row">
                     <div class="form-field">
                         <label for="password">Palavra-passe:</label>
                         <input type="password" id="password" name="password" value="*********" disabled>
                     </div>
-                </div>
+                </div>-->
                 <div class="profile-actions">
                 <form action="/labrats/app/editar-perfil.php" method="post">
                     <button id="edit" class="edit-btn">EDITAR PERFIL</button>
