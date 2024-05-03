@@ -1,26 +1,33 @@
 <?php
 session_start();
-include 'db.php';
+include 'db.php'; // Inclui o script de ligação à base de dados
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['user_id'])) {
-    $userId = $_SESSION['user_id'];
-    $nomeUtilizador = $_POST['nome-utilizador'];
-    $email = $_POST['email'];
-    $telefone = $_POST['telefone'];
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['username'])) {
+    $username = $_SESSION['username']; // Usa o nome de utilizador da sessão
+    $nomeUtilizador = $_POST['nome-utilizador'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $telefone = $_POST['telefone'] ?? '';
 
-    $query = "UPDATE utilizador SET NomeUtilizador = ?, EmailUtilizador = ?, TelefoneUtilizador = ? WHERE Utilizador_ID = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("sssi", $nomeUtilizador, $email, $telefone, $userId);
+    // Preparar chamada ao procedimento armazenado
+    $stmt = $conn->prepare("CALL AtualizarPerfil(?, ?, ?, ?)");
+    $stmt->bind_param("ssss", $username, $nomeUtilizador, $email, $telefone);
+
     if ($stmt->execute()) {
-        echo "Dados atualizados com sucesso.";
+        // Obter resultado do procedimento armazenado
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        
+        if ($row && $row['rows_affected'] > 0) {
+            echo "<script>alert('Dados atualizados com sucesso.'); window.location.href='/labrats/app/perfil.php';</script>";
+        } else {
+            echo "<script>alert('Nenhuma alteração foi feita.'); window.history.back();</script>";
+        }
     } else {
-        echo "Erro ao atualizar dados: " . $stmt->error;
+        echo "<script>alert('Erro ao atualizar dados: " . $stmt->error . "'); window.history.back();</script>";
     }
     $stmt->close();
     $conn->close();
-    header("Location: /labrats/app/perfil.php"); // Redireciona de volta para a página de perfil
-    exit();
 } else {
-    echo "Acesso não autorizado.";
+    echo "<script>alert('Acesso não autorizado.'); window.location.href='/labrats/app/iniciar-sessao.php';</script>";
 }
 ?>

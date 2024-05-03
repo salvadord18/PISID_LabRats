@@ -2,17 +2,18 @@
 session_start();
 include 'db.php'; // Assegura que este ficheiro tem a tua ligação à base de dados
 
-$userId = $_SESSION['user_id'] ?? null;
+$username = $_SESSION['username'] ?? null; // Obtém o nome de utilizador da sessão
+$userId = $_SESSION['user_id'] ?? null; // Obtém o ID do utilizador da sessão
 
 // Se não houver um utilizador com sessão iniciada, redirecionar para a página de login.
-if (!$userId) {
+if (!$username || !$userId) {
     header("Location: /labrats/app/iniciar-sessao.php");
     exit();
 }
 
 // Preparar e executar a consulta à base de dados para obter as experiências do utilizador
 $experiencias = [];
-if ($stmt = $conn->prepare("SELECT * FROM experiencia WHERE Utilizador_Utilizador_ID = ? AND EstadoRegisto = 'A'")) {
+if ($stmt = $conn->prepare("CALL MostrarTodasExperienciasInvestigador(?)")) {
     $stmt->bind_param("i", $userId);
     $stmt->execute();
     $resultado = $stmt->get_result();
@@ -23,6 +24,7 @@ if ($stmt = $conn->prepare("SELECT * FROM experiencia WHERE Utilizador_Utilizado
 }
 $conn->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -44,7 +46,6 @@ $conn->close();
             <p>Não tem experiências criadas.</p>
         <?php else: ?>
             <?php foreach ($experiencias as $experiencia): ?>
-                <div class="experiencias-container">
         <div class="experiencia-container">
             <span class="experiencia-nome">Experiencia_<?php echo htmlspecialchars($experiencia['Experiencia_ID']); ?></span>
             <button class="view-experience-btn" onclick="location.href='visualizar-experiencia.html';"></button>
@@ -55,7 +56,6 @@ $conn->close();
             <button class="alertas-btn" onclick="location.href='/labrats/app/alertas-experiencia.html';"></button>
             <button class="analise-btn" onclick="location.href='/labrats/app/analise.html';"></button>
         </div>
-    </div>
 <?php endforeach; ?>
         <?php endif; ?>
         <div class="button-container">
