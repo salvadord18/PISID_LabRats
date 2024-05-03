@@ -50,11 +50,11 @@ public class MainMongoDB {
             var s = mysqlDb.createStatement();
 
             //****  Exemplo de como ir buscar informação às tabelas e mapea-las ****
-//            var result = s.executeQuery("select * from experiencia;");
-//            var experiencias = ExperienciaMapper.mapList(result);
-//            for (Experiencia experiencia : experiencias) {
-//                System.out.println("Experiencia " + "Data_Hora: " + experiencia.getDataHora() + " Id:" + experiencia.getId());
-//            }
+            var result = s.executeQuery("select * from experiencia;");
+            var experiencias = ExperienciaMapper.mapList(result);
+            for (Experiencia experiencia : experiencias) {
+                System.out.println("Experiencia " + "Data_Hora: " + experiencia.getDataHora() + " Id:" + experiencia.getId());
+            }
 
             var mongoDb = mongoClient.getDB(mongo_database);
 
