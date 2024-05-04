@@ -59,16 +59,19 @@ public class MainMongoDB {
 
         var mongoDb = connectMongo.getDataBase();
 
-        var fetchMongo = new ProcessarTemperatura(mongoDb);
+        var fetchTempsMongo = new ProcessarTemperatura(mongoDb);
+        var fetchDoorsMongo = new ProcessarPortas(mongoDb);
         var threadFetchToSql = new EnviarDadosMysql(connectToSQL.getConnectionSQL());
 
 
-        fetchMongo.start();
+        fetchTempsMongo.start();
+        fetchDoorsMongo.start();
         threadFetchToSql.start();
 
-        fetchMongo.join();
-        threadFetchToSql.join();
 
+        fetchTempsMongo.join();
+        fetchDoorsMongo.join();
+        threadFetchToSql.join();
 
     }
 

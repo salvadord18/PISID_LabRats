@@ -1,15 +1,16 @@
 package MongoDB;
 
+import MongoDB.entities.DadosPortasMongoDB;
 import MongoDB.entities.DadosQueue;
 import MongoDB.entities.DadosTemperaturaMongoDB;
+import MongoDB.mappers.DadosPortasMongoDBMapper;
 import MongoDB.mappers.DadosTemperaturaMongoDBMapper;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import lombok.RequiredArgsConstructor;
 
-
 @RequiredArgsConstructor
-public class ProcessarTemperatura extends Thread {
+public class ProcessarPortas extends Thread{
     private final DB mongoDb;
     private DadosQueue queue = DadosQueue.getInstance();
 
@@ -17,14 +18,14 @@ public class ProcessarTemperatura extends Thread {
     public void run() {
         BasicDBObject query = new BasicDBObject("catch", new BasicDBObject("$exists", false));
 
-        var collection = mongoDb.getCollection("Sensor_Temperatura");
+        var collection = mongoDb.getCollection("Sensor_Porta");
         var iterator = collection.find(query).iterator();
-        var mappedTemps = DadosTemperaturaMongoDBMapper.mapList(iterator);
+        var mappedPortas = DadosPortasMongoDBMapper.mapList(iterator);
 
-        queue.pushData(mappedTemps);
+        queue.pushPortasMongo(mappedPortas);
 
 
-        BasicDBObject idQuery = new BasicDBObject("_id", new BasicDBObject("$in", mappedTemps.stream().map(DadosTemperaturaMongoDB::getId).toList()));
+        BasicDBObject idQuery = new BasicDBObject("_id", new BasicDBObject("$in", mappedPortas.stream().map(DadosPortasMongoDB::getId).toList()));
         BasicDBObject update = new BasicDBObject("$set", new BasicDBObject("catch", "P"));
 
         collection.updateMulti(idQuery, update);
