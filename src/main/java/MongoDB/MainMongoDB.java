@@ -10,6 +10,8 @@ import com.mongodb.MongoClientURI;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.Iterator;
 import java.util.Properties;
 
@@ -20,7 +22,7 @@ public class MainMongoDB {
     ConnectToSQL connectToSQL;
     static Statement s;
 
-    public static void IniciarExperiencia(ConnectToSQL connectToSQL) throws InterruptedException, SQLException {
+    public static int IniciarExperiencia(ConnectToSQL connectToSQL) throws InterruptedException, SQLException {
         while (true) {
             String testeCallSP = "{CALL Get_ProximaExperiencia(?)}";
             CallableStatement cs = connectToSQL.getConnectionSQL().prepareCall(testeCallSP);
@@ -30,7 +32,7 @@ public class MainMongoDB {
 
             if (resultado != -1){
                 System.out.println("Este é o meu resultado: " + resultado);
-                break;
+                return resultado;
             }
             Thread.sleep(5000);
         }
@@ -46,8 +48,11 @@ public class MainMongoDB {
 
         var s = connectToSQL.getConnectionSQL().createStatement();
 
-        IniciarExperiencia(connectToSQL);
-        //
+        int id = IniciarExperiencia(connectToSQL);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        LocalTime date = LocalTime.now();
+        Experiencia currentExperiencia = new Experiencia(formatter.format(date), String.valueOf(id));
+
 
         //****  Exemplo de como ir buscar informação às tabelas e mapea-las ****
         var result = s.executeQuery("select * from experiencia;");
