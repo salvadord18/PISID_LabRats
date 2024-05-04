@@ -9,18 +9,29 @@ import com.mongodb.MongoClientURI;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Iterator;
 import java.util.Properties;
 
 public class MainMongoDB {
 
+    ConnectToMongo connectMongo;
+    MongoClient myConnectionToMongo;
+    ConnectToSQL connectToSQL;
+    static Statement s;
 
-
-    public void IniciarExperiencia() throws InterruptedException {
+    public static void IniciarExperiencia(ConnectToSQL connectToSQL) throws InterruptedException, SQLException {
         while (true) {
+            String testeCallSP = "{CALL Get_ProximaExperiencia(?)}";
+            CallableStatement cs = connectToSQL.getConnectionSQL().prepareCall(testeCallSP);
+            cs.registerOutParameter(1, Types.INTEGER);
+            cs.execute();
+            int resultado = cs.getInt(1);
 
+            if (resultado != -1){
+                System.out.println("Este é o meu resultado: " + resultado);
+                break;
+            }
             Thread.sleep(5000);
         }
     }
@@ -28,14 +39,15 @@ public class MainMongoDB {
     public static void main(String[] args) throws IOException, InterruptedException, SQLException {
         //Esta parte foi toda para dentro do ConnectToMongo
 
-        ConnectToMongo connectMongo = new ConnectToMongo();
+
+        ConnectToMongo connectMongo  = new ConnectToMongo();
         MongoClient myConnectionToMongo = connectMongo.getConnectionMongo();
         ConnectToSQL connectToSQL = new ConnectToSQL();
-        connectToSQL.getConnectionSQL().createStatement();
-
 
         var s = connectToSQL.getConnectionSQL().createStatement();
 
+        IniciarExperiencia(connectToSQL);
+        //
 
         //****  Exemplo de como ir buscar informação às tabelas e mapea-las ****
         var result = s.executeQuery("select * from experiencia;");
