@@ -16,10 +16,14 @@ public class EnviarDadosMysql extends Thread{
 
     @Override
     public void run() {
-        var processedTemps = queue.popData();
+        //retira da lista envio para mysql
+
+//        var processedTemps = queue.popData();
+        var treatedTeps = queue.popTempsTratadas();
+
         var processedPortas = queue.popPortasMongo();
 
-        System.out.println(processedTemps);
+        System.out.println(treatedTeps);
         System.out.println(processedPortas);
     }
 }

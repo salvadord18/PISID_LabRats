@@ -6,6 +6,7 @@ import java.util.List;
 
 public class DadosQueue {
     ArrayList<DadosTemperaturaMongoDB> dadosTemperaturaMongoDB = new ArrayList<>();
+    ArrayList<DadosTemperaturaMongoDB> dadosTratadosTemperaturas = new ArrayList<>();
     ArrayList<DadosPortasMongoDB> dadosPortasMongoDB = new ArrayList<>();
     ArrayList<Experiencia> experiencias = new ArrayList<>();
 
@@ -44,6 +45,28 @@ public class DadosQueue {
         }
         return popPortasMongo();
     }
+
+    public synchronized void pushTempsTratadas(Collection<DadosTemperaturaMongoDB> data) {
+        dadosTratadosTemperaturas.addAll(data);
+        notifyAll();
+    }
+
+    public synchronized DadosTemperaturaMongoDB popTempsTratadas() {
+        if (dadosTratadosTemperaturas.size() > 0) {
+            return dadosTratadosTemperaturas.remove(0);
+        } else {
+            try {
+                wait();
+            } catch (InterruptedException ignored) {
+            }
+        }
+        return popTempsTratadas();
+    }
+
+    public synchronized ArrayList<DadosTemperaturaMongoDB> getDadosTemperaturaMongoDB(){
+        return dadosTemperaturaMongoDB;
+    }
+
     public synchronized void pushExperiencia(Experiencia data) {
         experiencias.add(data);
         notifyAll();

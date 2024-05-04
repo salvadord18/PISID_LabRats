@@ -28,7 +28,6 @@ public class ProcessarTemperatura extends Thread {
         BasicDBObject update = new BasicDBObject("$set", new BasicDBObject("catch", "P"));
 
         collection.updateMulti(idQuery, update);
-        System.out.println("Success");
 
     }
 }

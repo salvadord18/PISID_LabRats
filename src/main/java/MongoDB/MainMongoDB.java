@@ -51,15 +51,15 @@ public class MainMongoDB {
         int id = IniciarExperiencia(connectToSQL);
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         LocalTime date = LocalTime.now();
-        Experiencia currentExperiencia = new Experiencia(formatter.format(date), String.valueOf(id));
+//        Experiencia currentExperiencia = new Experiencia(formatter.format(date), String.valueOf(id));
 
 
-        //****  Exemplo de como ir buscar informação às tabelas e mapea-las ****
-        var result = s.executeQuery("select * from experiencia;");
-        var experiencias = ExperienciaMapper.mapList(result);
-        for (Experiencia experiencia : experiencias) {
-            System.out.println("Experiencia " + "Data_Hora: " + experiencia.getDataHora() + " Id:" + experiencia.getId());
-        }
+//        //****  Exemplo de como ir buscar informação às tabelas e mapea-las ****
+//        var result = s.executeQuery("select * from experiencia;");
+//        var experiencias = ExperienciaMapper.mapList(result);
+//        for (Experiencia experiencia : experiencias) {
+//            System.out.println("Experiencia " + "Data_Hora: " + experiencia.getDataHora() + " Id:" + experiencia.getId());
+//        }
 
 
         var mongoDb = connectMongo.getDataBase();
@@ -67,16 +67,19 @@ public class MainMongoDB {
         var fetchTempsMongo = new ProcessarTemperatura(mongoDb);
         var fetchDoorsMongo = new ProcessarPortas(mongoDb);
         var threadFetchToSql = new EnviarDadosMysql(connectToSQL.getConnectionSQL());
+        var threadDealWithData = new TratarDados(connectToSQL.getConnectionSQL(), mongoDb);
 
 
         fetchTempsMongo.start();
         fetchDoorsMongo.start();
         threadFetchToSql.start();
+        threadDealWithData.start();
 
 
         fetchTempsMongo.join();
         fetchDoorsMongo.join();
         threadFetchToSql.join();
+        threadDealWithData.join();
 
     }
 
