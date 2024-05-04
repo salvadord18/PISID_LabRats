@@ -4,18 +4,15 @@ import MongoDB.entities.Corredor;
 
 import java.util.List;
 
-public class CorredorFields {
-
+public enum CorredorFields {
 
     SALA_ORIGEM("Sala_Origem_ID", (e, value) -> e.setSalaOrigem((String) value)),
     SALA_DESTINO("Sala_Destino_ID", (e, value) -> e.setSalaDestino((String) value));
 
     private String column;
-    private CorredorFields.FieldSetter setter;
+    private FieldSetter setter;
 
-
-
-    CorredorFields(String salaOrigem, CorredorFields.FieldSetter setter) {
+    CorredorFields(String salaOrigem, FieldSetter setter) {
         this.setter = setter;
         this.column = salaOrigem;
     }
@@ -37,7 +34,4 @@ public class CorredorFields {
     private interface FieldSetter {
         void setField(Corredor c, Object value);
     }
-
-
-
 }
