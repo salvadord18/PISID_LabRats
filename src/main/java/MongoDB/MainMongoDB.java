@@ -30,6 +30,7 @@ public class MainMongoDB {
 
     public static int IniciarExperiencia(ConnectToSQL connectToSQL) throws InterruptedException, SQLException {
         while (true) {
+            //Não esquecer de passar a experiencia de a aguardar para em processamento!
             String testeCallSP = "{CALL Get_ProximaExperiencia(?)}";
             CallableStatement cs = connectToSQL.getConnectionSQL().prepareCall(testeCallSP);
             cs.registerOutParameter(1, Types.INTEGER);
@@ -77,9 +78,16 @@ public class MainMongoDB {
         return experiencia;
     }
 
+    public void validaPrimeiroMovimentoValido(Experiencia experiencia, DB mongoDb){
+        //Sala de origem inicial é sempre 1.
+        //Encontrar a sala de destino
+        //Depois ir encontrar no mongo, qual é o primeiro movimento valido
+        //Alterar a data da experiencia para data de primeiro movimento valido
+        //passar experiencia para em execução
+    }
+
     public static void main(String[] args) throws IOException, InterruptedException, SQLException {
         //Esta parte foi toda para dentro do ConnectToMongo
-
 
         ConnectToMongo connectMongo  = new ConnectToMongo();
         MongoClient myConnectionToMongo = connectMongo.getConnectionMongo();
@@ -91,9 +99,9 @@ public class MainMongoDB {
         //Recebe id da experiencia que está a aguardar à mais tempo
         int id = IniciarExperiencia(connectToSQL);
         System.out.println(id);
-        //Experiencia criada com id, data
+
+        //Experiencia criada com id, data e array de Corredores (posições validas)
         Experiencia experiencia = getCorredoresCurrentExperiencia(connectToSQL, id);
-        System.out.println(experiencia);
 
         for(int i = 0; i < experiencia.getCorredores().length; i++){
             System.out.println(experiencia.getCorredores()[i].getSalaOrigem());
