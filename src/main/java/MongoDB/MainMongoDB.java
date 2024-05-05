@@ -13,7 +13,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.Properties;
 
@@ -31,10 +33,10 @@ public class MainMongoDB {
             cs.registerOutParameter(1, Types.INTEGER);
             cs.execute();
             int resultado = cs.getInt(1);
-
             if (resultado != -1){
                 return resultado;
             }
+            System.out.println("Não ha threads a aguardar");
             Thread.sleep(5000);
         }
     }
@@ -43,17 +45,18 @@ public class MainMongoDB {
         String procedureCall = "{CALL GetCorredores(?)}";
         CallableStatement cs = connectToSQL.getConnectionSQL().prepareCall(procedureCall);
         cs.setInt(1, idExperiencia);
-        ResultSet resultado = cs.executeQuery();
-        System.out.println(resultado);
-
-        CorredorMapper corredorMapper = new CorredorMapper();
-        //
-        //System.out.println(corredores);
+        ResultSet resultado =  cs.executeQuery();
         while(resultado.next()) {
-            //for(Corredor corredor: corredores){
+
             System.out.println(resultado.getString(1));
-            var corredores = CorredorMapper.mapList(resultado);
+            //tratar json e popular corredores
+
         }
+        LocalDate currentDate = LocalDate.now();
+
+        String currentDateString = currentDate.toString();
+        Corredor[] corredores = {};
+
 
     }
 
@@ -64,19 +67,19 @@ public class MainMongoDB {
         ConnectToMongo connectMongo  = new ConnectToMongo();
         MongoClient myConnectionToMongo = connectMongo.getConnectionMongo();
         ConnectToSQL connectToSQL = new ConnectToSQL();
+        var mongoDb = connectMongo.getDataBase();
 
         var s = connectToSQL.getConnectionSQL().createStatement();
 
         //Recebe id da experiencia que está a aguardar à mais tempo
-        //int id = IniciarExperiencia(connectToSQL);
-        int id = 8;
+        int id = IniciarExperiencia(connectToSQL);
+        System.out.println(id);
         //Get corredores da experiencia
         getCorredoresCurrentExperiencia(connectToSQL, id);
 
 
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        LocalTime date = LocalTime.now();
-//        Experiencia currentExperiencia = new Experiencia(formatter.format(date), String.valueOf(id));
+
+
 
 
 //        //****  Exemplo de como ir buscar informação às tabelas e mapea-las ****
@@ -87,7 +90,7 @@ public class MainMongoDB {
 //        }
 
 
-        var mongoDb = connectMongo.getDataBase();
+
 
         var fetchTempsMongo = new ProcessarTemperatura(mongoDb);
         var fetchDoorsMongo = new ProcessarPortas(mongoDb);
