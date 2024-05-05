@@ -8,6 +8,8 @@ import com.mongodb.DB;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -41,23 +43,38 @@ public class MainMongoDB {
         }
     }
 
-    public static void getCorredoresCurrentExperiencia(ConnectToSQL connectToSQL, int idExperiencia) throws SQLException {
+    public static Experiencia getCorredoresCurrentExperiencia(ConnectToSQL connectToSQL, int idExperiencia) throws SQLException {
+
         String procedureCall = "{CALL GetCorredores(?)}";
         CallableStatement cs = connectToSQL.getConnectionSQL().prepareCall(procedureCall);
         cs.setInt(1, idExperiencia);
         ResultSet resultado =  cs.executeQuery();
-        while(resultado.next()) {
+        Experiencia experiencia = new Experiencia();
 
-            System.out.println(resultado.getString(1));
-            //tratar json e popular corredores
+        while(resultado.next()) {
+            JSONArray jsonArray = new JSONArray(resultado.getString(1));
+            Corredor[] corredores = new Corredor[jsonArray.length()];
+            int i = 0;
+
+            for (; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                Corredor corredor = new Corredor();
+                corredor.setSalaOrigem(jsonObject.getString("Sala_Origem_ID"));
+                corredor.setSalaDestino(jsonObject.getString("Sala_Destino_ID"));
+                corredores[i] = corredor;
+
+                //System.out.println(resultado.getString(1));
+                //tratar json e popular corredores
+
+            }
+            LocalDate currentDate = LocalDate.now();
+            String currentDateString = currentDate.toString();
+            experiencia.setDataHora(currentDateString);
+            experiencia.setId(String.valueOf(idExperiencia));
+            experiencia.setCorredores(corredores);
 
         }
-        LocalDate currentDate = LocalDate.now();
-
-        String currentDateString = currentDate.toString();
-        Corredor[] corredores = {};
-
-
+        return experiencia;
     }
 
     public static void main(String[] args) throws IOException, InterruptedException, SQLException {
@@ -74,10 +91,14 @@ public class MainMongoDB {
         //Recebe id da experiencia que está a aguardar à mais tempo
         int id = IniciarExperiencia(connectToSQL);
         System.out.println(id);
-        //Get corredores da experiencia
-        getCorredoresCurrentExperiencia(connectToSQL, id);
+        //Experiencia criada com id, data
+        Experiencia experiencia = getCorredoresCurrentExperiencia(connectToSQL, id);
+        System.out.println(experiencia);
 
-
+        for(int i = 0; i < experiencia.getCorredores().length; i++){
+            System.out.println(experiencia.getCorredores()[i].getSalaOrigem());
+            System.out.println(experiencia.getCorredores()[i].getSalaDestino());
+        }
 
 
 
