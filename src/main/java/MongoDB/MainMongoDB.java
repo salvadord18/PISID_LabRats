@@ -1,6 +1,8 @@
 package MongoDB;
 
+import MongoDB.entities.Corredor;
 import MongoDB.entities.Experiencia;
+import MongoDB.mappers.CorredorMapper;
 import MongoDB.mappers.ExperienciaMapper;
 import com.mongodb.DB;
 import com.mongodb.DBObject;
@@ -31,11 +33,28 @@ public class MainMongoDB {
             int resultado = cs.getInt(1);
 
             if (resultado != -1){
-                System.out.println("Este é o meu resultado: " + resultado);
                 return resultado;
             }
             Thread.sleep(5000);
         }
+    }
+
+    public static void getCorredoresCurrentExperiencia(ConnectToSQL connectToSQL, int idExperiencia) throws SQLException {
+        String procedureCall = "{CALL GetCorredores(?)}";
+        CallableStatement cs = connectToSQL.getConnectionSQL().prepareCall(procedureCall);
+        cs.setInt(1, idExperiencia);
+        ResultSet resultado = cs.executeQuery();
+        System.out.println(resultado);
+
+        CorredorMapper corredorMapper = new CorredorMapper();
+        //
+        //System.out.println(corredores);
+        while(resultado.next()) {
+            //for(Corredor corredor: corredores){
+            System.out.println(resultado.getString(1));
+            var corredores = CorredorMapper.mapList(resultado);
+        }
+
     }
 
     public static void main(String[] args) throws IOException, InterruptedException, SQLException {
@@ -48,7 +67,13 @@ public class MainMongoDB {
 
         var s = connectToSQL.getConnectionSQL().createStatement();
 
-        int id = IniciarExperiencia(connectToSQL);
+        //Recebe id da experiencia que está a aguardar à mais tempo
+        //int id = IniciarExperiencia(connectToSQL);
+        int id = 8;
+        //Get corredores da experiencia
+        getCorredoresCurrentExperiencia(connectToSQL, id);
+
+
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         LocalTime date = LocalTime.now();
 //        Experiencia currentExperiencia = new Experiencia(formatter.format(date), String.valueOf(id));
@@ -72,14 +97,16 @@ public class MainMongoDB {
 
         fetchTempsMongo.start();
         fetchDoorsMongo.start();
-        threadFetchToSql.start();
         threadDealWithData.start();
+        threadFetchToSql.start();
+
 
 
         fetchTempsMongo.join();
         fetchDoorsMongo.join();
-        threadFetchToSql.join();
         threadDealWithData.join();
+        threadFetchToSql.join();
+
 
     }
 
