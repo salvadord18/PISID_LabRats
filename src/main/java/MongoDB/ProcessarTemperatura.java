@@ -2,10 +2,13 @@ package MongoDB;
 
 import MongoDB.entities.DadosQueue;
 import MongoDB.entities.DadosTemperaturaMongoDB;
+import MongoDB.entities.Experiencia;
 import MongoDB.mappers.DadosTemperaturaMongoDBMapper;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import lombok.RequiredArgsConstructor;
+
+import java.time.LocalDate;
 
 
 @RequiredArgsConstructor
@@ -15,6 +18,8 @@ public class ProcessarTemperatura extends Thread {
 
     @Override
     public void run() {
+        LocalDate currentDate = LocalDate.now();
+
         BasicDBObject query = new BasicDBObject("catch", new BasicDBObject("$exists", false));
 
         var collection = mongoDb.getCollection("Sensor_Temperatura");
