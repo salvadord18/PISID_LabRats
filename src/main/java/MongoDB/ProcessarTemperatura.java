@@ -9,6 +9,7 @@ import com.mongodb.DB;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 
 @RequiredArgsConstructor
@@ -18,7 +19,6 @@ public class ProcessarTemperatura extends Thread {
 
     @Override
     public void run() {
-        LocalDate currentDate = LocalDate.now();
 
         BasicDBObject query = new BasicDBObject("catch", new BasicDBObject("$exists", false));
 
@@ -27,12 +27,14 @@ public class ProcessarTemperatura extends Thread {
         var mappedTemps = DadosTemperaturaMongoDBMapper.mapList(iterator);
 
         queue.pushData(mappedTemps);
-
+//        mappedTemps.stream().map(DadosTemperaturaMongoDB::getHora).
+//        if()
 
         BasicDBObject idQuery = new BasicDBObject("_id", new BasicDBObject("$in", mappedTemps.stream().map(DadosTemperaturaMongoDB::getId).toList()));
         BasicDBObject update = new BasicDBObject("$set", new BasicDBObject("catch", "P"));
 
         collection.updateMulti(idQuery, update);
-
     }
+
+
 }
