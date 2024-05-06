@@ -48,7 +48,7 @@ $conn->close();
             <?php foreach ($experiencias as $experiencia): ?>
         <div class="experiencia-container">
             <span class="experiencia-nome">Experiencia_<?php echo htmlspecialchars($experiencia['Experiencia_ID']); ?></span>
-            <button class="view-experience-btn" onclick="location.href='visualizar-experiencia.html';"></button>
+            <button class="view-experience-btn" onclick="location.href='visualizar-experiencia.php?Experiencia_ID=<?php echo $experiencia['Experiencia_ID']; ?>';"></button>
         </div>
         <div class="experiencia-buttons">
             <button class="substancias-odores-btn" onclick="location.href='/labrats/app/substancias-odores.html';"></button>

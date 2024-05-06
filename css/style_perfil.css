@@ -170,7 +170,7 @@ body, html {
 /* Define uma largura específica para os botões se não quiseres que cresçam com o conteúdo */
 .edit-btn, .logout-btn {
     padding: 15px 30px; /* Ajusta o padding para controlar o tamanho dos botões */
-    margin-top: 20px; /* Espaço acima dos botões */
+    margin-top: 230px; /* Espaço acima dos botões */
     font-size: 1em; /* Tamanho da fonte dentro do botão */
     flex: none; /* Impede que os botões cresçam além do padding */
 }

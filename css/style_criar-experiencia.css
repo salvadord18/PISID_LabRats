@@ -89,6 +89,7 @@ label {
     background-color: #EFEFEF; /* Cor de fundo dos campos de input */
     border-radius: 20px; /* Borda arredondada para os campos */
     font-size: 1em; /* Tamanho da fonte para os campos */
+    font-family: "Roboto Mono", monospace;
 }
 
 /* Ajuste a altura da textarea se necessário */
@@ -137,6 +138,27 @@ label {
 
 .submit-btn:hover {
     background-color: #7a45d6;
+}
+
+.finish-btn {
+    width: 200px; /* Largura fixa para o botão */
+    padding: 15px;
+    margin-top: 20px; /* Espaço acima do botão */
+    background-color: #ff5757;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    align-self: center; /* Centraliza o botão */
+    font-size: 1em;
+    display: block; /* Faz o botão ser um bloco para aplicar margin */
+    margin-left: auto; /* Alinha o botão à direita */
+    margin-right: auto; /* Alinha o botão à direita */
+    font-family: "Roboto Mono", monospace;
+}
+
+.finish-btn:hover {
+    background-color: #ce4646;
 }
 
 .back-btn {
