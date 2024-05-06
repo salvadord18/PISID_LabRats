@@ -68,7 +68,7 @@ public class MainMongoDB {
 
             }
             LocalDateTime currentDate = LocalDateTime.now();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:SSSSSS");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
             experiencia.setDataHora(currentDate.format(formatter));
             experiencia.setId(String.valueOf(idExperiencia));
             experiencia.setCorredores(corredores);
@@ -112,14 +112,31 @@ public class MainMongoDB {
                 LocalDateTime experienciaTime = LocalDateTime.parse(horasExperiencia, formatter2);
                 int compare = mongoTime.compareTo(experienciaTime);*/
 
-                if ((salaOrigemValue.equals("1") && (salaDestinoValue.equals(String.valueOf(salaDestino)) && salaDestino != 0))) {
+                DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
+
+                var dataDadosMongo = mappedPortas.get(i).getHora();
+
+                LocalDateTime dataMongo = LocalDateTime.parse(dataDadosMongo, formatter1);
+                LocalDateTime dataExperiencia = LocalDateTime.parse(experiencia.getDataHora(), formatter1);
+
+
+                if ((salaOrigemValue.equals("1") && (salaDestinoValue.equals(String.valueOf(salaDestino))
+                        && dataMongo.compareTo(dataExperiencia) > 0))) {
                     System.out.println("Sala origem: " + salaOrigemValue + " Sala destino: " + salaDestinoValue);
                     experiencia.setDataHora(mappedPortas.get(i).getHora());
+                    // push da experiencia, caso encontre o dado válido
+                    DadosQueue.getInstance().pushExperiencia(experiencia);
                     flag = 1;
                     break;
                 }
             }
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
+
 
         //Alterar a data da experiencia para data de primeiro movimento valido
         //passar experiencia para em execução
