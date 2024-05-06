@@ -9,7 +9,13 @@ if (!$userId) {
     exit();
 }
 
+// Obtém o ID da experiência a ser visualizada, que pode ser passado como parâmetro na URL
 $experienciaId = $_GET['Experiencia_ID'] ?? null;
+
+if (!$experienciaId) {
+    // Redireciona de volta para a página anterior ou exibe uma mensagem de erro, se apropriado
+    echo "<script>alert('ID da experiência não fornecido.'); window.history.back();</script>";
+}
 
 $stmt = $conn->prepare("CALL VisualizarDadosExperiencia(?, @p_Descricao, @p_NumeroRatos, @p_LimiteRatosSala, @p_SegundosSemMovimento, @p_TemperaturaIdeal, @p_VariacaoTemperaturaMaxima, @p_NumeroOutliersMaximo, @p_Nome_Estado)");
 $stmt->bind_param("i", $experienciaId);
@@ -29,7 +35,6 @@ if ($row = $result->fetch_assoc()) {
     echo "<script>alert('Nenhuma experiência encontrada com o ID fornecido.'); window.history.back();</script>";
     exit();
 }
-
 
 $style = '';
 switch ($nomeEstado) {
@@ -81,42 +86,56 @@ $conn->close();
     </header>
     <main class="main-content">
         <p style="<?php echo $style; ?>"><?php echo $nomeEstado; ?></p>
-        <form action="/labrats/app/guardar-alteracoes-experiencia.php?Experiencia_ID=<?php echo $experiencia['Experiencia_ID']; ?>';" method="POST" class="create-experience-form">
+        <form action="/labrats/app/ativar-edicao.php?Experiencia_ID=<?php echo $experiencia['Experiencia_ID']; ?>';" method="POST" class="create-experience-form">
             <div class="form-field description-field">
                 <label for="experience-description">Descrição da experiência:</label>
-                <textarea id="experience-description" name="experience_description"><?php echo htmlspecialchars($descricao ?? ''); ?></textarea>
+                <textarea id="experience-description" name="experience_description" disabled><?php echo htmlspecialchars($descricao ?? ''); ?></textarea>
             </div>
             <div class="form-row">
                 <div class="form-field">
                     <label for="experience-rats">Número de ratos da experiência:</label>
-                    <input type="number" id="experience-rats" name="experience-rats" value="<?php echo htmlspecialchars($numeroRatos ?? ''); ?>" min="1" step="1" required>
+                    <input type="number" id="experience-rats" name="experience-rats" value="<?php echo htmlspecialchars($numeroRatos ?? ''); ?>" disabled>
                 </div>
                 <div class="form-field">
                     <label for="experience-rats-limit">Limite de ratos por sala:</label>
-                    <input type="number" id="experience-rats-limit" name="experience-rats-limit" value="<?php echo htmlspecialchars($limiteRatosSala ?? ''); ?>" min="1" step="1" required>
+                    <input type="number" id="experience-rats-limit" name="experience-rats-limit" value="<?php echo htmlspecialchars($limiteRatosSala ?? ''); ?>" disabled>
                 </div>
                 <div class="form-field">
                     <label for="experience-seconds">Segundos sem movimento:</label>
-                    <input type="number" id="experience-seconds" name="experience-seconds" value="<?php echo htmlspecialchars($segundosSemMovimento ?? ''); ?>" min="0" step="1" required>
+                    <input type="number" id="experience-seconds" name="experience-seconds" value="<?php echo htmlspecialchars($segundosSemMovimento ?? ''); ?>" disabled>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-field">
                     <label for="experience-temperature">Temperatura ideal:</label>
-                    <input type="number" id="experience-temperature" name="experience-temperature" value="<?php echo htmlspecialchars($temperaturaIdeal ?? ''); ?>" step="0.1" required>
+                    <input type="number" id="experience-temperature" name="experience-temperature" value="<?php echo htmlspecialchars($temperaturaIdeal ?? ''); ?>" disabled>
                 </div>
                 <div class="form-field">
                     <label for="experience-max-temperature">Variação da temperatura máxima:</label>
-                    <input type="number" id="experience-max-temperature" name="experience-max-temperature" value="<?php echo htmlspecialchars($variacaoTemperaturaMaxima ?? ''); ?>" min="0" step="0.1" required>
+                    <input type="number" id="experience-max-temperature" name="experience-max-temperature" value="<?php echo htmlspecialchars($variacaoTemperaturaMaxima ?? ''); ?>" disabled>
                 </div>
                 <div class="form-field">
                     <label for="experience-outliers">Número máximo de outliers:</label>
-                    <input type="number" id="experience-outliers" name="experience-outliers" value="<?php echo htmlspecialchars($numeroOutliersMaximo ?? ''); ?>" min="0" step="1" max="100" required>
+                    <input type="number" id="experience-outliers" name="experience-outliers" value="<?php echo htmlspecialchars($numeroOutliersMaximo ?? ''); ?>" disabled>
                 </div>
             </div>
+            <?php if ($nomeEstado === 'A aguardar'): ?>
                 <div class="form-actions">
-                    <button type="submit" class="submit-btn">GUARDAR ALTERAÇÕES</button>
+                    <button type="submit" class="submit-btn">EDITAR EXPERIÊNCIA</button>
                 </div>
+            <?php endif; ?>
+            <?php if ($nomeEstado === 'Em processamento'): ?>
+                <div class="form-actions">
+                    <button type="submit" class="finish-btn">CANCELAR EXPERIÊNCIA</button>
+                </div>
+            <?php endif; ?>
+            <?php if ($nomeEstado === 'Em curso'): ?>
+                <div class="form-actions">
+                    <button type="submit" class="finish-btn">TERMINAR EXPERIÊNCIA</button>
+                </div>
+            <?php endif; ?>
+            <?php if ($nomeEstado === 'Terminada' || 'Cancelada' || 'Interrompida'): ?>
+            <?php endif; ?>
             </form>
         </section>
         <button type="button" onclick="window.history.back();" class="back-btn" aria-label="Voltar"></button>

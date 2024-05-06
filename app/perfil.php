@@ -13,11 +13,11 @@ if ($username) {
     if ($user = $result->fetch_assoc()) {
         // Dados recuperados com sucesso
     } else {
-       echo "Nenhum utilizador encontrado.";
+        echo "<script>alert('Nenhum utilizador encontrado. " . $stmt->error . "'); window.history.back();</script>";
     }
     $stmt->close();
 } else {
-    echo "Utilizador não identificado.";
+    echo "<script>alert('Utilizador não identificado. " . $stmt->error . "'); window.history.back();</script>";
 }
 $conn->close();
 ?>
