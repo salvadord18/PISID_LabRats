@@ -2,6 +2,8 @@ package MongoDB.entities;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 // Objeto associado à tabela experiencia, vai ser um recurso partilhado
 @Setter
 @Getter

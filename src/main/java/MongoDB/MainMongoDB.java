@@ -1,13 +1,13 @@
 package MongoDB;
 
 import MongoDB.entities.Corredor;
+import MongoDB.entities.DadosPortasMongoDB;
+import MongoDB.entities.DadosQueue;
 import MongoDB.entities.Experiencia;
 import MongoDB.mappers.CorredorMapper;
+import MongoDB.mappers.DadosPortasMongoDBMapper;
 import MongoDB.mappers.ExperienciaMapper;
-import com.mongodb.DB;
-import com.mongodb.DBObject;
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
+import com.mongodb.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -16,9 +16,12 @@ import java.io.IOException;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Properties;
 
 public class MainMongoDB {
@@ -39,7 +42,6 @@ public class MainMongoDB {
             if (resultado != -1){
                 return resultado;
             }
-            System.out.println("Não ha threads a aguardar");
             Thread.sleep(5000);
         }
     }
@@ -64,13 +66,10 @@ public class MainMongoDB {
                 corredor.setSalaDestino(jsonObject.getString("Sala_Destino_ID"));
                 corredores[i] = corredor;
 
-                //System.out.println(resultado.getString(1));
-                //tratar json e popular corredores
-
             }
-            LocalDate currentDate = LocalDate.now();
-            String currentDateString = currentDate.toString();
-            experiencia.setDataHora(currentDateString);
+            LocalDateTime currentDate = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:SSSSSS");
+            experiencia.setDataHora(currentDate.format(formatter));
             experiencia.setId(String.valueOf(idExperiencia));
             experiencia.setCorredores(corredores);
 
@@ -78,13 +77,54 @@ public class MainMongoDB {
         return experiencia;
     }
 
-    public void validaPrimeiroMovimentoValido(Experiencia experiencia, DB mongoDb){
+    public static void validaPrimeiroMovimentoValido(Experiencia experiencia, DB mongoDb){
         //Sala de origem inicial é sempre 1.
-        //Encontrar a sala de destino
+        //Encontra salaDestino correta
+        int salaDestino=0;
+        int aux;
+        System.out.println(experiencia.getCorredores().length);
+        for(int i = 0; i < experiencia.getCorredores().length; i++){
+            if(experiencia.getCorredores()[i].getSalaOrigem().equals("1")) {
+                salaDestino = Integer.parseInt(experiencia.getCorredores()[i].getSalaDestinoComOrigem(String.valueOf(1)));
+            }
+        }
+
         //Depois ir encontrar no mongo, qual é o primeiro movimento valido
+
+        BasicDBObject query = new BasicDBObject("catch", new BasicDBObject("$exists", false));
+        var collection = mongoDb.getCollection("Sensor_Porta");
+
+        int flag = 0;
+        while(flag == 0) {
+            var iterator = collection.find(query).iterator();
+            var mappedPortas = DadosPortasMongoDBMapper.mapList(iterator);
+            for (int i = 0; i < mappedPortas.size(); i++) {
+                String salaOrigemValue = String.valueOf(mappedPortas.get(i).getSalaOrigem());
+                String salaDestinoValue = String.valueOf(mappedPortas.get(i).getSalaDestino());
+
+                //int compare = LocalDateTime.parse(experiencia.getDataHora()).compareTo(LocalDateTime.parse(mappedPortas.get(i).getHora()));
+               /* DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
+                DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSS");
+                String horasMongo = mappedPortas.get(i).getHora();
+                String horasExperiencia = experiencia.getDataHora();
+                System.out.println(mappedPortas.get(i).getHora());
+                LocalDateTime mongoTime = LocalDateTime.parse(horasMongo, formatter1);
+                LocalDateTime experienciaTime = LocalDateTime.parse(horasExperiencia, formatter2);
+                int compare = mongoTime.compareTo(experienciaTime);*/
+
+                if ((salaOrigemValue.equals("1") && (salaDestinoValue.equals(String.valueOf(salaDestino)) && salaDestino != 0))) {
+                    System.out.println("Sala origem: " + salaOrigemValue + " Sala destino: " + salaDestinoValue);
+                    experiencia.setDataHora(mappedPortas.get(i).getHora());
+                    flag = 1;
+                    break;
+                }
+            }
+        }
+
         //Alterar a data da experiencia para data de primeiro movimento valido
         //passar experiencia para em execução
     }
+
 
     public static void main(String[] args) throws IOException, InterruptedException, SQLException {
         //Esta parte foi toda para dentro do ConnectToMongo
@@ -98,15 +138,19 @@ public class MainMongoDB {
 
         //Recebe id da experiencia que está a aguardar à mais tempo
         int id = IniciarExperiencia(connectToSQL);
-        System.out.println(id);
+
 
         //Experiencia criada com id, data e array de Corredores (posições validas)
         Experiencia experiencia = getCorredoresCurrentExperiencia(connectToSQL, id);
+        System.out.println("Hora inicial: " + experiencia.getDataHora());
+        validaPrimeiroMovimentoValido( experiencia, mongoDb);
+        System.out.println("Hora final: " + experiencia.getDataHora());
 
-        for(int i = 0; i < experiencia.getCorredores().length; i++){
+
+        /*for(int i = 0; i < experiencia.getCorredores().length; i++){
             System.out.println(experiencia.getCorredores()[i].getSalaOrigem());
             System.out.println(experiencia.getCorredores()[i].getSalaDestino());
-        }
+        }*/
 
 
 

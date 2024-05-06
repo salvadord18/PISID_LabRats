@@ -67,6 +67,10 @@ public class DadosQueue {
         return dadosTemperaturaMongoDB;
     }
 
+    public synchronized ArrayList<DadosPortasMongoDB> getDadosPortasMongoDB(){
+        return dadosPortasMongoDB;
+    }
+
     public synchronized void pushExperiencia(Experiencia data) {
         experiencias.add(data);
         notifyAll();
