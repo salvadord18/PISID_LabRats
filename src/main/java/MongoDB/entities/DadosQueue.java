@@ -3,15 +3,16 @@ package MongoDB.entities;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 public class DadosQueue {
     ArrayList<DadosTemperaturaMongoDB> dadosTemperaturaMongoDB = new ArrayList<>();
     ArrayList<DadosTemperaturaMongoDB> dadosTratadosTemperaturas = new ArrayList<>();
     ArrayList<DadosPortasMongoDB> dadosPortasMongoDB = new ArrayList<>();
-    ArrayList<Experiencia> experiencias = new ArrayList<>();
 
     private DadosQueue() {
     }
+
 
     public synchronized void pushData(Collection<DadosTemperaturaMongoDB> data) {
         dadosTemperaturaMongoDB.addAll(data);
@@ -69,23 +70,6 @@ public class DadosQueue {
 
     public synchronized ArrayList<DadosPortasMongoDB> getDadosPortasMongoDB(){
         return dadosPortasMongoDB;
-    }
-
-    public synchronized void pushExperiencia(Experiencia data) {
-        experiencias.add(data);
-        notifyAll();
-    }
-
-    public synchronized Experiencia popExperiencia() {
-        if (experiencias.size() > 0) {
-            return experiencias.remove(0);
-        } else {
-            try {
-                wait();
-            } catch (InterruptedException ignored) {
-            }
-        }
-        return popExperiencia();
     }
 
     private static DadosQueue single_instance = null;

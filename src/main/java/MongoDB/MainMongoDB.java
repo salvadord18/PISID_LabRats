@@ -1,9 +1,7 @@
 package MongoDB;
 
-import MongoDB.entities.Corredor;
-import MongoDB.entities.DadosPortasMongoDB;
-import MongoDB.entities.DadosQueue;
-import MongoDB.entities.Experiencia;
+import MongoDB.entities.*;
+import MongoDB.entities.enums.ExperienciaStatus;
 import MongoDB.mappers.CorredorMapper;
 import MongoDB.mappers.DadosPortasMongoDBMapper;
 import MongoDB.mappers.ExperienciaMapper;
@@ -119,13 +117,17 @@ public class MainMongoDB {
                 LocalDateTime dataMongo = LocalDateTime.parse(dataDadosMongo, formatter1);
                 LocalDateTime dataExperiencia = LocalDateTime.parse(experiencia.getDataHora(), formatter1);
 
-
                 if ((salaOrigemValue.equals("1") && (salaDestinoValue.equals(String.valueOf(salaDestino))
                         && dataMongo.compareTo(dataExperiencia) > 0))) {
                     System.out.println("Sala origem: " + salaOrigemValue + " Sala destino: " + salaDestinoValue);
                     experiencia.setDataHora(mappedPortas.get(i).getHora());
-                    // push da experiencia, caso encontre o dado válido
-                    DadosQueue.getInstance().pushExperiencia(experiencia);
+                    // faz set da Experiencia, caso encontre o dado válido
+                    CurrentExperiencia.getInstance().setExperiencia(experiencia);
+
+                    //Depois do SP que passa o estado da experiencia para em execução, faz set do estado da experiencia
+                    // no java, para execucao
+                    CurrentExperiencia.getInstance().setEstadoExperiencia(ExperienciaStatus.EM_CURSO);
+
                     flag = 1;
                     break;
                 }

@@ -68,13 +68,12 @@ public class TratarDados extends Thread {
 
     public boolean isOutlier(DadosTemperaturaMongoDB dadosTemperaturaMongoDB) {
         GFG gfg = new GFG();
-
         if (leituras.size() < 40) {
             leituras.add(dadosTemperaturaMongoDB.getLeitura());
             return false;
         }
-        int IQR = gfg.IQR(leituras, leituras.size());
-        if(dadosTemperaturaMongoDB.getLeitura()>IQR){
+        var isOutlier = gfg.isOutlier(leituras, leituras.size(), dadosTemperaturaMongoDB.getLeitura());
+        if (isOutlier) {
             return true;
         }
         leituras.add(0, dadosTemperaturaMongoDB.getLeitura());
@@ -112,8 +111,8 @@ public class TratarDados extends Thread {
 
         // Function to
         // calculate IQR
-        public int IQR(List<Integer> a, int n) {
-           Collections.sort(a);
+        public boolean isOutlier(List<Integer> a, int n, int value) {
+            Collections.sort(a);
 
             // Index of median
             // of entire data
@@ -134,7 +133,12 @@ public class TratarDados extends Thread {
                 Q3 = a.get(median(a, mid_index + 1, n));
 
             // IQR calculation
-            return (Q3 - Q1);
+            var IQR = Q3 - Q1;
+
+            var upperFence = Q3 + (1.5 * IQR);
+            var lowerFence = Q1 - (1.5 * IQR);
+
+            return !(lowerFence <= value && value <= upperFence);
         }
     }
 }
