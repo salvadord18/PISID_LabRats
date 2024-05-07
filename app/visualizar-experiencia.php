@@ -13,7 +13,7 @@ if (!$userId) {
 $experienciaId = $_GET['Experiencia_ID'] ?? null;
 
 if (!$experienciaId) {
-    // Redireciona de volta para a página anterior ou exibe uma mensagem de erro, se apropriado
+    // Exibe uma mensagem de erro e volta para a página anterior
     echo "<script>alert('ID da experiência não fornecido.'); window.history.back();</script>";
 }
 
@@ -86,7 +86,8 @@ $conn->close();
     </header>
     <main class="main-content">
         <p style="<?php echo $style; ?>"><?php echo $nomeEstado; ?></p>
-        <form action="/labrats/app/ativar-edicao.php?Experiencia_ID=<?php echo $experiencia['Experiencia_ID']; ?>';" method="POST" class="create-experience-form">
+        <form action="/labrats/app/ativar-edicao.php" method="POST" class="create-experience-form">
+            <input type="hidden" name="experienciaId" value="<?php echo $experienciaId; ?>">
             <div class="form-field description-field">
                 <label for="experience-description">Descrição da experiência:</label>
                 <textarea id="experience-description" name="experience_description" disabled><?php echo htmlspecialchars($descricao ?? ''); ?></textarea>
@@ -121,7 +122,7 @@ $conn->close();
             </div>
             <?php if ($nomeEstado === 'A aguardar'): ?>
                 <div class="form-actions">
-                    <button type="submit" class="submit-btn">EDITAR EXPERIÊNCIA</button>
+                    <button type="submit" name="action" value="editar" class="submit-btn">EDITAR EXPERIÊNCIA</button>
                 </div>
             <?php endif; ?>
             <?php if ($nomeEstado === 'Em processamento'): ?>

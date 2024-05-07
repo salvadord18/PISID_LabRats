@@ -71,17 +71,44 @@ $conn->close();
     <title>Experiencia_<?php echo htmlspecialchars($experienciaId); ?> | LabRats</title>
     <link rel="stylesheet" href="/labrats/css/style_criar-experiencia.css">
     <link rel="icon" href="/labrats/icons/icon3.png" type="image/x-icon">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        var backButton = document.querySelector('.back-btn');
+        backButton.addEventListener('click', function(event) {
+            event.preventDefault(); // Impede a ação padrão do botão
+            window.location.href = '/labrats/app/a-aguardar.php?Experiencia_ID=<?php echo $experienciaId; ?>'; // Redireciona para ajustar o estado
+        });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+        var backButton = document.querySelector('.logo');
+        backButton.addEventListener('click', function(event) {
+            event.preventDefault(); // Impede a ação padrão do botão
+            window.location.href = '/labrats/app/a-aguardar2.php?Experiencia_ID=<?php echo $experienciaId; ?>'; // Redireciona para ajustar o estado
+        });
+        });
+
+        /*window.addEventListener('beforeunload', function(e) {
+    // Coloca um aviso, mas não redireciona ou altera a localização aqui.
+    var confirmationMessage = 'Tem a certeza de que quer sair? Certifique-se de ter guardado todas as alterações.';
+    e.returnValue = confirmationMessage; // Isto é necessário para o evento.
+    return confirmationMessage; // Alguns navegadores podem usar isto para mostrar uma mensagem ao utilizador.
+    window.location.href = '/labrats/app/a-aguardar.php?Experiencia_ID=<?php echo $experienciaId; ?>'; // Redireciona para ajustar o estado
+});
+*/
+    </script>
 </head>
 <body>
     <header class="header">
-        <a href="/labrats/app/inicio.html">
+        <a class="logo" href="/labrats/app/inicio.html">
         <img src="/labrats/icons/logo2.png" alt="Lab Rats Logo" class="logo">
     </a>
         <h1>Experiencia_<?php echo htmlspecialchars($experienciaId); ?></h1>
     </header>
     <main class="main-content">
         <p style="<?php echo $style; ?>"><?php echo $nomeEstado; ?></p>
-        <form action="/labrats/app/guardar-alteracoes-experiencia.php?Experiencia_ID=<?php echo $experiencia['Experiencia_ID']; ?>';" method="POST" class="create-experience-form">
+        <form action="/labrats/app/guardar-alteracoes-experiencia.php" method="POST" class="create-experience-form">
+        <input type="hidden" name="Experiencia_ID" value="<?php echo $experienciaId; ?>">
             <div class="form-field description-field">
                 <label for="experience-description">Descrição da experiência:</label>
                 <textarea id="experience-description" name="experience_description"><?php echo htmlspecialchars($descricao ?? ''); ?></textarea>
