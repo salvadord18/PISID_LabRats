@@ -49,10 +49,10 @@ public class TratarDados extends Thread {
                 if (outlierCount <= maxNumOutliers) {
                     queue.pushTempsTratadas(List.of(tempData));
 
-                    String CallSP = "{ call CriarAlertaOutlierAmarelo(?) }";
-                    CallableStatement c = sqlDb.prepareCall(CallSP);
-                    c.setInt(1, outlierCount);
-                    c.execute();
+                    //String CallSP = "{ call CriarAlertaOutlierAmarelo(?) }";
+                    //CallableStatement c = sqlDb.prepareCall(CallSP);
+                    //c.setInt(1, outlierCount);
+                    //c.execute();
                 } else {
                     CallableStatement cs = null;
                     cs = sqlDb.prepareCall("{call CriarAlertaOutlierVermelho}");
