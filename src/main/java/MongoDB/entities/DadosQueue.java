@@ -9,6 +9,7 @@ public class DadosQueue {
     ArrayList<DadosTemperaturaMongoDB> dadosTemperaturaMongoDB = new ArrayList<>();
     ArrayList<DadosTemperaturaMongoDB> dadosTratadosTemperaturas = new ArrayList<>();
     ArrayList<DadosPortasMongoDB> dadosPortasMongoDB = new ArrayList<>();
+    ArrayList<DadosPortasMongoDB> dadosTratadosPortas = new ArrayList<>();
 
     private DadosQueue() {
     }
@@ -62,6 +63,23 @@ public class DadosQueue {
             }
         }
         return popTempsTratadas();
+    }
+
+    public synchronized void pushPortasTratadas(Collection<DadosPortasMongoDB> data) {
+        dadosTratadosPortas.addAll(data);
+        notifyAll();
+    }
+
+    public synchronized DadosPortasMongoDB popPortasTratadas() {
+        if (dadosTratadosPortas.size() > 0) {
+            return dadosTratadosPortas.remove(0);
+        } else {
+            try {
+                wait();
+            } catch (InterruptedException ignored) {
+            }
+        }
+        return popPortasTratadas();
     }
 
     public synchronized ArrayList<DadosTemperaturaMongoDB> getDadosTemperaturaMongoDB(){

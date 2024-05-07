@@ -40,6 +40,7 @@ public class MainMongoDB {
             if (resultado != -1){
                 return resultado;
             }
+            System.out.println("Não foi encontrada nenhuma experiencia");
             Thread.sleep(5000);
         }
     }

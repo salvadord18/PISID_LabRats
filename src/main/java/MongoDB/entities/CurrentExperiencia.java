@@ -42,7 +42,7 @@ public class CurrentExperiencia {
         return experiencia;
     }
 
-    public boolean isEstado(String estadoExperiencia){
+    public boolean isEstado(ExperienciaStatus estadoExperiencia){
         return estadoExperiencia.equals(this.estadoExperiencia);
     }
 

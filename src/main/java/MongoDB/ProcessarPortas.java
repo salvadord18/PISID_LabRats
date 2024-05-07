@@ -4,6 +4,7 @@ import MongoDB.entities.CurrentExperiencia;
 import MongoDB.entities.DadosPortasMongoDB;
 import MongoDB.entities.DadosQueue;
 import MongoDB.entities.DadosTemperaturaMongoDB;
+import MongoDB.entities.enums.ExperienciaStatus;
 import MongoDB.mappers.DadosPortasMongoDBMapper;
 import MongoDB.mappers.DadosTemperaturaMongoDBMapper;
 import com.mongodb.BasicDBObject;
@@ -23,7 +24,7 @@ public class ProcessarPortas extends Thread{
     @Override
     public void run() {
         // Vai correr enquanto o estado da experiencia estiver em execucao
-        while (CurrentExperiencia.getInstance().isEstado("EXECUCAO")) {
+        while (CurrentExperiencia.getInstance().isEstado(ExperienciaStatus.EM_CURSO)) {
 
             BasicDBObject query = new BasicDBObject("catch", new BasicDBObject("$exists", false));
 
