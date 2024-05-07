@@ -45,20 +45,36 @@ public class MainMongoDB {
         }
     }
 
-    public static void setExperienciaEmProcessamento(ConnectToSQL connectToSQL, Experiencia experiencia, int id) throws SQLException {
+    public static void setExperienciaEmProcessamento(ConnectToSQL connectToSQL, Experiencia experiencia) throws SQLException {
         String testeCallSP = "{CALL setEmProcessamento (?)}";
         CallableStatement cs = connectToSQL.getConnectionSQL().prepareCall(testeCallSP);
-        cs.setInt(1, id);
+        cs.setInt(1, Integer.valueOf(experiencia.getId()));
         cs.execute();
-        System.out.println("Experiencia " + id + " em processamento.");
+        System.out.println("Experiencia " + Integer.valueOf(experiencia.getId()) + " em processamento.");
     }
 
-    public static void setExperienciaEmExecucao(ConnectToSQL connectToSQL, Experiencia experiencia, int id) throws SQLException {
+    public static void setExperienciaEmExecucao(ConnectToSQL connectToSQL, Experiencia experiencia) throws SQLException {
         String testeCallSP = "{CALL Set_IniciarExperiencia (?)}";
         CallableStatement cs = connectToSQL.getConnectionSQL().prepareCall(testeCallSP);
-        cs.setInt(1, id);
+        cs.setInt(1, Integer.valueOf(experiencia.getId()));
         cs.execute();
-        System.out.println("Experiencia " + id + " em execução.");
+        System.out.println("Experiencia " + Integer.valueOf(experiencia.getId()) + " em execução.");
+    }
+
+    public static void validaIfExperienciaTerminou(ConnectToSQL connectToSQL, Experiencia experiencia) throws SQLException, InterruptedException {
+        int estadoExperiencia = 0;
+        while(true) {
+            String testeCallSP = "{CALL Get_EstadoExperiencia (?)}";
+            CallableStatement cs = connectToSQL.getConnectionSQL().prepareCall(testeCallSP);
+            cs.setInt(1, Integer.valueOf(experiencia.getId()));
+            cs.execute();
+            estadoExperiencia = cs.getInt(2);
+            if(estadoExperiencia == 5){
+                System.out.println("Experiencia " + Integer.valueOf(experiencia.getId()) + " Terminada.");
+                break;
+            }
+            Thread.sleep(2000);
+        }
     }
 
     public static Experiencia getCorredoresCurrentExperiencia(ConnectToSQL connectToSQL, int idExperiencia) throws SQLException {
@@ -170,26 +186,13 @@ public class MainMongoDB {
 
         //Experiencia criada com id, data e array de Corredores (posições validas)
         Experiencia experiencia = getCorredoresCurrentExperiencia(connectToSQL, id);
-        setExperienciaEmProcessamento(connectToSQL, experiencia, id);
-        System.out.println("Hora inicial: " + experiencia.getDataHora());
+        setExperienciaEmProcessamento(connectToSQL, experiencia);
         validaPrimeiroMovimentoValido( experiencia, mongoDb);
-        System.out.println("Hora final: " + experiencia.getDataHora());
-        setExperienciaEmExecucao(connectToSQL, experiencia, id);
+        setExperienciaEmExecucao(connectToSQL, experiencia);
 
-
-
-
-
-
-
-
-//        //****  Exemplo de como ir buscar informação às tabelas e mapea-las ****
-//        var result = s.executeQuery("select * from experiencia;");
-//        var experiencias = ExperienciaMapper.mapList(result);
-//        for (Experiencia experiencia : experiencias) {
-//            System.out.println("Experiencia " + "Data_Hora: " + experiencia.getDataHora() + " Id:" + experiencia.getId());
-//        }
-
+        //Neste momento é preciso lançar as Threads
+        //Ao mesmo tempo é preciso chamar validaIfExperienciaTerminou(connectToSQL, experiencia)
+        //Esta função vai validar se a experiencia passou para o estado "Terminada"
 
 
         //Depois da experiencia acabar, basta chamar de novo o metodo iniciar experiencia com a conexão do Mongo
@@ -212,6 +215,14 @@ public class MainMongoDB {
         fetchDoorsMongo.join();
         threadDealWithData.join();
         threadFetchToSql.join();
+
+        //Codigo auxiliar
+        //****  Exemplo de como ir buscar informação às tabelas e mapea-las ****
+        //var result = s.executeQuery("select * from experiencia;");
+        //var experiencias = ExperienciaMapper.mapList(result);
+        //for (Experiencia experiencia : experiencias) {
+        //System.out.println("Experiencia " + "Data_Hora: " + experiencia.getDataHora() + " Id:" + experiencia.getId());
+        //}
 
 
     }
