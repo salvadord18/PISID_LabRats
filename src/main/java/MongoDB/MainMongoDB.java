@@ -100,16 +100,6 @@ public class MainMongoDB {
                 String salaOrigemValue = String.valueOf(mappedPortas.get(i).getSalaOrigem());
                 String salaDestinoValue = String.valueOf(mappedPortas.get(i).getSalaDestino());
 
-                //int compare = LocalDateTime.parse(experiencia.getDataHora()).compareTo(LocalDateTime.parse(mappedPortas.get(i).getHora()));
-               /* DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
-                DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSS");
-                String horasMongo = mappedPortas.get(i).getHora();
-                String horasExperiencia = experiencia.getDataHora();
-                System.out.println(mappedPortas.get(i).getHora());
-                LocalDateTime mongoTime = LocalDateTime.parse(horasMongo, formatter1);
-                LocalDateTime experienciaTime = LocalDateTime.parse(horasExperiencia, formatter2);
-                int compare = mongoTime.compareTo(experienciaTime);*/
-
                 DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
 
                 var dataDadosMongo = mappedPortas.get(i).getHora();
@@ -120,7 +110,7 @@ public class MainMongoDB {
                 if ((salaOrigemValue.equals("1") && (salaDestinoValue.equals(String.valueOf(salaDestino))
                         && dataMongo.compareTo(dataExperiencia) > 0))) {
                     System.out.println("Sala origem: " + salaOrigemValue + " Sala destino: " + salaDestinoValue);
-                    experiencia.setDataHora(mappedPortas.get(i).getHora());
+                    experiencia.setDataHora(dataMongo.toString());
                     // faz set da Experiencia, caso encontre o dado válido
                     CurrentExperiencia.getInstance().setExperiencia(experiencia);
 
@@ -138,10 +128,38 @@ public class MainMongoDB {
                 throw new RuntimeException(e);
             }
         }
+    }
 
+    public static void setExperienciaEmProcessamento(ConnectToSQL connectToSQL, Experiencia experiencia) throws SQLException {
+        String testeCallSP = "{CALL setEmProcessamento (?)}";
+        CallableStatement cs = connectToSQL.getConnectionSQL().prepareCall(testeCallSP);
+        cs.setInt(1, Integer.valueOf(experiencia.getId()));
+        cs.execute();
+        System.out.println("Experiencia " + Integer.valueOf(experiencia.getId()) + " em processamento.");
+    }
 
-        //Alterar a data da experiencia para data de primeiro movimento valido
-        //passar experiencia para em execução
+    public static void setExperienciaEmExecucao(ConnectToSQL connectToSQL, Experiencia experiencia) throws SQLException {
+        String testeCallSP = "{CALL Set_IniciarExperiencia (?)}";
+        CallableStatement cs = connectToSQL.getConnectionSQL().prepareCall(testeCallSP);
+        cs.setInt(1, Integer.valueOf(experiencia.getId()));
+        cs.execute();
+        System.out.println("Experiencia " + Integer.valueOf(experiencia.getId()) + " em execução.");
+    }
+
+    public static void validaIfExperienciaTerminou(ConnectToSQL connectToSQL, Experiencia experiencia) throws SQLException, InterruptedException {
+        int estadoExperiencia = 0;
+        while(true) {
+            String testeCallSP = "{CALL Get_EstadoExperiencia (?)}";
+            CallableStatement cs = connectToSQL.getConnectionSQL().prepareCall(testeCallSP);
+            cs.setInt(1, Integer.valueOf(experiencia.getId()));
+            cs.execute();
+            estadoExperiencia = cs.getInt(2);
+            if(estadoExperiencia == 5){
+                System.out.println("Experiencia " + Integer.valueOf(experiencia.getId()) + " Terminada.");
+                break;
+            }
+            Thread.sleep(2000);
+        }
     }
 
 
@@ -161,16 +179,12 @@ public class MainMongoDB {
 
         //Experiencia criada com id, data e array de Corredores (posições validas)
         Experiencia experiencia = getCorredoresCurrentExperiencia(connectToSQL, id);
+        setExperienciaEmProcessamento(connectToSQL, experiencia);
         System.out.println("Hora inicial: " + experiencia.getDataHora());
+        setExperienciaEmProcessamento(connectToSQL, experiencia);
         validaPrimeiroMovimentoValido( experiencia, mongoDb);
         System.out.println("Hora final: " + experiencia.getDataHora());
-
-
-        /*for(int i = 0; i < experiencia.getCorredores().length; i++){
-            System.out.println(experiencia.getCorredores()[i].getSalaOrigem());
-            System.out.println(experiencia.getCorredores()[i].getSalaDestino());
-        }*/
-
+        setExperienciaEmExecucao(connectToSQL, experiencia);
 
 
 
@@ -182,7 +196,9 @@ public class MainMongoDB {
 //        }
 
 
-
+        //Neste momento é preciso lançar as Threads
+        //Ao mesmo tempo é preciso chamar validaIfExperienciaTerminou(connectToSQL, experiencia)
+        //Esta função vai validar se a experiencia passou para o estado "Terminada"
 
         var fetchTempsMongo = new ProcessarTemperatura(mongoDb);
         var fetchDoorsMongo = new ProcessarPortas(mongoDb);
