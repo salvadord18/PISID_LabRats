@@ -44,4 +44,3 @@ if ($updateStmt->affected_rows > 0 || $estadoStmt->affected_rows > 0) {
 $updateStmt->close();
 $estadoStmt->close();
 $conn->close();
-?>

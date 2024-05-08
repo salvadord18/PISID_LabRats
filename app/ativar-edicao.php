@@ -25,7 +25,7 @@ if ($stmt->affected_rows > 0) {
     header("Location: /labrats/app/editar-experiencia.php?Experiencia_ID=$experienciaId");
     exit();
 } else {
-    echo "<script>alert('Erro ao atualizar o estado ou a experiência já está em edição.'); window.history.back();</script>";
+    echo "<script>alert('Erro ao atualizar o estado ou a experiência já está em edição.'); window.location.href='/labrats/app/visualizar-experiencia.php?Experiencia_ID=$experienciaId';</script>";
 }
 
 $stmt->close();

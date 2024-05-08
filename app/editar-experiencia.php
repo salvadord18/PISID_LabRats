@@ -43,11 +43,11 @@ switch ($nomeEstado) {
         $style = 'color: #5271ff;';
         break;
     case 'Em curso':
-            $style = 'color: #7ed957;';
-            break;
+        $style = 'color: #7ed957;';
+        break;
     case 'Terminada':
-            $style = 'color: #ff5757;';
-            break;
+        $style = 'color: #ff5757;';
+        break;
     case 'Cancelada':
         $style = 'color: #ff5757;';
         break;
@@ -65,6 +65,7 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -73,19 +74,19 @@ $conn->close();
     <link rel="icon" href="/labrats/icons/icon3.png" type="image/x-icon">
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-        var backButton = document.querySelector('.back-btn');
-        backButton.addEventListener('click', function(event) {
-            event.preventDefault(); // Impede a ação padrão do botão
-            window.location.href = '/labrats/app/a-aguardar.php?Experiencia_ID=<?php echo $experienciaId; ?>'; // Redireciona para ajustar o estado
-        });
+            var backButton = document.querySelector('.back-btn');
+            backButton.addEventListener('click', function(event) {
+                event.preventDefault(); // Impede a ação padrão do botão
+                window.location.href = '/labrats/app/a-aguardar.php?Experiencia_ID=<?php echo $experienciaId; ?>'; // Redireciona para ajustar o estado
+            });
         });
 
         document.addEventListener('DOMContentLoaded', function() {
-        var backButton = document.querySelector('.logo');
-        backButton.addEventListener('click', function(event) {
-            event.preventDefault(); // Impede a ação padrão do botão
-            window.location.href = '/labrats/app/a-aguardar2.php?Experiencia_ID=<?php echo $experienciaId; ?>'; // Redireciona para ajustar o estado
-        });
+            var backButton = document.querySelector('.logo');
+            backButton.addEventListener('click', function(event) {
+                event.preventDefault(); // Impede a ação padrão do botão
+                window.location.href = '/labrats/app/a-aguardar2.php?Experiencia_ID=<?php echo $experienciaId; ?>'; // Redireciona para ajustar o estado
+            });
         });
 
         /*window.addEventListener('beforeunload', function(e) {
@@ -98,17 +99,18 @@ $conn->close();
         */
     </script>
 </head>
+
 <body>
     <header class="header">
         <a class="logo" href="/labrats/app/inicio.php">
-        <img src="/labrats/icons/logo2.png" alt="Lab Rats Logo" class="logo">
-    </a>
+            <img src="/labrats/icons/logo2.png" alt="Lab Rats Logo" class="logo">
+        </a>
         <h1>Experiencia_<?php echo htmlspecialchars($experienciaId); ?></h1>
     </header>
     <main class="main-content">
         <p style="<?php echo $style; ?>"><?php echo $nomeEstado; ?></p>
         <form action="/labrats/app/guardar-alteracoes-experiencia.php" method="POST" class="create-experience-form">
-        <input type="hidden" name="Experiencia_ID" value="<?php echo $experienciaId; ?>">
+            <input type="hidden" name="Experiencia_ID" value="<?php echo $experienciaId; ?>">
             <div class="form-field description-field">
                 <label for="experience-description">Descrição da experiência:</label>
                 <textarea id="experience-description" name="experience_description"><?php echo htmlspecialchars($descricao ?? ''); ?></textarea>
@@ -141,12 +143,13 @@ $conn->close();
                     <input type="number" id="experience-outliers" name="experience-outliers" value="<?php echo htmlspecialchars($numeroOutliersMaximo ?? ''); ?>" min="0" step="1" max="100" required>
                 </div>
             </div>
-                <div class="form-actions">
-                    <button type="submit" class="submit-btn">GUARDAR ALTERAÇÕES</button>
-                </div>
-            </form>
+            <div class="form-actions">
+                <button type="submit" class="submit-btn">GUARDAR ALTERAÇÕES</button>
+            </div>
+        </form>
         </section>
         <button type="button" onclick="window.history.back();" class="back-btn" aria-label="Voltar"></button>
     </main>
 </body>
+
 </html>

@@ -42,4 +42,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 } else {
     echo "<script>alert('Acesso não autorizado'); window.location.href='/labrats/app/iniciar-sessao.php';</script>";
 }
-?>

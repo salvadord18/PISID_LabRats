@@ -20,10 +20,10 @@ $stmt->bind_param("i", $experienciaId);
 $stmt->execute();
 
 if ($stmt->affected_rows > 0) {
-    header("Location: /labrats/app/visualizar-experiencia.php?Experiencia_ID=$experienciaId");
+    echo "<script>alert('Experiência cancelada com sucesso!');  window.location.href='/labrats/app/visualizar-experiencia.php?Experiencia_ID=$experienciaId';</script>";
     exit();
 } else {
-    echo "<script>alert('Erro ao atualizar o estado ou a experiência já foi cancelada.'); window.history.back();</script>";
+    echo "<script>alert('Erro ao atualizar o estado ou a experiência já está cancelada.'); window.location.href='/labrats/app/visualizar-experiencia.php?Experiencia_ID=$experienciaId';</script>";
 }
 
 $stmt->close();

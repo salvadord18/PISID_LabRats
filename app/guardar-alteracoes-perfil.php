@@ -21,4 +21,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['user_id'])) {
 } else {
     echo "Acesso não autorizado.";
 }
-?>

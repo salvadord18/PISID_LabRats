@@ -48,11 +48,11 @@ switch ($nomeEstado) {
         $style = 'color: #5271ff;';
         break;
     case 'Em curso':
-            $style = 'color: #7ed957;';
-            break;
+        $style = 'color: #7ed957;';
+        break;
     case 'Terminada':
-            $style = 'color: #ff5757;';
-            break;
+        $style = 'color: #ff5757;';
+        break;
     case 'Cancelada':
         $style = 'color: #ff5757;';
         break;
@@ -70,6 +70,7 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -77,11 +78,12 @@ $conn->close();
     <link rel="stylesheet" href="/labrats/css/style_criar-experiencia.css">
     <link rel="icon" href="/labrats/icons/icon3.png" type="image/x-icon">
 </head>
+
 <body>
     <header class="header">
         <a href="/labrats/app/inicio.php">
-        <img src="/labrats/icons/logo2.png" alt="Lab Rats Logo" class="logo">
-    </a>
+            <img src="/labrats/icons/logo2.png" alt="Lab Rats Logo" class="logo">
+        </a>
         <h1>Experiencia_<?php echo htmlspecialchars($experienciaId); ?></h1>
     </header>
     <main class="main-content">
@@ -120,26 +122,27 @@ $conn->close();
                     <input type="number" id="experience-outliers" name="experience-outliers" value="<?php echo htmlspecialchars($numeroOutliersMaximo ?? ''); ?>" disabled>
                 </div>
             </div>
-            <?php if ($nomeEstado === 'A aguardar'): ?>
+            <?php if ($nomeEstado === 'A aguardar') : ?>
                 <div class="form-actions">
                     <button type="submit" formaction="/labrats/app/ativar-edicao.php" name="action" value="editar" class="submit-btn">EDITAR EXPERIÊNCIA</button>
                 </div>
             <?php endif; ?>
-            <?php if ($nomeEstado === 'Em processamento'): ?>
+            <?php if ($nomeEstado === 'Em processamento') : ?>
                 <div class="form-actions">
                     <button type="submit" formaction="/labrats/app/cancelar-experiencia.php" class="finish-btn">CANCELAR EXPERIÊNCIA</button>
                 </div>
             <?php endif; ?>
-            <?php if ($nomeEstado === 'Em curso'): ?>
+            <?php if ($nomeEstado === 'Em curso') : ?>
                 <div class="form-actions">
                     <button type="submit" formaction="/labrats/app/terminar-experiencia.php" class="finish-btn">TERMINAR EXPERIÊNCIA</button>
                 </div>
             <?php endif; ?>
-            <?php if ($nomeEstado === 'Terminada' || 'Cancelada' || 'Interrompida'): ?>
+            <?php if ($nomeEstado === 'Terminada' || 'Cancelada' || 'Interrompida') : ?>
             <?php endif; ?>
-            </form>
+        </form>
         </section>
         <button type="button" onclick="location.href='/labrats/app/experiencias.php';" class="back-btn" aria-label="Voltar"></button>
     </main>
 </body>
+
 </html>

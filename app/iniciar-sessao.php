@@ -23,4 +23,3 @@ if ($row['Valid']) {
 }
 
 $conn->close();
-?>

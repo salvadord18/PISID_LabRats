@@ -27,13 +27,15 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Experiências | LabRats</title>
     <link rel="stylesheet" href="/labrats/css/style_experiencias.css">
     <link rel="icon" href="/labrats/icons/icon3.png" type="image/x-icon">
 </head>
+
 <body>
     <header class="header">
         <a href="/labrats/app/inicio.php">
@@ -42,21 +44,23 @@ $conn->close();
         <h1>Experiências</h1>
     </header>
     <main class="experiencias-container">
-        <?php if (empty($experiencias)): ?>
+        <?php if (empty($experiencias)) : ?>
             <p>Não tem experiências criadas.</p>
-        <?php else: ?>
-            <?php foreach ($experiencias as $experiencia): ?>
-        <div class="experiencia-container">
-            <span class="experiencia-nome">Experiencia_<?php echo htmlspecialchars($experiencia['Experiencia_ID']); ?></span>
-            <button class="view-experience-btn" onclick="location.href='visualizar-experiencia.php?Experiencia_ID=<?php echo $experiencia['Experiencia_ID']; ?>';"></button>
-        </div>
-        <div class="experiencia-buttons">
-            <button class="substancias-odores-btn" onclick="location.href='/labrats/app/substancias-odores.html';"></button>
-            <button class="labirinto-btn" onclick="location.href='/labrats/app/labirinto.html';"></button>
-            <button class="alertas-btn" onclick="location.href='/labrats/app/alertas-experiencia.html';"></button>
-            <button class="analise-btn" onclick="location.href='/labrats/app/analise.html';"></button>
-        </div>
-<?php endforeach; ?>
+        <?php else : ?>
+            <div class="experiencias-list">
+                <?php foreach ($experiencias as $experiencia) : ?>
+                    <div class="experiencia-container">
+                        <span class="experiencia-nome">Experiencia_<?php echo htmlspecialchars($experiencia['Experiencia_ID']); ?></span>
+                        <button class="view-experience-btn" onclick="location.href='visualizar-experiencia.php?Experiencia_ID=<?php echo $experiencia['Experiencia_ID']; ?>';"></button>
+                    </div>
+                    <div class="experiencia-buttons">
+                        <button class="substancias-odores-btn" onclick="location.href='/labrats/app/substancias-odores.html';"></button>
+                        <button class="labirinto-btn" onclick="location.href='/labrats/app/labirinto.html';"></button>
+                        <button class="alertas-btn" onclick="location.href='/labrats/app/alertas-experiencia.html';"></button>
+                        <button class="analise-btn" onclick="location.href='/labrats/app/analise.html';"></button>
+                    </div>
+                <?php endforeach; ?>
+            </div>
         <?php endif; ?>
         <div class="button-container">
             <button type="button" onclick="location.href='/labrats/app/criar-experiencia.html';" class="action-btn create-btn" aria-label="Adicionar experiência"></button>
@@ -64,4 +68,5 @@ $conn->close();
         </div>
     </main>
 </body>
+
 </html>

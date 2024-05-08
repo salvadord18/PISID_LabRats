@@ -31,27 +31,27 @@ $conn->close();
     <link rel="stylesheet" href="/labrats/css/style_editar-perfil.css">
     <link rel="icon" href="/labrats/icons/icon3.png" type="image/x-icon">
     <script>
-    function confirmExit() {
-        // Verifica se algum campo foi alterado
-        var nomeUtilizador = document.getElementById('nome-utilizador').value;
-        var email = document.getElementById('email').value;
-        var telefone = document.getElementById('telefone').value;
+        function confirmExit() {
+            // Verifica se algum campo foi alterado
+            var nomeUtilizador = document.getElementById('nome-utilizador').value;
+            var email = document.getElementById('email').value;
+            var telefone = document.getElementById('telefone').value;
 
-        if (nomeUtilizador !== "<?php echo htmlspecialchars($user['NomeUtilizador'] ?? ''); ?>" || 
-            email !== "<?php echo htmlspecialchars($user['EmailUtilizador'] ?? ''); ?>" || 
-            telefone !== "<?php echo htmlspecialchars($user['TelefoneUtilizador'] ?? ''); ?>") {
-            return "Tem alterações não guardadas. Tem a certeza que quer sair?";
+            if (nomeUtilizador !== "<?php echo htmlspecialchars($user['NomeUtilizador'] ?? ''); ?>" ||
+                email !== "<?php echo htmlspecialchars($user['EmailUtilizador'] ?? ''); ?>" ||
+                telefone !== "<?php echo htmlspecialchars($user['TelefoneUtilizador'] ?? ''); ?>") {
+                return "Tem alterações não guardadas. Tem a certeza que quer sair?";
+            }
         }
-    }
 
-    function disableConfirmExit() {
-        window.onbeforeunload = null;
-    }
+        function disableConfirmExit() {
+            window.onbeforeunload = null;
+        }
 
-    function enableConfirmExit() {
-        window.onbeforeunload = confirmExit;
-    }
-</script>
+        function enableConfirmExit() {
+            window.onbeforeunload = confirmExit;
+        }
+    </script>
 
 
 </head>
@@ -72,12 +72,12 @@ $conn->close();
                         <input type="text" id="nome-utilizador" name="nome-utilizador" style="color: #b3b3b3;" value="<?php echo htmlspecialchars($user['NomeUtilizador'] ?? ''); ?>" disabled>
                     </div>
                     <div class="form-field">
-                            <label for="email">E-mail:</label>
-                            <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($user['EmailUtilizador'] ?? ''); ?>">
+                        <label for="email">E-mail:</label>
+                        <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($user['EmailUtilizador'] ?? ''); ?>">
                     </div>
                     <div class="form-field">
-                            <label for="telefone">Telefone:</label>
-                            <input type="integer" id="telefone" name="telefone" value="<?php echo htmlspecialchars($user['TelefoneUtilizador'] ?? ''); ?>">
+                        <label for="telefone">Telefone:</label>
+                        <input type="integer" id="telefone" name="telefone" value="<?php echo htmlspecialchars($user['TelefoneUtilizador'] ?? ''); ?>">
                     </div>
                 </div>
                 <!--<div class="form-row">
