@@ -70,7 +70,7 @@ $conn->close();
                         <button type="submit" class="logout-btn">TERMINAR SESSÃO</button>
                     </form>
                 </div>
-                <button type="button" onclick="window.history.back();" class="back-btn" aria-label="Voltar"></button>
+                <button type="button" onclick="location.href='/labrats/app/inicio.html';" class="back-btn" aria-label="Voltar"></button>
         </main>
 </body>
 </html>

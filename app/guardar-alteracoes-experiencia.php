@@ -25,14 +25,14 @@ $temperaturaIdeal = $_POST['experience-temperature'] ?? 0.0;
 $variacaoTemperaturaMaxima = $_POST['experience-max-temperature'] ?? 0.0;
 $numeroOutliersMaximo = $_POST['experience-outliers'] ?? 0;
 
-$updateStmt = $conn->prepare("UPDATE experiencia SET Descricao = ?, NumeroRatos = ?, LimiteRatosSala = ?, SegundosSemMovimento = ?, TemperaturaIdeal = ?, VariacaoTemperaturaMaxima = ?, NumeroOutliersMaximo = ? WHERE Experiencia_ID = ?");
+$updateStmt = $conn->prepare("CALL GuardarAlteracoesExperiencia(?, ?, ?, ?, ?, ?, ?, ?)");
 $updateStmt->bind_param("siiddddi", $descricao, $numeroRatos, $limiteRatosSala, $segundosSemMovimento, $temperaturaIdeal, $variacaoTemperaturaMaxima, $numeroOutliersMaximo, $experienciaId);
 $updateStmt->execute();
 
 // Atualizar estado para 'A aguardar'
 $estadoAguardar = 1;
-$estadoStmt = $conn->prepare("UPDATE estadoexperiencia SET Estado_Estado_ID = ? WHERE Experiencia_Experiencia_ID = ?");
-$estadoStmt->bind_param("ii", $estadoAguardar, $experienciaId);
+$estadoStmt = $conn->prepare("CALL AlterarEstadoExperiencia(?, ?)");
+$estadoStmt->bind_param("ii", $experienciaId, $estadoAguardar);
 $estadoStmt->execute();
 
 if ($updateStmt->affected_rows > 0 || $estadoStmt->affected_rows > 0) {
