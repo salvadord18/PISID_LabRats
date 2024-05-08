@@ -8,11 +8,19 @@ import MongoDB.mappers.ExperienciaMapper;
 import com.mongodb.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Iterator;
+import java.util.Objects;
+import java.util.Properties;
 
 public class MainMongoDB {
 
@@ -32,40 +40,7 @@ public class MainMongoDB {
             if (resultado != -1){
                 return resultado;
             }
-            System.out.println("Não está nenhuma experiencia a aguardar.");
             Thread.sleep(5000);
-        }
-    }
-
-    public static void setExperienciaEmProcessamento(ConnectToSQL connectToSQL, Experiencia experiencia) throws SQLException {
-        String testeCallSP = "{CALL setEmProcessamento (?)}";
-        CallableStatement cs = connectToSQL.getConnectionSQL().prepareCall(testeCallSP);
-        cs.setInt(1, Integer.valueOf(experiencia.getId()));
-        cs.execute();
-        System.out.println("Experiencia " + Integer.valueOf(experiencia.getId()) + " em processamento.");
-    }
-
-    public static void setExperienciaEmExecucao(ConnectToSQL connectToSQL, Experiencia experiencia) throws SQLException {
-        String testeCallSP = "{CALL Set_IniciarExperiencia (?)}";
-        CallableStatement cs = connectToSQL.getConnectionSQL().prepareCall(testeCallSP);
-        cs.setInt(1, Integer.valueOf(experiencia.getId()));
-        cs.execute();
-        System.out.println("Experiencia " + Integer.valueOf(experiencia.getId()) + " em execução.");
-    }
-
-    public static void validaIfExperienciaTerminou(ConnectToSQL connectToSQL, Experiencia experiencia) throws SQLException, InterruptedException {
-        int estadoExperiencia = 0;
-        while(true) {
-            String testeCallSP = "{CALL Get_EstadoExperiencia (?)}";
-            CallableStatement cs = connectToSQL.getConnectionSQL().prepareCall(testeCallSP);
-            cs.setInt(1, Integer.valueOf(experiencia.getId()));
-            cs.execute();
-            estadoExperiencia = cs.getInt(2);
-            if(estadoExperiencia == 5){
-                System.out.println("Experiencia " + Integer.valueOf(experiencia.getId()) + " Terminada.");
-                break;
-            }
-            Thread.sleep(2000);
         }
     }
 
@@ -93,8 +68,7 @@ public class MainMongoDB {
             LocalDateTime currentDate = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
             experiencia.setDataHora(currentDate.format(formatter));
-
-            //experiencia.setId(String.valueOf(idExperiencia));
+            experiencia.setId(String.valueOf(idExperiencia));
             experiencia.setCorredores(corredores);
 
         }
@@ -126,19 +100,28 @@ public class MainMongoDB {
                 String salaOrigemValue = String.valueOf(mappedPortas.get(i).getSalaOrigem());
                 String salaDestinoValue = String.valueOf(mappedPortas.get(i).getSalaDestino());
 
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
+                //int compare = LocalDateTime.parse(experiencia.getDataHora()).compareTo(LocalDateTime.parse(mappedPortas.get(i).getHora()));
+               /* DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
+                DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSS");
+                String horasMongo = mappedPortas.get(i).getHora();
+                String horasExperiencia = experiencia.getDataHora();
+                System.out.println(mappedPortas.get(i).getHora());
+                LocalDateTime mongoTime = LocalDateTime.parse(horasMongo, formatter1);
+                LocalDateTime experienciaTime = LocalDateTime.parse(horasExperiencia, formatter2);
+                int compare = mongoTime.compareTo(experienciaTime);*/
+
+                DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
 
                 var dataDadosMongo = mappedPortas.get(i).getHora();
 
-                LocalDateTime dataMongo = LocalDateTime.parse(dataDadosMongo, formatter);
-                LocalDateTime dataExperiencia = LocalDateTime.parse(experiencia.getDataHora(), formatter);
+                LocalDateTime dataMongo = LocalDateTime.parse(dataDadosMongo, formatter1);
+                LocalDateTime dataExperiencia = LocalDateTime.parse(experiencia.getDataHora(), formatter1);
 
                 if ((salaOrigemValue.equals("1") && (salaDestinoValue.equals(String.valueOf(salaDestino))
                         && dataMongo.compareTo(dataExperiencia) > 0))) {
                     System.out.println("Sala origem: " + salaOrigemValue + " Sala destino: " + salaDestinoValue);
                     experiencia.setDataHora(mappedPortas.get(i).getHora());
                     // faz set da Experiencia, caso encontre o dado válido
-                    experiencia.setDataHora(dataMongo.toString());
                     CurrentExperiencia.getInstance().setExperiencia(experiencia);
 
                     //Depois do SP que passa o estado da experiencia para em execução, faz set do estado da experiencia
@@ -155,6 +138,10 @@ public class MainMongoDB {
                 throw new RuntimeException(e);
             }
         }
+
+
+        //Alterar a data da experiencia para data de primeiro movimento valido
+        //passar experiencia para em execução
     }
 
 
@@ -170,21 +157,32 @@ public class MainMongoDB {
 
         //Recebe id da experiencia que está a aguardar à mais tempo
         int id = IniciarExperiencia(connectToSQL);
-        System.out.println(id);
+
 
         //Experiencia criada com id, data e array de Corredores (posições validas)
         Experiencia experiencia = getCorredoresCurrentExperiencia(connectToSQL, id);
-        setExperienciaEmProcessamento(connectToSQL, experiencia);
+        System.out.println("Hora inicial: " + experiencia.getDataHora());
         validaPrimeiroMovimentoValido( experiencia, mongoDb);
-        setExperienciaEmExecucao(connectToSQL, experiencia);
-
-        //Neste momento é preciso lançar as Threads
-        //Ao mesmo tempo é preciso chamar validaIfExperienciaTerminou(connectToSQL, experiencia)
-        //Esta função vai validar se a experiencia passou para o estado "Terminada"
+        System.out.println("Hora final: " + experiencia.getDataHora());
 
 
-        //Depois da experiencia acabar, basta chamar de novo o metodo iniciar experiencia com a conexão do Mongo
-        //Com esta construção tens recursividade e não é preciso fazer mais nada
+        /*for(int i = 0; i < experiencia.getCorredores().length; i++){
+            System.out.println(experiencia.getCorredores()[i].getSalaOrigem());
+            System.out.println(experiencia.getCorredores()[i].getSalaDestino());
+        }*/
+
+
+
+
+//        //****  Exemplo de como ir buscar informação às tabelas e mapea-las ****
+//        var result = s.executeQuery("select * from experiencia;");
+//        var experiencias = ExperienciaMapper.mapList(result);
+//        for (Experiencia experiencia : experiencias) {
+//            System.out.println("Experiencia " + "Data_Hora: " + experiencia.getDataHora() + " Id:" + experiencia.getId());
+//        }
+
+
+
 
         var fetchTempsMongo = new ProcessarTemperatura(mongoDb);
         var fetchDoorsMongo = new ProcessarPortas(mongoDb);
@@ -203,14 +201,6 @@ public class MainMongoDB {
         fetchDoorsMongo.join();
         threadDealWithData.join();
         threadFetchToSql.join();
-
-        //Codigo auxiliar
-        //****  Exemplo de como ir buscar informação às tabelas e mapea-las ****
-        //var result = s.executeQuery("select * from experiencia;");
-        //var experiencias = ExperienciaMapper.mapList(result);
-        //for (Experiencia experiencia : experiencias) {
-        //System.out.println("Experiencia " + "Data_Hora: " + experiencia.getDataHora() + " Id:" + experiencia.getId());
-        //}
 
 
     }
