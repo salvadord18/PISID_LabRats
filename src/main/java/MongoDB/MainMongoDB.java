@@ -156,6 +156,7 @@ public class MainMongoDB {
             estadoExperiencia = cs.getInt(2);
             if(estadoExperiencia == 5){
                 System.out.println("Experiencia " + Integer.valueOf(experiencia.getId()) + " Terminada.");
+                IniciarExperiencia(connectToSQL);
                 break;
             }
             Thread.sleep(2000);
@@ -181,7 +182,6 @@ public class MainMongoDB {
         Experiencia experiencia = getCorredoresCurrentExperiencia(connectToSQL, id);
         setExperienciaEmProcessamento(connectToSQL, experiencia);
         System.out.println("Hora inicial: " + experiencia.getDataHora());
-        setExperienciaEmProcessamento(connectToSQL, experiencia);
         validaPrimeiroMovimentoValido( experiencia, mongoDb);
         System.out.println("Hora final: " + experiencia.getDataHora());
         setExperienciaEmExecucao(connectToSQL, experiencia);
