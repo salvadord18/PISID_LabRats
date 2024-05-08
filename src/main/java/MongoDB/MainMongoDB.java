@@ -157,6 +157,7 @@ public class MainMongoDB {
             estadoExperiencia = cs.getInt(2);
             if(estadoExperiencia == 5){
                 System.out.println("Experiencia " + Integer.valueOf(experiencia.getId()) + " Terminada.");
+                CurrentExperiencia.getInstance().setEstadoExperiencia(ExperienciaStatus.TERMINADA);
                 //IniciarExperiencia(connectToSQL);
                 flag = 1;
                 break;
