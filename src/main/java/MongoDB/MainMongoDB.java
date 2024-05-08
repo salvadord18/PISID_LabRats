@@ -148,7 +148,8 @@ public class MainMongoDB {
 
     public static void validaIfExperienciaTerminou(ConnectToSQL connectToSQL, Experiencia experiencia) throws SQLException, InterruptedException {
         int estadoExperiencia = 0;
-        while(true) {
+        int flag = 0;
+        while(flag == 0) {
             String testeCallSP = "{CALL Get_EstadoExperiencia (?)}";
             CallableStatement cs = connectToSQL.getConnectionSQL().prepareCall(testeCallSP);
             cs.setInt(1, Integer.valueOf(experiencia.getId()));
@@ -156,7 +157,8 @@ public class MainMongoDB {
             estadoExperiencia = cs.getInt(2);
             if(estadoExperiencia == 5){
                 System.out.println("Experiencia " + Integer.valueOf(experiencia.getId()) + " Terminada.");
-                IniciarExperiencia(connectToSQL);
+                //IniciarExperiencia(connectToSQL);
+                flag = 1;
                 break;
             }
             Thread.sleep(2000);
