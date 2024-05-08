@@ -13,7 +13,7 @@ if (!$username || !$userId) {
 
 // Preparar e executar a consulta à base de dados para obter as experiências do utilizador
 $experiencias = [];
-if ($stmt = $conn->prepare("CALL MostrarTodasExperienciasInvestigador(?)")) {
+if ($stmt = $conn->prepare("CALL MostrarTodasExperienciasInvestigador(?, @p_Nome_Estado)")) {
     $stmt->bind_param("i", $userId);
     $stmt->execute();
     $resultado = $stmt->get_result();
@@ -22,6 +22,7 @@ if ($stmt = $conn->prepare("CALL MostrarTodasExperienciasInvestigador(?)")) {
     }
     $stmt->close();
 }
+
 $conn->close();
 ?>
 
@@ -47,10 +48,34 @@ $conn->close();
         <?php if (empty($experiencias)) : ?>
             <p>Não tem experiências criadas.</p>
         <?php else : ?>
-            <div class="experiencias-list">
                 <?php foreach ($experiencias as $experiencia) : ?>
+                    <?php
+                    // Define o estilo com base no estado da experiência
+                    switch ($experiencia['Nome_Estado']) {
+                        case 'A aguardar':
+                            $style = 'color: #737373;';
+                            break;
+                        case 'Edicao':
+                            $style = 'color: #ffde59;';
+                            break;
+                        case 'Em processamento':
+                            $style = 'color: #5271ff;';
+                            break;
+                        case 'Em curso':
+                            $style = 'color: #7ed957;';
+                            break;
+                        case 'Terminada':
+                        case 'Cancelada':
+                        case 'Interrompida':
+                            $style = 'color: #ff5757;';
+                            break;
+                        default:
+                            $style = 'color: #8C52FF;'; // Um estilo padrão para estados não especificados
+                    }
+                    ?>
                     <div class="experiencia-container">
                         <span class="experiencia-nome">Experiencia_<?php echo htmlspecialchars($experiencia['Experiencia_ID']); ?></span>
+                        <span class="experiencia-estado" style="<?php echo $style; ?>"><?php echo htmlspecialchars($experiencia['Nome_Estado']); ?></span>
                         <button class="view-experience-btn" onclick="location.href='visualizar-experiencia.php?Experiencia_ID=<?php echo $experiencia['Experiencia_ID']; ?>';"></button>
                     </div>
                     <div class="experiencia-buttons">
@@ -60,7 +85,6 @@ $conn->close();
                         <button class="analise-btn" onclick="location.href='/labrats/app/analise.html';"></button>
                     </div>
                 <?php endforeach; ?>
-            </div>
         <?php endif; ?>
         <div class="button-container">
             <button type="button" onclick="location.href='/labrats/app/criar-experiencia.html';" class="action-btn create-btn" aria-label="Adicionar experiência"></button>
