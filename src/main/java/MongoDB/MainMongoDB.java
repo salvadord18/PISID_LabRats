@@ -8,19 +8,11 @@ import MongoDB.mappers.ExperienciaMapper;
 import com.mongodb.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Iterator;
-import java.util.Objects;
-import java.util.Properties;
 
 public class MainMongoDB {
 
@@ -40,7 +32,7 @@ public class MainMongoDB {
             if (resultado != -1){
                 return resultado;
             }
-            System.out.println("Não foi encontrada nenhuma experiencia");
+            System.out.println("Não está nenhuma experiencia a aguardar.");
             Thread.sleep(5000);
         }
     }
@@ -134,19 +126,19 @@ public class MainMongoDB {
                 String salaOrigemValue = String.valueOf(mappedPortas.get(i).getSalaOrigem());
                 String salaDestinoValue = String.valueOf(mappedPortas.get(i).getSalaDestino());
 
-                DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
 
                 var dataDadosMongo = mappedPortas.get(i).getHora();
 
-                LocalDateTime dataMongo = LocalDateTime.parse(dataDadosMongo, formatter1);
-                LocalDateTime dataExperiencia = LocalDateTime.parse(experiencia.getDataHora(), formatter1);
+                LocalDateTime dataMongo = LocalDateTime.parse(dataDadosMongo, formatter);
+                LocalDateTime dataExperiencia = LocalDateTime.parse(experiencia.getDataHora(), formatter);
 
                 if ((salaOrigemValue.equals("1") && (salaDestinoValue.equals(String.valueOf(salaDestino))
                         && dataMongo.compareTo(dataExperiencia) > 0))) {
                     System.out.println("Sala origem: " + salaOrigemValue + " Sala destino: " + salaDestinoValue);
                     experiencia.setDataHora(mappedPortas.get(i).getHora());
                     // faz set da Experiencia, caso encontre o dado válido
-                    experiencia.setDataHora(dataDadosMongo);
+                    experiencia.setDataHora(dataMongo.toString());
                     CurrentExperiencia.getInstance().setExperiencia(experiencia);
 
                     //Depois do SP que passa o estado da experiencia para em execução, faz set do estado da experiencia
@@ -163,10 +155,6 @@ public class MainMongoDB {
                 throw new RuntimeException(e);
             }
         }
-
-
-        //Alterar a data da experiencia para data de primeiro movimento valido
-        //passar experiencia para em execução
     }
 
 
