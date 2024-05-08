@@ -115,7 +115,7 @@ body, html {
 .profile-actions {
     display: flex; /* Usa flexbox para organizar os botões lado a lado */
     justify-content: center; /* Centraliza os botões na horizontal */
-    margin: 20px auto; /* Mantém a margem para centralizar o contêiner */
+    margin: 20px auto; /* Mantém a margem para centralizar o container */
     gap: 20px; /* Espaço entre os botões */
 }
 

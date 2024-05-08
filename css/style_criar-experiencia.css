@@ -120,8 +120,14 @@ label {
     }
 }
 
+.form-actions {
+    display: flex; /* Torna o container um flex container */
+    gap: 20px; /* Espaço entre os botões */
+    justify-content: center; /* Alinha os botões ao centro horizontalmente */
+}
+
 .submit-btn {
-    width: 200px; /* Largura fixa para o botão */
+    width: 220px; /* Largura fixa para o botão */
     padding: 15px;
     margin-top: 20px; /* Espaço acima do botão */
     background-color: #8C52FF;
@@ -132,8 +138,6 @@ label {
     align-self: center; /* Centraliza o botão */
     font-size: 1em;
     display: block; /* Faz o botão ser um bloco para aplicar margin */
-    margin-left: auto; /* Alinha o botão à direita */
-    margin-right: auto; /* Alinha o botão à direita */
     font-family: "Roboto Mono", monospace;
 }
 
@@ -153,8 +157,6 @@ label {
     align-self: center; /* Centraliza o botão */
     font-size: 1em;
     display: block; /* Faz o botão ser um bloco para aplicar margin */
-    margin-left: auto; /* Alinha o botão à direita */
-    margin-right: auto; /* Alinha o botão à direita */
     font-family: "Roboto Mono", monospace;
 }
 

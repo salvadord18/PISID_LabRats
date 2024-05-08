@@ -125,10 +125,6 @@ $conn->close();
             <?php if ($nomeEstado === 'A aguardar') : ?>
                 <div class="form-actions">
                     <button type="submit" formaction="/labrats/app/ativar-edicao.php" name="action" value="editar" class="submit-btn">EDITAR EXPERIÊNCIA</button>
-                </div>
-            <?php endif; ?>
-            <?php if ($nomeEstado === 'Em processamento') : ?>
-                <div class="form-actions">
                     <button type="submit" formaction="/labrats/app/cancelar-experiencia.php" class="finish-btn">CANCELAR EXPERIÊNCIA</button>
                 </div>
             <?php endif; ?>
@@ -137,7 +133,7 @@ $conn->close();
                     <button type="submit" formaction="/labrats/app/terminar-experiencia.php" class="finish-btn">TERMINAR EXPERIÊNCIA</button>
                 </div>
             <?php endif; ?>
-            <?php if ($nomeEstado === 'Terminada' || 'Cancelada' || 'Interrompida') : ?>
+            <?php if ($nomeEstado === 'Em processamento' || 'Terminada' || 'Cancelada' || 'Interrompida') : ?>
             <?php endif; ?>
         </form>
         </section>
