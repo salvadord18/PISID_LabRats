@@ -16,7 +16,7 @@ if (!$experienciaId || $action !== 'editar') {
 }
 
 // Atualiza o estado para 'Edicao'
-$novoEstadoId = 2; // Supõe que 2 seja o ID para 'Edição'
+$novoEstadoId = 2; // Supõe que 2 seja o ID para 'Edicao'
 $stmt = $conn->prepare("CALL AlterarEstadoExperiencia(?, ?)");
 $stmt->bind_param("ii", $experienciaId, $novoEstadoId);
 $stmt->execute();

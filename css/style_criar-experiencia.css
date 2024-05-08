@@ -141,7 +141,7 @@ label {
 }
 
 .finish-btn {
-    width: 200px; /* Largura fixa para o botão */
+    width: 220px; /* Largura fixa para o botão */
     padding: 15px;
     margin-top: 20px; /* Espaço acima do botão */
     background-color: #ff5757;

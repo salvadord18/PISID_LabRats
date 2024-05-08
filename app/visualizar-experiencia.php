@@ -86,7 +86,7 @@ $conn->close();
     </header>
     <main class="main-content">
         <p style="<?php echo $style; ?>"><?php echo $nomeEstado; ?></p>
-        <form action="/labrats/app/ativar-edicao.php" method="POST" class="create-experience-form">
+        <form method="POST" class="create-experience-form">
             <input type="hidden" name="experienciaId" value="<?php echo $experienciaId; ?>">
             <div class="form-field description-field">
                 <label for="experience-description">Descrição da experiência:</label>
@@ -122,17 +122,17 @@ $conn->close();
             </div>
             <?php if ($nomeEstado === 'A aguardar'): ?>
                 <div class="form-actions">
-                    <button type="submit" name="action" value="editar" class="submit-btn">EDITAR EXPERIÊNCIA</button>
+                    <button type="submit" formaction="/labrats/app/ativar-edicao.php" name="action" value="editar" class="submit-btn">EDITAR EXPERIÊNCIA</button>
                 </div>
             <?php endif; ?>
             <?php if ($nomeEstado === 'Em processamento'): ?>
                 <div class="form-actions">
-                    <button type="submit" class="finish-btn">CANCELAR EXPERIÊNCIA</button>
+                    <button type="submit" formaction="/labrats/app/cancelar-experiencia.php" class="finish-btn">CANCELAR EXPERIÊNCIA</button>
                 </div>
             <?php endif; ?>
             <?php if ($nomeEstado === 'Em curso'): ?>
                 <div class="form-actions">
-                    <button type="submit" class="finish-btn">TERMINAR EXPERIÊNCIA</button>
+                    <button type="submit" formaction="/labrats/app/terminar-experiencia.php" class="finish-btn">TERMINAR EXPERIÊNCIA</button>
                 </div>
             <?php endif; ?>
             <?php if ($nomeEstado === 'Terminada' || 'Cancelada' || 'Interrompida'): ?>
