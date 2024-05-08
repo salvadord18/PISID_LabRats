@@ -166,6 +166,12 @@ public class MainMongoDB {
         }
     }
 
+    public static void dropMongo(DB mongoDb){
+        mongoDb.getCollection("Sensor_Porta").drop();
+        mongoDb.getCollection("Sensor_Temperatura").drop();
+        System.out.println("Dados Apagados no Mongo");
+    }
+
 
     public static void main(String[] args) throws IOException, InterruptedException, SQLException {
         //Esta parte foi toda para dentro do ConnectToMongo
@@ -188,6 +194,9 @@ public class MainMongoDB {
         validaPrimeiroMovimentoValido( experiencia, mongoDb);
         System.out.println("Hora final: " + experiencia.getDataHora());
         setExperienciaEmExecucao(connectToSQL, experiencia);
+
+        //dropMongo(mongoDb);
+
 
 
 
