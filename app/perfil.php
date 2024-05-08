@@ -34,7 +34,7 @@ $conn->close();
 
 <body>
     <header class="header">
-        <a href="/labrats/app/inicio.html">
+        <a href="/labrats/app/inicio.php">
             <img src="/labrats/icons/logo2.png" alt="Lab Rats Logo" class="logo">
         </a>
         <h1>Perfil do utilizador</h1>
@@ -69,7 +69,7 @@ $conn->close();
                         <button type="submit" class="logout-btn">TERMINAR SESSÃO</button>
                     </form>
                 </div>
-                <button type="button" onclick="location.href='/labrats/app/inicio.html';" class="back-btn" aria-label="Voltar"></button>
+                <button type="button" onclick="location.href='/labrats/app/inicio.php';" class="back-btn" aria-label="Voltar"></button>
         </main>
 </body>
 </html>

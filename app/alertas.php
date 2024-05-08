@@ -6,7 +6,7 @@ $userId = $_SESSION['user_id'] ?? null;
 
 // Se não houver um utilizador com sessão iniciada, redirecionar para a página de login.
 if (!$userId) {
-    header("Location: login.php");
+    header("Location: iniciar-sessao.php");
     exit();
 }
 

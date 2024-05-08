@@ -58,7 +58,7 @@ $conn->close();
 
 <body onbeforeunload="return confirmExit()">
     <header class="header">
-        <a href="/labrats/app/inicio.html">
+        <a href="/labrats/app/inicio.php">
             <img src="/labrats/icons/logo2.png" alt="Lab Rats Logo" class="logo">
         </a>
         <h1>Editar perfil</h1>

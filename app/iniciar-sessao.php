@@ -16,7 +16,7 @@ $row = $result->fetch_assoc();
 if ($row['Valid']) {
     $_SESSION['user_id'] = $row['UserID'];
     $_SESSION['username'] = $username;
-    header("Location: /labrats/app/inicio.html");
+    header("Location: /labrats/app/inicio.php");
     exit();
 } else {
     echo "<script>alert('Nome de utilizador ou palavra-passe incorretos.'); window.history.back();</script>";

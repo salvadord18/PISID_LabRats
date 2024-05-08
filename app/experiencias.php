@@ -36,7 +36,7 @@ $conn->close();
 </head>
 <body>
     <header class="header">
-        <a href="/labrats/app/inicio.html">
+        <a href="/labrats/app/inicio.php">
             <img src="/labrats/icons/logo2.png" alt="Lab Rats Logo" class="logo">
         </a>
         <h1>Experiências</h1>
@@ -60,7 +60,7 @@ $conn->close();
         <?php endif; ?>
         <div class="button-container">
             <button type="button" onclick="location.href='/labrats/app/criar-experiencia.html';" class="action-btn create-btn" aria-label="Adicionar experiência"></button>
-            <button type="button" onclick="location.href='/labrats/app/inicio.html';" class="action-btn back-btn" aria-label="Voltar"></button>
+            <button type="button" onclick="location.href='/labrats/app/inicio.php';" class="action-btn back-btn" aria-label="Voltar"></button>
         </div>
     </main>
 </body>

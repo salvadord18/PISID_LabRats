@@ -9,10 +9,14 @@
 </head>
 <body>
     <header class="header">
-        <a href="/labrats/app/inicio.html">
+        <a href="/labrats/app/inicio.php">
         <img src="/labrats/icons/logo2.png" alt="Lab Rats Logo" class="logo">
     </a>
-        <h1>Bem-vindo, Investigador!</h1>
+    <?php
+        session_start();
+        $username = $_SESSION['username'] ?? "Utilizador";
+        echo "<h1>Bem-vindo, $username!</h1>";
+    ?>
     </header>
     <div class="navigation">
         <ul>

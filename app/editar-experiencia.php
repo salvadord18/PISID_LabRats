@@ -100,7 +100,7 @@ $conn->close();
 </head>
 <body>
     <header class="header">
-        <a class="logo" href="/labrats/app/inicio.html">
+        <a class="logo" href="/labrats/app/inicio.php">
         <img src="/labrats/icons/logo2.png" alt="Lab Rats Logo" class="logo">
     </a>
         <h1>Experiencia_<?php echo htmlspecialchars($experienciaId); ?></h1>
