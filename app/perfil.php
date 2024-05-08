@@ -5,8 +5,8 @@ include 'db.php'; // Inclui o script de ligação à base de dados
 $username = $_SESSION['username'] ?? null; // Obtém o nome de utilizador da sessão
 
 if ($username) {
-    $query = "SELECT Utilizador_ID, NomeUtilizador, EmailUtilizador, TelefoneUtilizador FROM utilizador WHERE NomeUtilizador = ?";
-    $stmt = $conn->prepare($query);
+    //$query = "SELECT Utilizador_ID, NomeUtilizador, EmailUtilizador, TelefoneUtilizador FROM utilizador WHERE NomeUtilizador = ?";
+    $stmt = $conn->prepare("CALL PerfilUtilizador(?, ?, ?, ?)");
     $stmt->bind_param("s", $username); // 's' indica que o parâmetro é uma string
     $stmt->execute();
     $result = $stmt->get_result();
@@ -70,7 +70,7 @@ $conn->close();
                         <button type="submit" class="logout-btn">TERMINAR SESSÃO</button>
                     </form>
                 </div>
-                <button type="button" onclick="window.history.back();" class="back-btn" aria-label="Voltar"></button>
+                <button type="button" onclick="location.href='/labrats/app/inicio.html';" class="back-btn" aria-label="Voltar"></button>
         </main>
 </body>
 </html>
