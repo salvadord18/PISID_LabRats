@@ -10,8 +10,11 @@ if (!isset($_SESSION['username'])) {
 
 $utilizadorID = $_SESSION['user_id'];
 
+date_default_timezone_set('Europe/Lisbon');
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $descricao = $_POST['experience_description'];
+    $dataHora = date('Y-m-d H:i:s');
     $numeroRatos = $_POST['experience-rats'];
     $limiteRatosSala = $_POST['experience-rats-limit'];
     $segundosSemMovimento = $_POST['experience-seconds'];
@@ -19,8 +22,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $variacaoTemperaturaMaxima = $_POST['experience-max-temperature'];
     $numeroOutliersMaximo = $_POST['experience-outliers'];
 
-    $stmt = $conn->prepare("CALL CriarExperiencia(?, ?, ?, ?, ?, ?, ?, ?, @new_Experiencia_ID)");
-    $stmt->bind_param("isiiiddi", $utilizadorID, $descricao, $numeroRatos, $limiteRatosSala, $segundosSemMovimento, $temperaturaIdeal, $variacaoTemperaturaMaxima, $numeroOutliersMaximo);
+    $stmt = $conn->prepare("CALL CriarExperiencia(?, ?, ?, ?, ?, ?, ?, ?, ?, @new_Experiencia_ID)");
+    $stmt->bind_param("issiiiddi", $utilizadorID, $descricao, $dataHora, $numeroRatos, $limiteRatosSala, $segundosSemMovimento, $temperaturaIdeal, $variacaoTemperaturaMaxima, $numeroOutliersMaximo);
     if ($stmt->execute()) {
         $stmt->close();
 

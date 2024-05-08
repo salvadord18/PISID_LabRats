@@ -60,7 +60,7 @@ $conn->close();
         <?php endif; ?>
         <div class="button-container">
             <button type="button" onclick="location.href='/labrats/app/criar-experiencia.html';" class="action-btn create-btn" aria-label="Adicionar experiência"></button>
-            <button type="button" onclick="window.history.back();" class="action-btn back-btn" aria-label="Voltar"></button>
+            <button type="button" onclick="location.href='/labrats/app/inicio.html';" class="action-btn back-btn" aria-label="Voltar"></button>
         </div>
     </main>
 </body>

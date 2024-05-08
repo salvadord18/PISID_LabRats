@@ -89,13 +89,13 @@ $conn->close();
         });
 
         /*window.addEventListener('beforeunload', function(e) {
-    // Coloca um aviso, mas não redireciona ou altera a localização aqui.
-    var confirmationMessage = 'Tem a certeza de que quer sair? Certifique-se de ter guardado todas as alterações.';
-    e.returnValue = confirmationMessage; // Isto é necessário para o evento.
-    return confirmationMessage; // Alguns navegadores podem usar isto para mostrar uma mensagem ao utilizador.
-    window.location.href = '/labrats/app/a-aguardar.php?Experiencia_ID=<?php echo $experienciaId; ?>'; // Redireciona para ajustar o estado
-});
-*/
+        // Coloca um aviso, mas não redireciona ou altera a localização aqui.
+        var confirmationMessage = 'Tem a certeza de que quer sair? Certifique-se de ter guardado todas as alterações.';
+        e.returnValue = confirmationMessage; // Isto é necessário para o evento.
+        return confirmationMessage; // Alguns navegadores podem usar isto para mostrar uma mensagem ao utilizador.
+        window.location.href = '/labrats/app/a-aguardar.php?Experiencia_ID=<?php echo $experienciaId; ?>'; // Redireciona para ajustar o estado
+        });
+        */
     </script>
 </head>
 <body>

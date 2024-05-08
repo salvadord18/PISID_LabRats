@@ -5,8 +5,7 @@ include 'db.php'; // Inclui o script de ligação à base de dados
 $username = $_SESSION['username'] ?? null; // Obtém o nome de utilizador da sessão
 
 if ($username) {
-    //$query = "SELECT Utilizador_ID, NomeUtilizador, EmailUtilizador, TelefoneUtilizador FROM utilizador WHERE NomeUtilizador = ?";
-    $stmt = $conn->prepare("CALL PerfilUtilizador(?, ?, ?, ?)");
+    $stmt = $conn->prepare("CALL PerfilUtilizador(?)");
     $stmt->bind_param("s", $username); // 's' indica que o parâmetro é uma string
     $stmt->execute();
     $result = $stmt->get_result();
