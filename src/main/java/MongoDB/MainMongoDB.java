@@ -77,7 +77,7 @@ public class MainMongoDB {
         return experiencia;
     }
 
-    public static void validaPrimeiroMovimentoValido(ConnectToSQL connectToSQL, Experiencia experiencia, DB mongoDb){
+    public static void validaPrimeiroMovimentoValido(ConnectToSQL connectToSQL, Experiencia experiencia, DB mongoDb) throws SQLException {
         //Sala de origem inicial é sempre 1.
         //Encontra salaDestino correta
         int salaDestino=0;
