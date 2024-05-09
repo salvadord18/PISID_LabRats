@@ -9,6 +9,7 @@ import com.mongodb.DB;
 import lombok.RequiredArgsConstructor;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -49,13 +50,64 @@ public class TratarDadosPortas extends Thread {
                     queue.pushPortasTratadas(List.of(portasData));
                     System.out.println("Dados corretos inseridos nas Portas Tratadas");
                 }
-            }
-
                 String CallSP = "{ call CriarAlertaSensorDadosInvalidos(?) }";
                 CallableStatement c = sqlDb.prepareCall(CallSP);
                 Timestamp timestamp = Timestamp.valueOf(portasData.getHora());
-                c.setTimestamp("HoraEscrita", timestamp);
+                c.setTimestamp(1, timestamp);
                 c.execute();
+            }
+
+// ............... Numero ratos em cada sala ...................
+            String SPNumRatos = "{ call Get_RatosAtuais(?,?,?) }";
+            CallableStatement c = sqlDb.prepareCall(SPNumRatos);
+//            c.setInt(1, Integer.parseInt((experiencia.getExperiencia().getId())));
+//            c.setInt(2, Integer.parseInt(salaDestino));
+            c.setInt(1, 8);
+            c.setInt(2, 2);
+            c.registerOutParameter(3, Types.INTEGER);
+            c.execute();
+
+            int numeroAtualRatos = c.getInt(3);
+
+            //Chamar SP para limiteRatosFinal
+            int limiteRatosFinal = 4;
+
+
+            int limiteAmarelo = (int) (limiteRatosFinal * 0.75);
+            if(numeroAtualRatos <= limiteAmarelo){
+                String SPRatosAtuais = "{ call CriarAlertaRatosAmarelo(?,?) }";
+                CallableStatement call = sqlDb.prepareCall(SPRatosAtuais);
+                call.setInt(1, Integer.parseInt((experiencia.getExperiencia().getId())));
+                call.setInt(2, Integer.parseInt(salaDestino));
+                call.execute();
+            } else if (numeroAtualRatos >= limiteRatosFinal) {
+                String SPRatosAtuais = "{ call CriarAlertaRatosVermelho(?,?) }";
+                CallableStatement call = sqlDb.prepareCall(SPRatosAtuais);
+                call.setInt(1, Integer.parseInt((experiencia.getExperiencia().getId())));
+                call.setInt(2, Integer.parseInt(salaDestino));
+                call.execute();
+            }
+
+
+//................... Segundos sem movimento .......................
+
+            // por acabar
+            int segundosSemMovimento = 0;
+
+            if (segundosSemMovimento >= 60 && segundosSemMovimento < 120) {
+                //Criar alerta sem movimento amarelo
+//                String procedureCall = "{CALL CriarAlertaSemMovimentosAmarelo(?,?,?,?)}";
+//                CallableStatement c = sqlDb.prepareCall(procedureCall);
+//                Timestamp timestamp = Timestamp.valueOf(portasData.getHora());
+//                c.setTimestamp(1, timestamp);
+//                c.setTimestamp(2, timestamp);
+//                c.setInt(3, );
+                System.out.println("SEM MOVIMENTOS AMARELO");
+            } else if (segundosSemMovimento >= 120) {
+                //Criar alerta sem movimentos vermelho
+                System.out.println("SEM MOVIMENTOS VERMELHO");
+            }
+
 
             try {
                 Thread.sleep(1000);

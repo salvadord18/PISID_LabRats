@@ -25,8 +25,6 @@ public class EnviarDadosMysql extends Thread{
 //
 //        var processedPortas = queue.popPortasMongo();
 
-        // Vai estar em wait, e só vai acordar e enviar os dados quando o estado da experiencia for Terminado
-        CurrentExperiencia.getInstance().getIfEstadoEquals(ExperienciaStatus.TERMINADA);
-        System.out.println("INICIEI!!!");
+     // Vai enviar continuamente os dados
     }
 }
