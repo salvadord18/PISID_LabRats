@@ -79,10 +79,10 @@ $conn->close();
                         <button class="view-experience-btn" onclick="location.href='visualizar-experiencia.php?Experiencia_ID=<?php echo $experiencia['Experiencia_ID']; ?>';"></button>
                     </div>
                     <div class="experiencia-buttons">
-                        <button class="substancias-odores-btn" onclick="location.href='/labrats/app/substancias-odores.html';"></button>
-                        <button class="labirinto-btn" onclick="location.href='/labrats/app/labirinto.html';"></button>
-                        <button class="alertas-btn" onclick="location.href='/labrats/app/alertas-experiencia.html';"></button>
-                        <button class="analise-btn" onclick="location.href='/labrats/app/analise.html';"></button>
+                        <button class="substancias-odores-btn" onclick="location.href='/labrats/app/substancias-odores.php?Experiencia_ID=<?php echo $experiencia['Experiencia_ID']; ?>';"></button>
+                        <button class="labirinto-btn" onclick="location.href='/labrats/app/labirinto.php?Experiencia_ID=<?php echo $experiencia['Experiencia_ID']; ?>';"></button>
+                        <button class="alertas-btn" onclick="location.href='/labrats/app/alertas-experiencia.php?Experiencia_ID=<?php echo $experiencia['Experiencia_ID']; ?>';"></button>
+                        <button class="analise-btn" onclick="location.href='/labrats/app/analise.php?Experiencia_ID=<?php echo $experiencia['Experiencia_ID']; ?>';"></button>
                     </div>
                 <?php endforeach; ?>
         <?php endif; ?>
