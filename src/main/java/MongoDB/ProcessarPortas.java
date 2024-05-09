@@ -53,12 +53,12 @@ public class ProcessarPortas extends Thread {
             BasicDBObject update = new BasicDBObject("$set", new BasicDBObject("catch", "P"));
 
             collection.updateMulti(idQuery, update);
-
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
+        System.out.println("Processei Portas");
     }
 }

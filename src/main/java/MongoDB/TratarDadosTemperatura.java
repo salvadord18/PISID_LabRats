@@ -15,7 +15,7 @@ import java.sql.Types;
 import java.util.*;
 
 @RequiredArgsConstructor
-public class TratarDados extends Thread {
+public class TratarDadosTemperatura extends Thread {
     private List<Integer> leituras = new ArrayList<>();
     private final Connection sqlDb;
     private final DB mongoDb;
@@ -27,7 +27,6 @@ public class TratarDados extends Thread {
     public void run() {
         try {
             tratarDadosTemperatura();
-//            tratarDadosPortas();
         } catch (SQLException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -58,19 +57,23 @@ public class TratarDados extends Thread {
                     c.setInt(2, Integer.parseInt(experienciaId));
                     c.execute();
 
-                    Thread.sleep(30000);
+                    //Thread.sleep(30000);
                 } else {
+
                     CallableStatement cs = null;
                     cs = sqlDb.prepareCall("{call CriarAlertaOutlierVermelho}");
                     cs.executeQuery();
-
-                    Thread.sleep(10000);
+                    //Thread.sleep(10000);
                 }
             } else {
                 queue.pushTempsTratadas(List.of(tempData));
                 System.out.println("Não é outlier");
             }
-
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
 
     }
@@ -101,30 +104,6 @@ public class TratarDados extends Thread {
         return maxNumberOutliers;
 
     }
-
-    public void tratarDadosPortas() throws SQLException {
-        while (true) {
-            var portasData = queue.popPortasMongo();
-            var collection = mongoDb.getCollection("Sensor_Porta");
-            var salaOrigem = portasData.getSalaOrigem();
-            var salaDestino = portasData.getSalaDestino();
-
-            var corredoresExperiencia = experiencia.getExperiencia().getCorredores();
-
-            for(Corredor corredor: corredoresExperiencia){
-                if(corredor.getSalaOrigem().equals(salaOrigem) && corredor.getSalaDestino().equals(salaDestino)){
-                    queue.pushPortasTratadas(List.of(portasData));
-                    System.out.println("Dados corretos inseridos nas Portas Tratadas");
-                }
-//                String CallSP = "{ call CriarAlertaSensorDadosInvalidos(?) }";
-//                CallableStatement c = sqlDb.prepareCall(CallSP);
-//                Timestamp timestamp = Timestamp.valueOf(portasData.getHora());
-//                c.setTimestamp("HoraEscrita", timestamp);
-//                c.execute();
-            }
-        }
-    }
-
 
     public class InterquartileRange {
 

@@ -46,7 +46,7 @@ public class MainMongoDB {
         Experiencia experiencia = new Experiencia();
         experiencia.setId(String.valueOf(idExperiencia));
 
-        setExperienciaEmProcessamento(connectToSQL, experiencia);
+//        setExperienciaEmProcessamento(connectToSQL, experiencia);
         CurrentExperiencia.getInstance().setEstadoExperiencia(ExperienciaStatus.EM_PROCESSAMENTO);
 
         while(resultado.next()) {
@@ -108,12 +108,12 @@ public class MainMongoDB {
                 if ((salaOrigemValue.equals("1") && (salaDestinoValue.equals(String.valueOf(salaDestino))
                         && dataMongo.compareTo(dataExperiencia) > 0))) {
                     System.out.println("Sala origem: " + salaOrigemValue + " Sala destino: " + salaDestinoValue);
-                    experiencia.setDataHora(dataMongo.toString());
+                    experiencia.setDataHora(dataDadosMongo);
 
                     // faz set da Experiencia, caso encontre o dado válido
                     CurrentExperiencia.getInstance().setExperiencia(experiencia);
 
-                    setExperienciaEmCurso(connectToSQL, experiencia);
+//                    setExperienciaEmCurso(connectToSQL, experiencia);
 
                     //Depois do SP que passa o estado da experiencia para em execução, faz set do estado da experiencia
                     // no java, para execucao
@@ -150,11 +150,15 @@ public class MainMongoDB {
         int estadoExperiencia = 0;
         int flag = 0;
         while(flag == 0) {
-            String testeCallSP = "{CALL Get_EstadoExperiencia (?)}";
+            String testeCallSP = "{CALL Get_EstadoExperiencia (?,?)}";
             CallableStatement cs = connectToSQL.getConnectionSQL().prepareCall(testeCallSP);
             cs.setInt(1, Integer.valueOf(experiencia.getId()));
+            cs.registerOutParameter(2, Types.INTEGER);
             cs.execute();
+
             estadoExperiencia = cs.getInt(2);
+
+
             if(estadoExperiencia == 5){
                 System.out.println("Experiencia " + Integer.valueOf(experiencia.getId()) + " Terminada.");
                 CurrentExperiencia.getInstance().setEstadoExperiencia(ExperienciaStatus.TERMINADA);
@@ -211,27 +215,29 @@ public class MainMongoDB {
         //Ao mesmo tempo é preciso chamar validaIfExperienciaTerminou(connectToSQL, experiencia)
         //Esta função vai validar se a experiencia passou para o estado "Terminada"
 
-        validaIfExperienciaTerminou(connectToSQL,experiencia);
+//        validaIfExperienciaTerminou(connectToSQL,experiencia);
        // if(CurrentExperiencia.getInstance().isEstado(ExperienciaStatus.TERMINADA)){
 
 //        }
         var fetchTempsMongo = new ProcessarTemperatura(mongoDb);
         var fetchDoorsMongo = new ProcessarPortas(mongoDb);
         var threadFetchToSql = new EnviarDadosMysql(connectToSQL.getConnectionSQL());
-        var threadDealWithData = new TratarDados(connectToSQL.getConnectionSQL(), mongoDb);
-
+        var threadDealWithTemperatura = new TratarDadosTemperatura(connectToSQL.getConnectionSQL(), mongoDb);
+        var threadDealWithPortas = new TratarDadosPortas(connectToSQL.getConnectionSQL(), mongoDb);
 
         fetchTempsMongo.start();
         fetchDoorsMongo.start();
-        threadDealWithData.start();
+        threadDealWithTemperatura.start();
         threadFetchToSql.start();
+        threadDealWithPortas.start();
 
 
 
         fetchTempsMongo.join();
         fetchDoorsMongo.join();
-        threadDealWithData.join();
+        threadDealWithTemperatura.join();
         threadFetchToSql.join();
+        threadDealWithPortas.join();
 
 
     }
