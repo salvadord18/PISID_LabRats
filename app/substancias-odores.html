@@ -16,30 +16,52 @@
         </a>
         <h1>Substâncias e Odores</h1>
     </header>
-    <div class="substancia-section-container">
-        <p class="substancia-section-title">Substâncias:</p>
-        <div class="substancia-container">
-            <span class="substancia-nome">Ácido clorídrico</span>
-            <button class="eliminar-substancia-btn" onclick="location.href='elminar-substancia.php';"></button>
+    <div class="line-container">
+        <div class="substancia-section-container">
+            <p class="substancia-section-title">Substâncias:</p>
+            <div class="substancia-container">
+                <span class="substancia-nome">Ácido clorídrico</span>
+                <button class="eliminar-substancia-btn" onclick="location.href='elminar-substancia.php';"></button>
+            </div>
+            <div class="rats-number-section-container">
+                <p class="rats-number-section-title">N.º de ratos:</p>
+                <div class="rats-number-container">
+                    <span class="rats-number">4</span>
+                </div>
+            </div>
+        </div>
+        <div class="odor-section-container">
+            <p class="odor-section-title">Odores:</p>
+            <div class="odor-container">
+                <span class="odor-nome">Salmão</span>
+                <button class="eliminar-odor-btn" onclick="location.href='eliminar-odor.php';"></button>
+            </div>
+            <div class="room-section-container">
+                <p class="room-section-title">N.º da sala:</p>
+                <div class="room-container">
+                    <span class="room-number">9</span>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="rats-number-section-container">
-        <p class="rats-number-section-title">N.º de ratos:</p>
-        <div class="rats-number-container">
-            <span class="rats-number">4</span>
+    <div class="line-container addition">
+        <div class="substancia-section-container addition select-container">
+            <select class="substancia-container">
+                <option value="">Selecionar Substância</option>
+                <option value="Acido Cloridrico">Ácido Clorídrico</option>
+                <option value="Oxigenio">Oxigénio</option>
+            </select>
+            <input type="number" class="rats-number-container select-container">
+            <button class="add-button" onclick="location.href='adicionar-substancia.php';"></button>
         </div>
-    </div>
-    <div class="odor-section-container">
-        <p class="odor-section-title">Odores:</p>
-        <div class="odor-container">
-            <span class="odor-nome">Salmão</span>
-            <button class="eliminar-odor-btn" onclick="location.href='eliminar-odor.php';"></button>
-        </div>
-    </div>
-    <div class="room-section-container">
-        <p class="room-section-title">N.º da sala:</p>
-        <div class="room-container">
-            <span class="room-number">9</span>
+        <div class="odor-section-container addition select-container add-odor-button-container">
+            <select class="odor-container">
+                <option value="">Selecionar Odor</option>
+                <option value="Salmao">Salmão</option>
+                <option value="Banana">Banana</option>
+            </select>
+            <input type="number" class="room-container select-container">
+            <button class="add-button" onclick="location.href='adicionar-odor.php';"></button>
         </div>
     </div>
     <div class="form-actions">
