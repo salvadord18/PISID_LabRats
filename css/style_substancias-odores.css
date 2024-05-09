@@ -70,6 +70,7 @@ body, html {
 .substancia-section-container {
     margin-left: 30px;
     margin-top: 160px;
+    margin-bottom: 20px;
 }
 
 .substancia-section-title {
@@ -135,6 +136,7 @@ body, html {
 .odor-section-container {
     margin-left: 260px;
     margin-top: 158px;
+    margin-bottom: 20px;
 }
 
 .add-odor-section-container {

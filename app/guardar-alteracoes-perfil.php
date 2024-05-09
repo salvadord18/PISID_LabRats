@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['user_id'])) {
     $email = $_POST['email'];
     $telefone = $_POST['telefone'];
 
-    $stmt = $conn->prepare("CALL GuardarAlteracoesPerfil(?, ?, ?)");
+    $stmt = $conn->prepare("CALL AtualizarPerfil(?, ?, ?)");
     $stmt->bind_param("ssi", $email, $telefone, $userId);
     if ($stmt->execute()) {
         echo "<script>alert('Alterações guardadas com sucesso!'); window.location.href='/labrats/app/perfil.php';</script>";

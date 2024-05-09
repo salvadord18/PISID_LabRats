@@ -25,7 +25,7 @@ $temperaturaIdeal = $_POST['experience-temperature'] ?? 0.0;
 $variacaoTemperaturaMaxima = $_POST['experience-max-temperature'] ?? 0.0;
 $numeroOutliersMaximo = $_POST['experience-outliers'] ?? 0;
 
-$updateStmt = $conn->prepare("CALL GuardarAlteracoesExperiencia(?, ?, ?, ?, ?, ?, ?, ?)");
+$updateStmt = $conn->prepare("CALL AtualizarExperiencia(?, ?, ?, ?, ?, ?, ?, ?)");
 $updateStmt->bind_param("isiiiddi", $experienciaId, $descricao, $numeroRatos, $limiteRatosSala, $segundosSemMovimento, $temperaturaIdeal, $variacaoTemperaturaMaxima, $numeroOutliersMaximo);
 $updateStmt->execute();
 
