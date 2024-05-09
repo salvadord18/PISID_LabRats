@@ -4,6 +4,7 @@ import MongoDB.entities.CurrentExperiencia;
 import MongoDB.entities.DadosQueue;
 import MongoDB.entities.DadosTemperaturaMongoDB;
 import MongoDB.entities.Experiencia;
+import MongoDB.entities.enums.ExperienciaStatus;
 import MongoDB.mappers.DadosTemperaturaMongoDBMapper;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -24,7 +25,7 @@ public class ProcessarTemperatura extends Thread {
     @Override
     public void run() {
         // Vai correr enquanto o estado da experiencia estiver em execucao
-        while (CurrentExperiencia.getInstance().isEstado("EXECUCAO")) {
+        while (CurrentExperiencia.getInstance().isEstado(ExperienciaStatus.EM_CURSO)) {
 
             BasicDBObject query = new BasicDBObject("catch", new BasicDBObject("$exists", false));
             var collection = mongoDb.getCollection("Sensor_Temperatura");

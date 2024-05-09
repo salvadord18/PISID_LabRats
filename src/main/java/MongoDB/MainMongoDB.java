@@ -2,25 +2,15 @@ package MongoDB;
 
 import MongoDB.entities.*;
 import MongoDB.entities.enums.ExperienciaStatus;
-import MongoDB.mappers.CorredorMapper;
 import MongoDB.mappers.DadosPortasMongoDBMapper;
-import MongoDB.mappers.ExperienciaMapper;
 import com.mongodb.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Iterator;
-import java.util.Objects;
-import java.util.Properties;
 
 public class MainMongoDB {
 
@@ -40,6 +30,7 @@ public class MainMongoDB {
             if (resultado != -1){
                 return resultado;
             }
+            System.out.println("Não foi encontrada nenhuma experiencia");
             Thread.sleep(5000);
         }
     }
@@ -116,10 +107,11 @@ public class MainMongoDB {
                     // faz set da Experiencia, caso encontre o dado válido
                     CurrentExperiencia.getInstance().setExperiencia(experiencia);
 
+                    setExperienciaEmCurso(connectToSQL, experiencia);
+
                     //Depois do SP que passa o estado da experiencia para em execução, faz set do estado da experiencia
                     // no java, para execucao
                     CurrentExperiencia.getInstance().setEstadoExperiencia(ExperienciaStatus.EM_CURSO);
-                    setExperienciaEmExecucao(connectToSQL, experiencia);
                     flag = 1;
                     break;
                 }
@@ -140,7 +132,7 @@ public class MainMongoDB {
         System.out.println("Experiencia " + Integer.valueOf(experiencia.getId()) + " em processamento.");
     }
 
-    public static void setExperienciaEmExecucao(ConnectToSQL connectToSQL, Experiencia experiencia) throws SQLException {
+    public static void setExperienciaEmCurso(ConnectToSQL connectToSQL, Experiencia experiencia) throws SQLException {
         String testeCallSP = "{CALL Set_IniciarExperiencia (?)}";
         CallableStatement cs = connectToSQL.getConnectionSQL().prepareCall(testeCallSP);
         cs.setInt(1, Integer.valueOf(experiencia.getId()));
@@ -197,8 +189,7 @@ public class MainMongoDB {
         System.out.println("Hora final: " + experiencia.getDataHora());
 
 
-        //dropMongo(mongoDb);
-
+//        dropMongo(mongoDb);
 
 
 
@@ -214,6 +205,10 @@ public class MainMongoDB {
         //Ao mesmo tempo é preciso chamar validaIfExperienciaTerminou(connectToSQL, experiencia)
         //Esta função vai validar se a experiencia passou para o estado "Terminada"
 
+        validaIfExperienciaTerminou(connectToSQL,experiencia);
+       // if(CurrentExperiencia.getInstance().isEstado(ExperienciaStatus.TERMINADA)){
+
+//        }
         var fetchTempsMongo = new ProcessarTemperatura(mongoDb);
         var fetchDoorsMongo = new ProcessarPortas(mongoDb);
         var threadFetchToSql = new EnviarDadosMysql(connectToSQL.getConnectionSQL());

@@ -1,5 +1,7 @@
 package MongoDB;
 
+import MongoDB.entities.Corredor;
+import MongoDB.entities.CurrentExperiencia;
 import MongoDB.entities.DadosQueue;
 import MongoDB.entities.DadosTemperaturaMongoDB;
 import com.mongodb.BasicDBObject;
@@ -19,6 +21,7 @@ public class TratarDados extends Thread {
     private final DB mongoDb;
     private int outlierCount = 0;
     private DadosQueue queue = DadosQueue.getInstance();
+    private CurrentExperiencia experiencia = CurrentExperiencia.getInstance();
 
     @Override
     public void run() {
@@ -67,12 +70,12 @@ public class TratarDados extends Thread {
     }
 
     public boolean isOutlier(DadosTemperaturaMongoDB dadosTemperaturaMongoDB) {
-        GFG gfg = new GFG();
+        InterquartileRange interquartileRange = new InterquartileRange();
         if (leituras.size() < 40) {
             leituras.add(dadosTemperaturaMongoDB.getLeitura());
             return false;
         }
-        var isOutlier = gfg.isOutlier(leituras, leituras.size(), dadosTemperaturaMongoDB.getLeitura());
+        var isOutlier = interquartileRange.isOutlier(leituras, leituras.size(), dadosTemperaturaMongoDB.getLeitura());
         if (isOutlier) {
             return true;
         }
@@ -93,12 +96,31 @@ public class TratarDados extends Thread {
 
     }
 
-    public void tratarDadosPortas() {
+    public void tratarDadosPortas() throws SQLException {
+        while (true) {
+            var portasData = queue.popPortasMongo();
+            var collection = mongoDb.getCollection("Sensor_Porta");
+            var salaOrigem = portasData.getSalaOrigem();
+            var salaDestino = portasData.getSalaDestino();
 
+            var corredoresExperiencia = experiencia.getExperiencia().getCorredores();
+
+            for(Corredor corredor: corredoresExperiencia){
+                if(corredor.getSalaOrigem().equals(salaOrigem) && corredor.getSalaDestino().equals(salaDestino)){
+                    queue.pushPortasTratadas(List.of(portasData));
+                    System.out.println("Dados corretos inseridos nas Portas Tratadas");
+                }
+//                String CallSP = "{ call CriarAlertaSensorDadosInvalidos(?) }";
+//                CallableStatement c = sqlDb.prepareCall(CallSP);
+//                Timestamp timestamp = Timestamp.valueOf(portasData.getHora());
+//                c.setTimestamp("HoraEscrita", timestamp);
+//                c.execute();
+            }
+        }
     }
 
 
-    public class GFG {
+    public class InterquartileRange {
 
         // Function to give
         // index of the median
