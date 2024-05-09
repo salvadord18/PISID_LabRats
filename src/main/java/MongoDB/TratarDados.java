@@ -28,7 +28,7 @@ public class TratarDados extends Thread {
         try {
             tratarDadosTemperatura();
 //            tratarDadosPortas();
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             throw new RuntimeException(e);
         }
 
