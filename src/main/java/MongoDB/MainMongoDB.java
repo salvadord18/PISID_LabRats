@@ -51,6 +51,8 @@ public class MainMongoDB {
         cs.setInt(1, idExperiencia);
         ResultSet resultado =  cs.executeQuery();
         Experiencia experiencia = new Experiencia();
+        experiencia.setId(String.valueOf(idExperiencia));
+        setExperienciaEmProcessamento(connectToSQL, experiencia);
 
         while(resultado.next()) {
             JSONArray jsonArray = new JSONArray(resultado.getString(1));
@@ -75,7 +77,7 @@ public class MainMongoDB {
         return experiencia;
     }
 
-    public static void validaPrimeiroMovimentoValido(Experiencia experiencia, DB mongoDb){
+    public static void validaPrimeiroMovimentoValido(ConnectToSQL connectToSQL, Experiencia experiencia, DB mongoDb){
         //Sala de origem inicial é sempre 1.
         //Encontra salaDestino correta
         int salaDestino=0;
@@ -117,7 +119,7 @@ public class MainMongoDB {
                     //Depois do SP que passa o estado da experiencia para em execução, faz set do estado da experiencia
                     // no java, para execucao
                     CurrentExperiencia.getInstance().setEstadoExperiencia(ExperienciaStatus.EM_CURSO);
-
+                    setExperienciaEmExecucao(connectToSQL, experiencia);
                     flag = 1;
                     break;
                 }
@@ -189,11 +191,11 @@ public class MainMongoDB {
 
         //Experiencia criada com id, data e array de Corredores (posições validas)
         Experiencia experiencia = getCorredoresCurrentExperiencia(connectToSQL, id);
-        setExperienciaEmProcessamento(connectToSQL, experiencia);
+
         System.out.println("Hora inicial: " + experiencia.getDataHora());
-        validaPrimeiroMovimentoValido( experiencia, mongoDb);
+        validaPrimeiroMovimentoValido(connectToSQL, experiencia, mongoDb);
         System.out.println("Hora final: " + experiencia.getDataHora());
-        setExperienciaEmExecucao(connectToSQL, experiencia);
+
 
         //dropMongo(mongoDb);
 
