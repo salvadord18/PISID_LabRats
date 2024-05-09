@@ -26,6 +26,7 @@ public class MainMongoDB {
             CallableStatement cs = connectToSQL.getConnectionSQL().prepareCall(testeCallSP);
             cs.registerOutParameter(1, Types.INTEGER);
             cs.execute();
+
             int resultado = cs.getInt(1);
             if (resultado != -1){
                 return resultado;
@@ -41,9 +42,12 @@ public class MainMongoDB {
         CallableStatement cs = connectToSQL.getConnectionSQL().prepareCall(procedureCall);
         cs.setInt(1, idExperiencia);
         ResultSet resultado =  cs.executeQuery();
+
         Experiencia experiencia = new Experiencia();
         experiencia.setId(String.valueOf(idExperiencia));
+
         setExperienciaEmProcessamento(connectToSQL, experiencia);
+        CurrentExperiencia.getInstance().setEstadoExperiencia(ExperienciaStatus.EM_PROCESSAMENTO);
 
         while(resultado.next()) {
             JSONArray jsonArray = new JSONArray(resultado.getString(1));
@@ -60,6 +64,7 @@ public class MainMongoDB {
             }
             LocalDateTime currentDate = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
+
             experiencia.setDataHora(currentDate.format(formatter));
             experiencia.setId(String.valueOf(idExperiencia));
             experiencia.setCorredores(corredores);
@@ -104,6 +109,7 @@ public class MainMongoDB {
                         && dataMongo.compareTo(dataExperiencia) > 0))) {
                     System.out.println("Sala origem: " + salaOrigemValue + " Sala destino: " + salaDestinoValue);
                     experiencia.setDataHora(dataMongo.toString());
+
                     // faz set da Experiencia, caso encontre o dado válido
                     CurrentExperiencia.getInstance().setExperiencia(experiencia);
 

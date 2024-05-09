@@ -27,6 +27,7 @@ public class TratarDados extends Thread {
     public void run() {
         try {
             tratarDadosTemperatura();
+//            tratarDadosPortas();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -34,11 +35,11 @@ public class TratarDados extends Thread {
     }
 
 
-    public void tratarDadosTemperatura() throws SQLException {
+    public void tratarDadosTemperatura() throws SQLException, InterruptedException {
         while (true) {
             var tempData = queue.popData();
             var collection = mongoDb.getCollection("Sensor_Temperatura");
-
+            var experienciaId = experiencia.getExperiencia().getId();
             // if outlier então
             if (isOutlier(tempData)) {
                 outlierCount++;
@@ -51,14 +52,19 @@ public class TratarDados extends Thread {
                 if (outlierCount <= maxNumOutliers) {
                     queue.pushTempsTratadas(List.of(tempData));
 
-                    String CallSP = "{ call CriarAlertaOutlierAmarelo(?) }";
+                    String CallSP = "{ call CriarAlertaOutlierAmarelo(?,?) }";
                     CallableStatement c = sqlDb.prepareCall(CallSP);
                     c.setInt(1, outlierCount);
+                    c.setInt(2, Integer.parseInt(experienciaId));
                     c.execute();
+
+                    Thread.sleep(30000);
                 } else {
                     CallableStatement cs = null;
                     cs = sqlDb.prepareCall("{call CriarAlertaOutlierVermelho}");
                     cs.executeQuery();
+
+                    Thread.sleep(10000);
                 }
             } else {
                 queue.pushTempsTratadas(List.of(tempData));

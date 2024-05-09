@@ -9,19 +9,19 @@ import java.util.Objects;
 // Class para a experiencia que está a decorrer
 public class CurrentExperiencia {
 
-   Experiencia experiencia;
+    Experiencia experiencia;
     ExperienciaStatus estadoExperiencia;
 
     private CurrentExperiencia() {
     }
 
-    public synchronized  void setEstadoExperiencia(ExperienciaStatus estadoExperiencia){
+    public synchronized void setEstadoExperiencia(ExperienciaStatus estadoExperiencia) {
         this.estadoExperiencia = estadoExperiencia;
         notifyAll();
     }
 
-    public synchronized  Experiencia getIfEstadoEquals(ExperienciaStatus estadoExperiencia){
-        if (!Objects.equals(this.estadoExperiencia, estadoExperiencia)){
+    public synchronized Experiencia getIfEstadoEquals(ExperienciaStatus estadoExperiencia) {
+        if (!Objects.equals(this.estadoExperiencia, estadoExperiencia)) {
             try {
                 wait();
             } catch (InterruptedException e) {
@@ -31,18 +31,18 @@ public class CurrentExperiencia {
         return experiencia;
     }
 
-    public synchronized Experiencia getExperiencia(){
-        if(Objects.isNull(experiencia)){
+    public synchronized Experiencia getExperiencia() {
+        if (Objects.isNull(experiencia)) {
             try {
                 wait();
             } catch (InterruptedException e) {
-                return  getExperiencia();
+                return getExperiencia();
             }
         }
         return experiencia;
     }
 
-    public boolean isEstado(ExperienciaStatus estadoExperiencia){
+    public boolean isEstado(ExperienciaStatus estadoExperiencia) {
         return estadoExperiencia.equals(this.estadoExperiencia);
     }
 
