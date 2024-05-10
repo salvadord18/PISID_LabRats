@@ -41,42 +41,36 @@ body, html {
     visibility: hidden;
 }
 
-.select-container select, .select-container input {
+.select-container select,
+.select-container input[type="number"] {
     font-family: 'Roboto Mono', monospace;
 }
 
-/* Reduz a margem entre as seções de exemplo e de adição */
-.substancia-section-container.addition,
-.odor-section-container.addition{
-    margin-top: -200px;
+.container {
     display: flex;
-    gap: 100px;
+    gap: 20px;
+    justify-content: center;
 }
 
-/* Ajuste para os contêineres de seleção e input para adição de novos itens */
-.line-container.addition {
-    margin-top: 10px; /* Espaçamento reduzido entre linhas se necessário */
-    gap: 10px; /* Ajusta o espaço entre os elementos dentro da linha */
+.column {
+    flex: 1;
 }
 
-
-.line-container {
+.titles-substancias {
     display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.substancia-section-container {
-    margin-left: 30px;
-    margin-top: 160px;
-    margin-bottom: 20px;
+    gap: 300px;
+    justify-content: center;
 }
 
 .substancia-section-title {
     color: #8C52FF;
     font-size: 1em;
-    margin-top: -240px;
+    margin-left: -210px;
+}
+
+.substancia-section-container {
+    margin-left: 30px;
+    margin-top: -100px;
 }
 
 .substancia-container {
@@ -109,15 +103,15 @@ body, html {
     text-align: center; /* Centraliza horizontalmente o texto, se houver */
 }
 
-.rats-number-section-container {
-    margin-left: 400px;
-    margin-top: -95.5px;
-}
-
 .rats-number-section-title {
     color: #8C52FF;
     font-size: 1em;
-    margin-top: 10px;
+    text-align: center;
+}
+
+.rats-number-section-container {
+    margin-left: 400px;
+    margin-top: -60px;
 }
 
 .rats-number-container {
@@ -130,24 +124,24 @@ body, html {
     align-items: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     color: #8C52FF;
-    margin-bottom: 10px; /* Espaço depois da caixa da substância */
+    margin-bottom: 10px;
 }
 
-.odor-section-container {
-    margin-left: 260px;
-    margin-top: 158px;
-    margin-bottom: 20px;
-}
-
-.add-odor-section-container {
-    margin-left: 280px;
-    margin-top: 158px;
+.titles-odores {
+    display: flex;
+    gap: 337px;
+    justify-content: center;
 }
 
 .odor-section-title {
     color: #8C52FF;
     font-size: 1em;
-    margin-top: -240px;
+    margin-left: -165px;
+}
+
+.odor-section-container {
+    margin-left: 80px;
+    margin-top: -100px;
 }
 
 .odor-container {
@@ -160,7 +154,7 @@ body, html {
     align-items: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     color: #8C52FF;
-    margin-bottom: 10px; /* Espaço depois da caixa da substância */
+    margin-bottom: 10px;
 }
 
 .eliminar-odor-btn {
@@ -180,20 +174,15 @@ body, html {
     text-align: center; /* Centraliza horizontalmente o texto, se houver */
 }
 
-.add-odor-button-container {
-    position: relative;
-    margin-left: 148px; /* Use valores positivos ou negativos para mover para a direita ou esquerda */
+.room-section-title {
+    color: #8C52FF;
+    font-size: 1em;
+    text-align: center; /* Centraliza o texto */
 }
 
 .room-section-container {
     margin-left: 400px;
-    margin-top: -95.5px;
-}
-
-.room-section-title {
-    color: #8C52FF;
-    font-size: 1em;
-    margin-top: 10px;
+    margin-top: -60px;
 }
 
 .room-container {
@@ -206,13 +195,43 @@ body, html {
     align-items: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     color: #8C52FF;
-    margin-bottom: 10px; /* Espaço depois da caixa da substância */
+    margin-bottom: 10px;
+}
+
+.substancia-container-addition {
+    width: 333px;
+    background-color: #EFEFEF;
+    border-radius: 20px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    color: #8C52FF;
+}
+
+.rats-number-section-container-addition {
+    margin-left: 400px;
+    margin-top: -50px;
+}
+
+.odor-container-addition {
+    width: 333px;
+    background-color: #EFEFEF;
+    border-radius: 20px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    color: #8C52FF;
+    margin-bottom: 10px;
 }
 
 .add-button {
     width: 50px;
     height: 50px;
-    margin-left: -40px;
+    margin-left: 550px;
     background-color: #EFEFEF;
     border-radius: 20px;
     border: 3px solid #8C52FF;
@@ -224,6 +243,7 @@ body, html {
     background-repeat: no-repeat;  /* Adicionado para evitar a repetição do ícone */
     background-size: 30px 30px;  /* Ajuste conforme necessário */
     background-position: center;  /* Centraliza o ícone no botão */
+    margin-top: -59px;
 }
 
 .add-button:hover {
@@ -246,6 +266,7 @@ body, html {
     margin-left: auto; /* Alinha o botão à direita */
     margin-right: auto; /* Alinha o botão à direita */
     font-family: "Roboto Mono", monospace;
+    margin-top: 200px;
 }
 
 .submit-btn:hover {

@@ -17,20 +17,33 @@ if (!$experienciaId) {
     echo "<script>alert('ID da experiência não fornecido.'); window.history.back();</script>";
 }
 
+// Chama o procedimento armazenado para obter as substâncias e odores selecionados na experiência
 $stmt = $conn->prepare("CALL VisualizarSubstanciasOdoresExperiencia(?)");
 $stmt->bind_param("i", $experienciaId);
 $stmt->execute();
 
-// Processar os resultados das substâncias
+// Processa os resultados das substâncias e odores
 $resultadoSubstancias = $stmt->get_result();
 $substancias = $resultadoSubstancias->fetch_all(MYSQLI_ASSOC);
 
-// Avançar para o próximo resultado para capturar odores
+// Avança para o próximo resultado para capturar odores
 $stmt->next_result();
 $resultadoOdores = $stmt->get_result();
 $odores = $resultadoOdores->fetch_all(MYSQLI_ASSOC);
 
 $stmt->close();
+
+// Chama o procedimento armazenado para obter as substâncias não selecionadas na experiência
+$stmtSubstanciasNaoSelecionadas = $conn->prepare("CALL GetSubstanciasNaoSelecionadasNaExperiencia(?)");
+$stmtSubstanciasNaoSelecionadas->bind_param("i", $experienciaId);
+$stmtSubstanciasNaoSelecionadas->execute();
+
+// Processa os resultados das substâncias não selecionadas
+$resultadoSubstanciasNaoSelecionadas = $stmtSubstanciasNaoSelecionadas->get_result();
+$substanciasNaoSelecionadas = $resultadoSubstanciasNaoSelecionadas->fetch_all(MYSQLI_ASSOC);
+
+$stmtSubstanciasNaoSelecionadas->close();
+
 $conn->close();
 ?>
 
@@ -52,56 +65,78 @@ $conn->close();
         </a>
         <h1>Substâncias e Odores</h1>
     </header>
-    <div class="line-container">
-        <div class="substancia-section-container">
-            <p class="substancia-section-title">Substâncias:</p>
-            <?php foreach ($substancias as $substancia): ?>
-            <div class="substancia-container">
-                <span class="substancia-nome"><?php echo htmlspecialchars($substancia['NomeSubstancia']); ?></span>
-                <button class="eliminar-substancia-btn" onclick="location.href='elminar-substancia.php';"></button>
-            </div>
-            <div class="rats-number-section-container">
-                <p class="rats-number-section-title">N.º de ratos:</p>
-                <div class="rats-number-container">
-                    <span class="rats-number"><?php echo htmlspecialchars($substancia['NumeroRatos']); ?></span>
+    <div class="container">
+        <div class="column">
+            <div class="substancia-section-container">
+                <div class="titles-substancias">
+                    <p class="substancia-section-title">Substâncias:</p>
+                    <p class="rats-number-section-title">N.º de ratos:</p>
                 </div>
+                <?php foreach ($substancias as $substancia) : ?>
+                    <div class="substancia-container">
+                        <span class="substancia-nome"><?php echo htmlspecialchars($substancia['NomeSubstancia']); ?></span>
+                        <button class="eliminar-substancia-btn" onclick="location.href='eliminar-substancia.php?Experiencia_ID=<?php echo $experienciaId; ?>';"></button>
+                    </div>
+                    <div class="rats-number-section-container">
+                        <div class="rats-number-container">
+                            <span class="rats-number"><?php echo htmlspecialchars($substancia['NumeroRatos']); ?></span>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+                <form action="adicionar-substancia.php" method="POST">
+                    <input type="hidden" name="experiencia_id" value="<?php echo $experienciaId; ?>">
+                    <div class="substancia-addition select-container">
+                        <select name="substancia_id" class="substancia-container-addition">
+                            <option value="">Selecionar Substância</option>
+                            <?php
+                            foreach ($substanciasNaoSelecionadas as $substancia) {
+                                echo '<option value="' . htmlspecialchars($substancia['Substancia_ID']) . '">' . htmlspecialchars($substancia['NomeSubstancia']) . '</option>';
+                            }
+                            ?>
+                        </select>
+                        <div class="rats-number-section-container-addition">
+                            <input type="number" name="numero_ratos" class="rats-number-container" min="1">
+                        </div>
+                        <button type="submit" class="add-button"></button>
+                    </div>
+                </form>
             </div>
-            <?php endforeach; ?>
         </div>
-        <div class="odor-section-container">
-            <p class="odor-section-title">Odores:</p>
-            <?php foreach ($odores as $odor): ?>
-            <div class="odor-container">
-                <span class="odor-nome"><?php echo htmlspecialchars($odor['NomeOdor']); ?></span>
-                <button class="eliminar-odor-btn" onclick="location.href='eliminar-odor.php';"></button>
-            </div>
-            <div class="room-section-container">
-                <p class="room-section-title">N.º da sala:</p>
-                <div class="room-container">
-                    <span class="room-number"><?php echo htmlspecialchars($odor['Sala_ID']); ?></span>
+        <div class="column">
+            <div class="odor-section-container">
+                <div class="titles-odores">
+                    <p class="odor-section-title">Odores:</p>
+                    <p class="room-section-title">N.º da sala:</p>
                 </div>
+                <?php foreach ($odores as $odor) : ?>
+                    <div class="odor-container">
+                        <span class="odor-nome"><?php echo htmlspecialchars($odor['NomeOdor']); ?></span>
+                        <button class="eliminar-odor-btn" onclick="location.href='eliminar-odor.php?Experiencia_ID=<?php echo $experienciaId; ?>';"></button>
+                    </div>
+                    <div class="room-section-container">
+                        <div class="room-container">
+                            <span class="room-number"><?php echo htmlspecialchars($odor['Sala_ID']); ?></span>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+                <form action="adicionar-odor.php" method="POST">
+                    <input type="hidden" name="experiencia_id" value="<?php echo $experienciaId; ?>">
+                    <div class="odor-addition select-container">
+                        <select name="odor_id" class="odor-container-addition">
+                            <option value="">Selecionar Odor</option>
+                            <?php
+                            foreach ($odores as $odor) {
+                                echo '<option value="' . htmlspecialchars($odor['Odor_ID']) . '">' . htmlspecialchars($odor['NomeOdor']) . '</option>';
+                            }
+                            ?>
+                        </select>
+                        <div class="room-section-container">
+                            <input type="number" name="sala_id" class="room-container" min="1">
+                        </div>
+                        <button class="add-button"></button>
+                    </div>
+                </form>
             </div>
-            <?php endforeach; ?>
-        </div>
-    </div>
-    <div class="line-container addition">
-        <div class="substancia-section-container addition select-container">
-            <select class="substancia-container">
-                <option value="">Selecionar Substância</option>
-                <option value="Acido Cloridrico">Ácido Clorídrico</option>
-                <option value="Oxigenio">Oxigénio</option>
-            </select>
-            <input type="number" class="rats-number-container select-container">
-            <button class="add-button" onclick="location.href='adicionar-substancia.php';"></button>
-        </div>
-        <div class="odor-section-container addition select-container add-odor-button-container">
-            <select class="odor-container">
-                <option value="">Selecionar Odor</option>
-                <option value="Salmao">Salmão</option>
-                <option value="Banana">Banana</option>
-            </select>
-            <input type="number" class="room-container select-container">
-            <button class="add-button" onclick="location.href='adicionar-odor.php';"></button>
         </div>
     </div>
     <div class="form-actions">

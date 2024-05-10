@@ -46,7 +46,7 @@ $conn->close();
     </header>
     <main class="experiencias-container">
         <?php if (empty($experiencias)) : ?>
-            <p>Não tem experiências criadas.</p>
+            <p>Não tem experiências criadas. Utilize o botão no canto inferior direito para criar uma.</p>
         <?php else : ?>
                 <?php foreach ($experiencias as $experiencia) : ?>
                     <?php
