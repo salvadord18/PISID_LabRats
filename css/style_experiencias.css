@@ -106,20 +106,6 @@ p {
     z-index: 20; /* Garante que o botão fique acima de outros elementos */
 }
 
-.action-btn {
-    width: 50px;
-    height: 50px;
-    background-color: #8C52FF;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    opacity: 0; /* Inicia invisível */
-    transition: opacity 0.3s ease; /* Suaviza a transição da opacidade */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 60%;
-}
-
 .experiencia-buttons {
     margin-left: 30px;
     margin-top: -50px;
@@ -135,6 +121,32 @@ p {
     margin-left: 8px; /* Espaço entre os botões */
     border: none;
     cursor: pointer;
+}
+
+.action-btn {
+    width: 50px;
+    height: 50px;
+    background-color: #8C52FF;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 0; /* Inicia invisível */
+    transition: opacity 0.3s ease; /* Suaviza a transição da opacidade */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 60%;
+}
+
+.action-btn-empty {
+    width: 50px;
+    height: 50px;
+    background-color: #8C52FF;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 60%;
 }
 
 .action-btn:hover {

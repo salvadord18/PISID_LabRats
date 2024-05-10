@@ -46,49 +46,54 @@ $conn->close();
     </header>
     <main class="experiencias-container">
         <?php if (empty($experiencias)) : ?>
-            <p>Não tem experiências criadas. Utilize o botão no canto inferior direito para criar uma.</p>
+            <p>Não tem experiências criadas. Utilize o botão '+' no canto inferior direito para criar uma.</p>
         <?php else : ?>
-                <?php foreach ($experiencias as $experiencia) : ?>
-                    <?php
-                    // Define o estilo com base no estado da experiência
-                    switch ($experiencia['Nome_Estado']) {
-                        case 'A aguardar':
-                            $style = 'color: #737373;';
-                            break;
-                        case 'Edicao':
-                            $style = 'color: #ffde59;';
-                            break;
-                        case 'Em processamento':
-                            $style = 'color: #5271ff;';
-                            break;
-                        case 'Em curso':
-                            $style = 'color: #7ed957;';
-                            break;
-                        case 'Terminada':
-                        case 'Cancelada':
-                        case 'Interrompida':
-                            $style = 'color: #ff5757;';
-                            break;
-                        default:
-                            $style = 'color: #8C52FF;'; // Um estilo padrão para estados não especificados
-                    }
-                    ?>
-                    <div class="experiencia-container">
-                        <span class="experiencia-nome">Experiencia_<?php echo htmlspecialchars($experiencia['Experiencia_ID']); ?></span>
-                        <span class="experiencia-estado" style="<?php echo $style; ?>"><?php echo htmlspecialchars($experiencia['Nome_Estado']); ?></span>
-                        <button class="view-experience-btn" onclick="location.href='visualizar-experiencia.php?Experiencia_ID=<?php echo $experiencia['Experiencia_ID']; ?>';"></button>
-                    </div>
-                    <div class="experiencia-buttons">
-                        <button class="substancias-odores-btn" onclick="location.href='/labrats/app/substancias-odores.php?Experiencia_ID=<?php echo $experiencia['Experiencia_ID']; ?>';"></button>
-                        <button class="labirinto-btn" onclick="location.href='/labrats/app/labirinto.php?Experiencia_ID=<?php echo $experiencia['Experiencia_ID']; ?>';"></button>
-                        <button class="alertas-btn" onclick="location.href='/labrats/app/alertas-experiencia.php?Experiencia_ID=<?php echo $experiencia['Experiencia_ID']; ?>';"></button>
-                        <button class="analise-btn" onclick="location.href='/labrats/app/analise.php?Experiencia_ID=<?php echo $experiencia['Experiencia_ID']; ?>';"></button>
-                    </div>
-                <?php endforeach; ?>
+            <?php foreach ($experiencias as $experiencia) : ?>
+                <?php
+                // Define o estilo com base no estado da experiência
+                switch ($experiencia['Nome_Estado']) {
+                    case 'A aguardar':
+                        $style = 'color: #737373;';
+                        break;
+                    case 'Edicao':
+                        $style = 'color: #ffde59;';
+                        break;
+                    case 'Em processamento':
+                        $style = 'color: #5271ff;';
+                        break;
+                    case 'Em curso':
+                        $style = 'color: #7ed957;';
+                        break;
+                    case 'Terminada':
+                    case 'Cancelada':
+                    case 'Interrompida':
+                        $style = 'color: #ff5757;';
+                        break;
+                    default:
+                        $style = 'color: #8C52FF;'; // Um estilo padrão para estados não especificados
+                }
+                ?>
+                <div class="experiencia-container">
+                    <span class="experiencia-nome">Experiencia_<?php echo htmlspecialchars($experiencia['Experiencia_ID']); ?></span>
+                    <span class="experiencia-estado" style="<?php echo $style; ?>"><?php echo htmlspecialchars($experiencia['Nome_Estado']); ?></span>
+                    <button class="view-experience-btn" onclick="location.href='visualizar-experiencia.php?Experiencia_ID=<?php echo $experiencia['Experiencia_ID']; ?>';"></button>
+                </div>
+                <div class="experiencia-buttons">
+                    <button class="substancias-odores-btn" onclick="location.href='/labrats/app/substancias-odores.php?Experiencia_ID=<?php echo $experiencia['Experiencia_ID']; ?>';"></button>
+                    <button class="labirinto-btn" onclick="location.href='/labrats/app/labirinto.php?Experiencia_ID=<?php echo $experiencia['Experiencia_ID']; ?>';"></button>
+                    <button class="alertas-btn" onclick="location.href='/labrats/app/alertas-experiencia.php?Experiencia_ID=<?php echo $experiencia['Experiencia_ID']; ?>';"></button>
+                    <button class="analise-btn" onclick="location.href='/labrats/app/analise.php?Experiencia_ID=<?php echo $experiencia['Experiencia_ID']; ?>';"></button>
+                </div>
+            <?php endforeach; ?>
         <?php endif; ?>
         <div class="button-container">
-            <button type="button" onclick="location.href='/labrats/app/criar-experiencia.html';" class="action-btn create-btn" aria-label="Adicionar experiência"></button>
-            <button type="button" onclick="location.href='/labrats/app/inicio.php';" class="action-btn back-btn" aria-label="Voltar"></button>
+            <?php if (empty($experiencias)) : ?>
+                <button type="button" onclick="location.href='/labrats/app/criar-experiencia.html';" class="action-btn-empty create-btn" aria-label="Adicionar experiência"></button>
+                <button type="button" onclick="location.href='/labrats/app/inicio.php';" class="action-btn-empty back-btn" aria-label="Voltar"></button>
+            <?php else : ?>
+                <button type="button" onclick="location.href='/labrats/app/criar-experiencia.html';" class="action-btn create-btn" aria-label="Adicionar experiência"></button>
+                <button type="button" onclick="location.href='/labrats/app/inicio.php';" class="action-btn back-btn" aria-label="Voltar"></button>
+            <?php endif; ?>
         </div>
     </main>
 </body>
