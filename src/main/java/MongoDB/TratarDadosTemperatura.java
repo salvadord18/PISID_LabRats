@@ -30,9 +30,7 @@ public class TratarDadosTemperatura extends Thread {
         } catch (SQLException | InterruptedException e) {
             throw new RuntimeException(e);
         }
-
     }
-
 
     public void tratarDadosTemperatura() throws SQLException, InterruptedException {
         while (true) {
@@ -75,7 +73,6 @@ public class TratarDadosTemperatura extends Thread {
                 throw new RuntimeException(e);
             }
         }
-
     }
 
     public boolean isOutlier(DadosTemperaturaMongoDB dadosTemperaturaMongoDB) {
@@ -102,7 +99,6 @@ public class TratarDadosTemperatura extends Thread {
         int maxNumberOutliers = c.getInt(1);
 
         return maxNumberOutliers;
-
     }
 
     public class InterquartileRange {
@@ -116,8 +112,7 @@ public class TratarDadosTemperatura extends Thread {
             return n + l;
         }
 
-        // Function to
-        // calculate IQR
+        // Function to calculate IQR
         public boolean isOutlier(List<Integer> a, int n, int value) {
             Collections.sort(a);
 

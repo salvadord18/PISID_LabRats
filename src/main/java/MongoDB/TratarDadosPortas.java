@@ -16,10 +16,9 @@ import java.util.List;
 
 @RequiredArgsConstructor
 public class TratarDadosPortas extends Thread {
-    private List<Integer> leituras = new ArrayList<>();
+
     private final Connection sqlDb;
     private final DB mongoDb;
-    private int outlierCount = 0;
     private DadosQueue queue = DadosQueue.getInstance();
     private CurrentExperiencia experiencia = CurrentExperiencia.getInstance();
 
@@ -40,7 +39,8 @@ public class TratarDadosPortas extends Thread {
             var salaOrigem = String.valueOf(portasData.getSalaOrigem());
             var salaDestino = String.valueOf(portasData.getSalaDestino());
 
-            System.out.println(experiencia.getExperiencia().getCorredores().length);
+            System.out.println("A sala origem é " + salaOrigem);
+            System.out.println("A sala destino é " + salaDestino);
 
             var corredoresSize = experiencia.getExperiencia().getCorredores().length;
 
@@ -56,7 +56,6 @@ public class TratarDadosPortas extends Thread {
                 c.setTimestamp(1, timestamp);
                 c.execute();
             }
-
 // ............... Numero ratos em cada sala ...................
             String SPNumRatos = "{ call Get_RatosAtuais(?,?,?) }";
             CallableStatement c = sqlDb.prepareCall(SPNumRatos);
@@ -70,8 +69,11 @@ public class TratarDadosPortas extends Thread {
             int numeroAtualRatos = c.getInt(3);
 
             //Chamar SP para limiteRatosFinal
-            int limiteRatosFinal = 4;
-
+            String SPLimiteRatos = "{ call GetLimiteRatosSala(?) }";
+            CallableStatement cbs = sqlDb.prepareCall(SPLimiteRatos);
+            cbs.registerOutParameter(1, Types.INTEGER);
+            cbs.execute();
+            int limiteRatosFinal =cbs.getInt(1);
 
             int limiteAmarelo = (int) (limiteRatosFinal * 0.75);
             if(numeroAtualRatos <= limiteAmarelo){
@@ -87,37 +89,31 @@ public class TratarDadosPortas extends Thread {
                 call.setInt(2, Integer.parseInt(salaDestino));
                 call.execute();
             }
-
-
 //................... Segundos sem movimento .......................
 
             // por acabar
-            int segundosSemMovimento = 0;
-
-            if (segundosSemMovimento >= 60 && segundosSemMovimento < 120) {
-                //Criar alerta sem movimento amarelo
-//                String procedureCall = "{CALL CriarAlertaSemMovimentosAmarelo(?,?,?,?)}";
-//                CallableStatement c = sqlDb.prepareCall(procedureCall);
-//                Timestamp timestamp = Timestamp.valueOf(portasData.getHora());
-//                c.setTimestamp(1, timestamp);
-//                c.setTimestamp(2, timestamp);
-//                c.setInt(3, );
-                System.out.println("SEM MOVIMENTOS AMARELO");
-            } else if (segundosSemMovimento >= 120) {
-                //Criar alerta sem movimentos vermelho
-                System.out.println("SEM MOVIMENTOS VERMELHO");
-            }
-
-
+//            int segundosSemMovimento = 0;
+//
+//            if (segundosSemMovimento >= 60 && segundosSemMovimento < 120) {
+//                //Criar alerta sem movimento amarelo
+////                String procedureCall = "{CALL CriarAlertaSemMovimentosAmarelo(?,?,?,?)}";
+////                CallableStatement c = sqlDb.prepareCall(procedureCall);
+////                Timestamp timestamp = Timestamp.valueOf(portasData.getHora());
+////                c.setTimestamp(1, timestamp);
+////                c.setTimestamp(2, timestamp);
+////                c.setInt(3, );
+//                System.out.println("SEM MOVIMENTOS AMARELO");
+//            } else if (segundosSemMovimento >= 120) {
+//                //Criar alerta sem movimentos vermelho
+//                System.out.println("SEM MOVIMENTOS VERMELHO");
+//            }
             try {
-                Thread.sleep(1000);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
     }
-
-
 }
 
 

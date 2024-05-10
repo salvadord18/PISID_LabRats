@@ -7,8 +7,8 @@ import java.util.Objects;
 
 public class DadosQueue {
     ArrayList<DadosTemperaturaMongoDB> dadosTemperaturaMongoDB = new ArrayList<>();
-    ArrayList<DadosTemperaturaMongoDB> dadosTratadosTemperaturas = new ArrayList<>();
     ArrayList<DadosPortasMongoDB> dadosPortasMongoDB = new ArrayList<>();
+    ArrayList<DadosTemperaturaMongoDB> dadosTratadosTemperaturas = new ArrayList<>();
     ArrayList<DadosPortasMongoDB> dadosTratadosPortas = new ArrayList<>();
 
     private DadosQueue() {
@@ -80,12 +80,12 @@ public class DadosQueue {
         return popTempsTratadas();
     }
 
-    public synchronized ArrayList<DadosTemperaturaMongoDB> getDadosTemperaturaMongoDB(){
-        return dadosTemperaturaMongoDB;
+    public synchronized ArrayList<DadosTemperaturaMongoDB> getDadosTratadosTemperaturas(){
+        return dadosTratadosTemperaturas;
     }
 
-    public synchronized ArrayList<DadosPortasMongoDB> getDadosPortasMongoDB(){
-        return dadosPortasMongoDB;
+    public synchronized ArrayList<DadosPortasMongoDB> getDadosTratadosPortas(){
+        return dadosTratadosPortas;
     }
 
     private static DadosQueue single_instance = null;

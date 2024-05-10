@@ -24,6 +24,6 @@ public class CheckExperienciaStatus extends Thread{
         // Aqui vai chamar o SP para retornar o estado da experiencia, se for Terminado
         //callSpCheckStatus() exemplo ----- por fazer ainda
         // faz set do estado da experiencia como está abaixo
-        CurrentExperiencia.getInstance().setEstadoExperiencia(ExperienciaStatus.TERMINADA);
+//        CurrentExperiencia.getInstance().setEstadoExperiencia(ExperienciaStatus.TERMINADA);
     }
 }

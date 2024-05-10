@@ -113,7 +113,7 @@ public class MainMongoDB {
                     // faz set da Experiencia, caso encontre o dado válido
                     CurrentExperiencia.getInstance().setExperiencia(experiencia);
 
-//                    setExperienciaEmCurso(connectToSQL, experiencia);
+                    setExperienciaEmCurso(connectToSQL, experiencia);
 
                     //Depois do SP que passa o estado da experiencia para em execução, faz set do estado da experiencia
                     // no java, para execucao
@@ -143,7 +143,7 @@ public class MainMongoDB {
         CallableStatement cs = connectToSQL.getConnectionSQL().prepareCall(testeCallSP);
         cs.setInt(1, Integer.valueOf(experiencia.getId()));
         cs.execute();
-        System.out.println("Experiencia " + Integer.valueOf(experiencia.getId()) + " em execução.");
+        System.out.println("Experiencia " + Integer.valueOf(experiencia.getId()) + " em curso.");
     }
 
     public static void validaIfExperienciaTerminou(ConnectToSQL connectToSQL, Experiencia experiencia) throws SQLException, InterruptedException {
@@ -221,23 +221,24 @@ public class MainMongoDB {
 //        }
         var fetchTempsMongo = new ProcessarTemperatura(mongoDb);
         var fetchDoorsMongo = new ProcessarPortas(mongoDb);
-        var threadFetchToSql = new EnviarDadosMysql(connectToSQL.getConnectionSQL());
         var threadDealWithTemperatura = new TratarDadosTemperatura(connectToSQL.getConnectionSQL(), mongoDb);
         var threadDealWithPortas = new TratarDadosPortas(connectToSQL.getConnectionSQL(), mongoDb);
+        var threadFetchTempsToSql = new InsertMedicaoTemperaturaMysql(connectToSQL.getConnectionSQL());
+        var threadFetchPassagensToSql = new InsertMedicaoPassagem(connectToSQL.getConnectionSQL());
 
         fetchTempsMongo.start();
         fetchDoorsMongo.start();
         threadDealWithTemperatura.start();
-        threadFetchToSql.start();
         threadDealWithPortas.start();
-
-
+        threadFetchTempsToSql.start();
+        threadFetchPassagensToSql.start();
 
         fetchTempsMongo.join();
         fetchDoorsMongo.join();
         threadDealWithTemperatura.join();
-        threadFetchToSql.join();
         threadDealWithPortas.join();
+        threadFetchPassagensToSql.join();
+        threadFetchTempsToSql.join();
 
         //Esta linha de codigo não pode estar aqui.
         //Tem que estar no Java que corre no SQL. Depois de Pipa acabar
