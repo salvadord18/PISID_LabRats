@@ -36,7 +36,7 @@ try {
     $conn->close();
 
     // Redireciona de volta para a página anterior com uma mensagem
-    echo "<script>alert('Odor $nomeOdor adicionado à experiência com sucesso.'); window.location.href = '/labrats/app/substancias-odores.php';</script>";
+    echo "<script>alert('Odor $nomeOdor adicionado à experiência com sucesso.'); window.location.href = '/labrats/app/substancias-odores.php?Experiencia_ID=$experienciaId';</script>";
 } catch (mysqli_sql_exception $e) {
     // Em caso de erro, emite um alerta JavaScript com a mensagem de erro
     echo "<script>alert('" . $e->getMessage() . "'); window.history.back();</script>";

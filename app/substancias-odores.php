@@ -23,13 +23,13 @@ $stmt->bind_param("i", $experienciaId);
 $stmt->execute();
 
 // Processa os resultados das substâncias e odores
-$resultadoSubstancias = $stmt->get_result();
-$substancias = $resultadoSubstancias->fetch_all(MYSQLI_ASSOC);
+$resultadoSubstanciasExperiencia = $stmt->get_result();
+$substanciasExperiencia = $resultadoSubstanciasExperiencia->fetch_all(MYSQLI_ASSOC);
 
 // Avança para o próximo resultado para capturar odores
 $stmt->next_result();
-$resultadoOdores = $stmt->get_result();
-$odores = $resultadoOdores->fetch_all(MYSQLI_ASSOC);
+$resultadoOdoresExperiencia = $stmt->get_result();
+$odoresExperiencia = $resultadoOdoresExperiencia->fetch_all(MYSQLI_ASSOC);
 
 $stmt->close();
 
@@ -43,6 +43,16 @@ $resultadoSubstanciasNaoSelecionadas = $stmtSubstanciasNaoSelecionadas->get_resu
 $substanciasNaoSelecionadas = $resultadoSubstanciasNaoSelecionadas->fetch_all(MYSQLI_ASSOC);
 
 $stmtSubstanciasNaoSelecionadas->close();
+
+// Chama o procedimento armazenado para obter todos os odores
+$stmtOdores = $conn->prepare("CALL GetOdores()");
+$stmtOdores->execute();
+
+// Processa os resultados dos odores
+$resultadoOdores = $stmtOdores->get_result();
+$odores = $resultadoOdores->fetch_all(MYSQLI_ASSOC);
+
+$stmtOdores->close();
 
 $conn->close();
 ?>
@@ -72,10 +82,14 @@ $conn->close();
                     <p class="substancia-section-title">Substâncias:</p>
                     <p class="rats-number-section-title">N.º de ratos:</p>
                 </div>
-                <?php foreach ($substancias as $substancia) : ?>
+                <?php foreach ($substanciasExperiencia as $substancia) : ?>
                     <div class="substancia-container">
                         <span class="substancia-nome"><?php echo htmlspecialchars($substancia['NomeSubstancia']); ?></span>
-                        <button class="eliminar-substancia-btn" onclick="location.href='eliminar-substancia.php?Experiencia_ID=<?php echo $experienciaId; ?>';"></button>
+                        <form action="eliminar-substancia.php" method="POST">
+                            <input type="hidden" name="experiencia_id" value="<?php echo $experienciaId; ?>">
+                            <input type="hidden" name="SubstanciaExperiencia_ID" value="<?php echo htmlspecialchars($substancia['SubstanciaExperiencia_ID']); ?>">
+                            <button class="eliminar-substancia-btn"></button>
+                        </form>
                     </div>
                     <div class="rats-number-section-container">
                         <div class="rats-number-container">
@@ -108,10 +122,14 @@ $conn->close();
                     <p class="odor-section-title">Odores:</p>
                     <p class="room-section-title">N.º da sala:</p>
                 </div>
-                <?php foreach ($odores as $odor) : ?>
+                <?php foreach ($odoresExperiencia as $odor) : ?>
                     <div class="odor-container">
                         <span class="odor-nome"><?php echo htmlspecialchars($odor['NomeOdor']); ?></span>
-                        <button class="eliminar-odor-btn" onclick="location.href='eliminar-odor.php?Experiencia_ID=<?php echo $experienciaId; ?>';"></button>
+                        <form action="eliminar-odor.php" method="POST">
+                            <input type="hidden" name="experiencia_id" value="<?php echo $experienciaId; ?>">
+                            <input type="hidden" name="OdorExperiencia_ID" value="<?php echo htmlspecialchars($odor['OdorExperiencia_ID']); ?>">
+                            <button class="eliminar-odor-btn"></button>
+                        </form>
                     </div>
                     <div class="room-section-container">
                         <div class="room-container">
@@ -139,11 +157,11 @@ $conn->close();
             </div>
         </div>
     </div>
-    <div class="form-actions">
+    <!--<div action="adicionar-odor.php" class="form-actions">
         <button type="submit" class="submit-btn">GUARDAR</button>
-    </div>
+    </div>-->
     <div class="button-container">
-        <button type="button" onclick="window.history.back();" class="action-btn back-btn" aria-label="Voltar"></button>
+        <button type="button" onclick="location.href='/labrats/app/experiencias.php';" class="action-btn back-btn" aria-label="Voltar"></button>
     </div>
     </main>
 </body>
