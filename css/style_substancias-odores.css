@@ -266,7 +266,7 @@ body, html {
     margin-left: auto; /* Alinha o botão à direita */
     margin-right: auto; /* Alinha o botão à direita */
     font-family: "Roboto Mono", monospace;
-    margin-top: 200px;
+    margin-top: 80px;
 }
 
 .submit-btn:hover {

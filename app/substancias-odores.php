@@ -17,6 +17,20 @@ if (!$experienciaId) {
     echo "<script>alert('ID da experiência não fornecido.'); window.history.back();</script>";
 }
 
+// Variável para armazenar o estado atual da experiência
+$estadoExperiencia = null;
+
+// Chama o procedimento armazenado para obter o estado atual da experiência
+$stmtEstadoExperiencia = $conn->prepare("CALL Get_EstadoExperiencia(?, @p_EstadoAtualExperiencia)");
+$stmtEstadoExperiencia->bind_param("i", $experienciaId);
+$stmtEstadoExperiencia->execute();
+$stmtEstadoExperiencia->close();
+
+// Obtém o valor da variável de saída do procedimento armazenado
+$result = $conn->query("SELECT @p_EstadoAtualExperiencia AS p_EstadoAtualExperiencia");
+$row = $result->fetch_assoc();
+$estadoExperiencia = $row['p_EstadoAtualExperiencia'];
+
 // Chama o procedimento armazenado para obter as substâncias e odores selecionados na experiência
 $stmt = $conn->prepare("CALL VisualizarSubstanciasOdoresExperiencia(?)");
 $stmt->bind_param("i", $experienciaId);
@@ -97,23 +111,25 @@ $conn->close();
                         </div>
                     </div>
                 <?php endforeach; ?>
-                <form action="adicionar-substancia.php" method="POST">
-                    <input type="hidden" name="experiencia_id" value="<?php echo $experienciaId; ?>">
-                    <div class="substancia-addition select-container">
-                        <select name="substancia_id" class="substancia-container-addition">
-                            <option value="">Selecionar Substância</option>
-                            <?php
-                            foreach ($substanciasNaoSelecionadas as $substancia) {
-                                echo '<option value="' . htmlspecialchars($substancia['Substancia_ID']) . '">' . htmlspecialchars($substancia['NomeSubstancia']) . '</option>';
-                            }
-                            ?>
-                        </select>
-                        <div class="rats-number-section-container-addition">
-                            <input type="number" name="numero_ratos" class="rats-number-container" min="1">
+                <?php if ($estadoExperiencia == 1) : ?>
+                    <form action="adicionar-substancia.php" method="POST">
+                        <input type="hidden" name="experiencia_id" value="<?php echo $experienciaId; ?>">
+                        <div class="substancia-addition select-container">
+                            <select name="substancia_id" class="substancia-container-addition">
+                                <option value="">Selecionar Substância</option>
+                                <?php
+                                foreach ($substanciasNaoSelecionadas as $substancia) {
+                                    echo '<option value="' . htmlspecialchars($substancia['Substancia_ID']) . '">' . htmlspecialchars($substancia['NomeSubstancia']) . '</option>';
+                                }
+                                ?>
+                            </select>
+                            <div class="rats-number-section-container-addition">
+                                <input type="number" name="numero_ratos" class="rats-number-container" min="1">
+                            </div>
+                            <button type="submit" class="add-button"></button>
                         </div>
-                        <button type="submit" class="add-button"></button>
-                    </div>
-                </form>
+                    </form>
+                <?php endif; ?>
             </div>
         </div>
         <div class="column">
@@ -137,29 +153,39 @@ $conn->close();
                         </div>
                     </div>
                 <?php endforeach; ?>
-                <form action="adicionar-odor.php" method="POST">
-                    <input type="hidden" name="experiencia_id" value="<?php echo $experienciaId; ?>">
-                    <div class="odor-addition select-container">
-                        <select name="odor_id" class="odor-container-addition">
-                            <option value="">Selecionar Odor</option>
-                            <?php
-                            foreach ($odores as $odor) {
-                                echo '<option value="' . htmlspecialchars($odor['Odor_ID']) . '">' . htmlspecialchars($odor['NomeOdor']) . '</option>';
-                            }
-                            ?>
-                        </select>
-                        <div class="room-section-container">
-                            <input type="number" name="sala_id" class="room-container" min="1">
+                <?php if ($estadoExperiencia == 1) : ?>
+                    <form action="adicionar-odor.php" method="POST">
+                        <input type="hidden" name="experiencia_id" value="<?php echo $experienciaId; ?>">
+                        <div class="odor-addition select-container">
+                            <select name="odor_id" class="odor-container-addition">
+                                <option value="">Selecionar Odor</option>
+                                <?php
+                                foreach ($odores as $odor) {
+                                    echo '<option value="' . htmlspecialchars($odor['Odor_ID']) . '">' . htmlspecialchars($odor['NomeOdor']) . '</option>';
+                                }
+                                ?>
+                            </select>
+                            <div class="room-section-container">
+                                <input type="number" name="sala_id" class="room-container" min="1">
+                            </div>
+                            <button class="add-button"></button>
                         </div>
-                        <button class="add-button"></button>
-                    </div>
-                </form>
+                    </form>
+                <?php endif; ?>
             </div>
         </div>
     </div>
-    <!--<div action="adicionar-odor.php" class="form-actions">
-        <button type="submit" class="submit-btn">GUARDAR</button>
-    </div>-->
+    <?php if ($estadoExperiencia == 1) : ?>
+        <form action="/labrats/app/experiencias.php" class="form-actions" onsubmit="return confirmarGuardar();">
+            <button type="submit" class="submit-btn">GUARDAR</button>
+        </form>
+    <?php endif; ?>
+    <script>
+        function confirmarGuardar() {
+            alert('Substâncias e Odores guardados com sucesso!');
+            return true;
+        }
+    </script>
     <div class="button-container">
         <button type="button" onclick="location.href='/labrats/app/experiencias.php';" class="action-btn back-btn" aria-label="Voltar"></button>
     </div>

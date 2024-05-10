@@ -13,11 +13,9 @@ $experienciaId = $_POST['experiencia_id'] ?? null;
 $odorId = $_POST['odor_id'] ?? null;
 $salaId = $_POST['sala_id'] ?? null;
 
-echo "Experiência ID: $experienciaId, Odor ID: $odorId, Sala ID: $salaId";
-
 // Verifica se todos os campos estão preenchidos
 if (!$experienciaId || !$odorId || !$salaId) {
-    //echo "<script>alert('Por favor, preencha todos os campos.'); window.history.back();</script>";
+    echo "<script>alert('Por favor, preencha todos os campos.'); window.history.back();</script>";
     exit();
 }
 

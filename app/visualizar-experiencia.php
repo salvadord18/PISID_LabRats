@@ -30,7 +30,7 @@ if ($row = $result->fetch_assoc()) {
     $temperaturaIdeal = $row['TemperaturaIdeal'];
     $variacaoTemperaturaMaxima = $row['VariacaoTemperaturaMaxima'];
     $numeroOutliersMaximo = $row['NumeroOutliersMaximo'];
-    $nomeEstado = $row['Nome_Estado']; // Supondo que o SP já retorna isso
+    $nomeEstado = $row['Nome_Estado'];
 } else {
     echo "<script>alert('Nenhuma experiência encontrada com o ID fornecido.'); window.history.back();</script>";
     exit();
