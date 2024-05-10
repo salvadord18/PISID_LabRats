@@ -46,7 +46,7 @@ public class MainMongoDB {
         Experiencia experiencia = new Experiencia();
         experiencia.setId(String.valueOf(idExperiencia));
 
-//        setExperienciaEmProcessamento(connectToSQL, experiencia);
+        setExperienciaEmProcessamento(connectToSQL, experiencia);
         CurrentExperiencia.getInstance().setEstadoExperiencia(ExperienciaStatus.EM_PROCESSAMENTO);
 
         while(resultado.next()) {
@@ -238,6 +238,10 @@ public class MainMongoDB {
         threadDealWithTemperatura.join();
         threadFetchToSql.join();
         threadDealWithPortas.join();
+
+        //Esta linha de codigo não pode estar aqui.
+        //Tem que estar no Java que corre no SQL. Depois de Pipa acabar
+        //SQLBackup backup = new SQLBackup(connectToSQL);
 
 
     }
