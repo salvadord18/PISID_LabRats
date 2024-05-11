@@ -10,9 +10,16 @@ if (!$userId) {
     exit();
 }
 
+$experienciaId = $_GET['Experiencia_ID'] ?? null;
+
+if (!$experienciaId) {
+    echo "<script>alert('ID da experiência não fornecido.'); window.history.back();</script>";
+    exit();
+}
+
 $alertas = [];
-if ($stmt = $conn->prepare("CALL MostrarTodosAlertas(?)")) {
-    $stmt->bind_param("i", $userId);
+if ($stmt = $conn->prepare("CALL MostrarAnaliseExperiencia(?)")) {
+    $stmt->bind_param("i", $experienciaId);
     $stmt->execute();
     $resultado = $stmt->get_result();
     while ($linha = $resultado->fetch_assoc()) {
@@ -30,7 +37,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alertas | LabRats</title>
+    <title>Análise da Experiencia_<?php echo htmlspecialchars($experienciaId); ?> | LabRats</title>
     <link rel="stylesheet" href="/labrats/css/style_alertas.css">
     <link rel="icon" href="/labrats/icons/icon3.png" type="image/x-icon">
 </head>
@@ -40,27 +47,21 @@ $conn->close();
         <a href="/labrats/app/inicio.php">
             <img src="/labrats/icons/logo2.png" alt="Lab Rats Logo" class="logo">
         </a>
-        <h1>Alertas</h1>
+        <h1>Análise da Experiencia_<?php echo htmlspecialchars($experienciaId); ?></h1>
     </header>
-    <div class="alertas-container">
+    <main class="alertas-container">
         <?php if (empty($alertas)) : ?>
-            <p>Não existem alertas.</p>
+            <p>Não existe análise desta experiência.</p>
         <?php else : ?>
             <?php foreach ($alertas as $alerta) : ?>
                 <div class="alerta <?= htmlspecialchars(strtolower($alerta['TipoAlerta'])) ?>">
                     <p class="alerta-mensagem <?= htmlspecialchars(strtolower($alerta['TipoAlerta'])) ?>"><?php echo htmlspecialchars($alerta['Mensagem']); ?></p>
                     <p class="alerta-hora <?= htmlspecialchars(strtolower($alerta['TipoAlerta'])) ?>">[<?php echo htmlspecialchars($alerta['Hora']); ?>]</p>
-                    <button class="visualizar-experiencia-btn" onclick="location.href='/labrats/app/visualizar-experiencia.php?Experiencia_ID=<?php echo $alerta['Experiencia_Experiencia_ID']; ?>';"></button>
-                    <p class="experiencia" onclick="location.href='/labrats/app/visualizar-experiencia.php?Experiencia_ID=<?php echo $alerta['Experiencia_Experiencia_ID']; ?>';"><?php echo $alerta['Experiencia_Experiencia_ID']; ?></p>
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>
-        <?php if (empty($alertas)) : ?>
-            <button type="button" onclick="location.href='/labrats/app/inicio.php';" class="action-btn back-btn-empty" aria-label="Voltar"></button>
-        <?php else : ?>
-            <button type="button" onclick="location.href='/labrats/app/inicio.php';" class="action-btn back-btn" aria-label="Voltar"></button>
-        <?php endif; ?>
-    </div>
+        <button type="button" onclick="location.href='/labrats/app/experiencias.php';" class="back-btn" aria-label="Voltar"></button>
+    </main>
 </body>
 
 </html>
