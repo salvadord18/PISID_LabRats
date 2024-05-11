@@ -51,7 +51,7 @@ $conn->close();
                     <p class="alerta-mensagem <?= htmlspecialchars(strtolower($alerta['TipoAlerta'])) ?>"><?php echo htmlspecialchars($alerta['Mensagem']); ?></p>
                     <p class="alerta-hora <?= htmlspecialchars(strtolower($alerta['TipoAlerta'])) ?>">[<?php echo htmlspecialchars($alerta['Hora']); ?>]</p>
                     <button class="visualizar-experiencia-btn" onclick="location.href='/labrats/app/visualizar-experiencia.php?Experiencia_ID=<?php echo $alerta['Experiencia_Experiencia_ID']; ?>';"></button>
-                    <p class="experiencia"><?php echo $alerta['Experiencia_Experiencia_ID']; ?></p>
+                    <p class="experiencia" onclick="location.href='/labrats/app/visualizar-experiencia.php?Experiencia_ID=<?php echo $alerta['Experiencia_Experiencia_ID']; ?>';"><?php echo $alerta['Experiencia_Experiencia_ID']; ?></p>
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>
