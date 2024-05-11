@@ -1,0 +1,125 @@
+body, html {
+    margin: 0;
+    font-family: "Roboto Mono", monospace;
+    background-color: #ffffff; /* Cor de fundo para todo o corpo */
+    padding-top: 80px; /* Espaço no topo para não ficar sob a barra de navegação */
+    overflow-x: hidden;;
+}
+
+.header {
+    width: 100%;
+    background-color: #8C52FF;
+    color: #ffffff;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+
+.logo {
+    margin-right: 20px; /* Espaço entre o logo e o título */
+    width: 120px;
+    height: auto;
+}
+
+.header h1 {
+    flex-grow: 1;
+    margin: 0;
+    font-size: 2em;
+    text-align: center; /* Centraliza o texto no espaço restante */
+}
+
+.header::after {
+    content: "";
+    margin-right: 20px; /* Equilibra o espaço do lado esquerdo */
+    width: 120px; /* Mesmo tamanho do logotipo */
+    flex: 0 0 auto;
+    visibility: hidden;
+}
+
+p {
+    color: #8C52FF;
+    text-align: center;
+    font-size: 1.2em;
+    margin-top: 48px;
+}
+
+label {
+    color: #8C52FF;
+}
+
+.alertas-container {
+    margin: 40px auto; /* Aumenta a margem e centraliza o container */
+    padding: 20px; /* Preenchimento maior */
+    max-width: 80%; /* Define uma largura máxima para o container */
+    border-radius: 20px; /* Bordas arredondadas para o container */
+    position: relative;
+}
+
+/* Ajustes finais para garantir visibilidade e acessibilidade */
+.back-btn {
+    opacity: 0.9; /* Torna o botão levemente visível o tempo todo */
+}
+
+
+.back-btn {
+    position: fixed; /* Ou absolute, dependendo de como está estruturada a tua página */
+    bottom: 20px; /* Ajusta conforme necessário para posicionar o botão */
+    right: 20px; /* Ajusta conforme necessário para posicionar o botão */
+    width: 50px; /* Tamanho do botão */
+    height: 50px; /* Tamanho do botão */
+    background-color: #8C52FF; /* Cor de fundo do botão */
+    border: none;
+    border-radius: 50%; /* Torna o botão circular */
+    cursor: pointer;
+    opacity: 0; /* Botão é inicialmente invisível */
+    transition: opacity 0.3s ease; /* Suaviza a transição da opacidade */
+    z-index: 20; /* Garante que o botão fique acima de outros elementos */
+    background-image: url('/labrats/icons/voltar.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 60%; /* Ajusta para o tamanho desejado */
+}
+
+.back-btn-empty {
+    position: fixed; /* Ou absolute, dependendo de como está estruturada a tua página */
+    bottom: 20px; /* Ajusta conforme necessário para posicionar o botão */
+    right: 20px; /* Ajusta conforme necessário para posicionar o botão */
+    width: 50px; /* Tamanho do botão */
+    height: 50px; /* Tamanho do botão */
+    background-color: #8C52FF; /* Cor de fundo do botão */
+    border: none;
+    border-radius: 50%; /* Torna o botão circular */
+    cursor: pointer;
+    transition: opacity 0.3s ease; /* Suaviza a transição da opacidade */
+    z-index: 20; /* Garante que o botão fique acima de outros elementos */
+    background-image: url('/labrats/icons/voltar.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 60%; /* Ajusta para o tamanho desejado */
+}
+
+.back-btn:hover {
+    opacity: 1; /* Botão se torna visível quando o cursor está sobre ele */
+}
+
+/* Opcional: esconde o botão quando não estiver focado para evitar interação acidental */
+.back-btn:focus {
+    opacity: 1;
+}
+
+.action-btn-empty {
+    width: 50px;
+    height: 50px;
+    background-color: #8C52FF;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 60%;
+}
