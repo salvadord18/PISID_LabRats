@@ -49,18 +49,31 @@ $conn->close();
         <h1>Análise da Experiencia_<?php echo htmlspecialchars($experienciaId); ?></h1>
     </header>
     <?php if (empty($dados)) : ?>
-        <p class="none-message">Ainda não é possível ver a análise desta experiência.</p>
+        <p>Ainda não é possível ver a análise desta experiência.</p>
     <?php else : ?>
         <main class="alertas-container">
             <div id="chartContainer" style="height: 370px; width: 100%;"></div>
             <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
             <script>
-                window.onload = function() {
+                function fetchData() {
+                    fetch('fetchChartData.php?Experiencia_ID=<?php echo $experienciaId; ?>')
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.length > 0) {
+                                updateChart(data);
+                            } else {
+                                document.querySelector(".none-message").textContent = "Ainda não é possível ver a análise desta experiência.";
+                            }
+                        })
+                        .catch(error => console.error('Error fetching data:', error));
+                }
+
+                function updateChart(data) {
                     var chart = new CanvasJS.Chart("chartContainer", {
                         theme: "light2",
                         title: {
                             text: "Ratos por Sala",
-                            titleFontColor: "#8C52FF",
+                            fontColor: "#8C52FF",
                         },
                         axisY: {
                             title: "Número de Ratos",
@@ -69,15 +82,19 @@ $conn->close();
                         data: [{
                             type: "column",
                             color: "#8C52FF",
-                            titleFontColor: "#8C52FF",
-                            dataPoints: <?php echo json_encode(array_map(function ($item) {
-                                            return ['label' => 'Sala ' . $item['Sala'], 'y' => $item['NumeroRatos']];
-                                        }, $dados)); ?>
+                            dataPoints: data.map(item => ({
+                                label: 'Sala ' + item.Sala,
+                                y: parseInt(item.NumeroRatos)
+                            }))
                         }]
                     });
                     chart.render();
                 }
+
+                setInterval(fetchData, 5000); // Polling a cada 5 segundos
+                window.onload = fetchData; // Carrega inicialmente os dados
             </script>
+
         <?php endif; ?>
         <div class="button-container">
             <?php if (empty($dados)) : ?>
