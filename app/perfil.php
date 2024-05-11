@@ -55,12 +55,6 @@ $conn->close();
                     <input type="integer" id="telefone" name="telefone" value="<?php echo htmlspecialchars($user['TelefoneUtilizador'] ?? ''); ?>" disabled>
                 </div>
             </div>
-            <!--<div class="form-row">
-                    <div class="form-field">
-                        <label for="password">Palavra-passe:</label>
-                        <input type="password" id="password" name="password" value="*********" disabled>
-                    </div>
-                </div>-->
             <div class="profile-actions">
                 <form action="/labrats/app/editar-perfil.php" method="post">
                     <button id="edit" class="edit-btn">EDITAR PERFIL</button>

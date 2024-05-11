@@ -1,0 +1,335 @@
+body, html {
+    margin: 0;
+    font-family: "Roboto Mono", monospace;
+    background-color: #ffffff; /* Cor de fundo para todo o corpo */
+    padding-top: 80px; /* Espaço no topo para não ficar sob a barra de navegação */
+}
+
+.header {
+    width: 100%;
+    background-color: #8C52FF;
+    color: #ffffff;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+
+.logo {
+    margin-right: 20px; /* Espaço entre o logo e o título */
+    width: 120px;
+    height: auto;
+}
+
+.header h1 {
+    flex-grow: 1;
+    margin: 0;
+    font-size: 2em;
+    text-align: center; /* Centraliza o texto no espaço restante */
+}
+
+.header::after {
+    content: "";
+    margin-right: 20px; /* Equilibra o espaço do lado esquerdo */
+    width: 120px; /* Mesmo tamanho do logotipo */
+    flex: 0 0 auto;
+    visibility: hidden;
+}
+
+p {
+    color: #8C52FF;
+    text-align: center;
+    font-size: 1.2em;
+    margin-top: -71px;
+}
+
+label {
+    color: #8C52FF;
+}
+
+.alertas-container {
+    margin: 40px auto; /* Aumenta a margem e centraliza o container */
+    padding: 20px; /* Preenchimento maior */
+    max-width: 80%; /* Define uma largura máxima para o container */
+    border-radius: 20px; /* Bordas arredondadas para o container */
+}
+
+/* Correções adicionais para responsividade e acessibilidade */
+@media (max-width: 768px) {
+    .alerta-mensagem {
+        padding: 15px; /* Menos preenchimento em ecrãs menores */
+        font-size: 16px; /* Tamanho de fonte ajustado para ecrãs menores */
+    }
+    .alertas-container {
+        margin: 20px; /* Menos margem para telas menores */
+        width: 95%; /* Largura ajustada para melhor visualização em ecrãs menores */
+    }
+}
+
+.alerta {
+    color: black; /* Cor do texto */
+    padding: 20px; /* Preenchimento para dar mais espaço dentro da caixa */
+    margin: 20px 0; /* Margem entre cada alerta */
+    border-radius: 50px; /* Bordas mais arredondadas */
+    font-size: 16px; /* Tamanho de fonte apropriado */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Sombra sutil para a caixa */
+    position: relative; /* Posicionamento relativo para posicionar a data */
+    min-height: 60px; /* Altura mínima para acomodar o conteúdo */
+}
+
+/* Exemplos de tipos de alerta */
+.alerta.experienciapararevisao {
+    background-color: #8C52FF; /* Vermelho para urgente */
+}
+
+.alerta.fimexperiencia {
+    background-color: #8C52FF; /* Amarelo para importante */
+}
+
+.alerta.fimtempoexperiencia {
+    background-color: #8C52FF; /* Azul para informação */
+}
+
+.alerta.inicioexperiencia {
+    background-color: #8C52FF; /* Vermelho para urgente */
+}
+
+.alerta.outlieramarelo {
+    background-color: #FFCF00; /* Amarelo para importante */
+}
+
+.alerta.outliervermelho {
+    background-color: #FF3131; /* Azul para informação */
+}
+
+.alerta.ratosamarelo {
+    background-color: #FFCF00; /* Vermelho para urgente */
+}
+
+.alerta.ratosvermelho {
+    background-color: #FF3131; /* Amarelo para importante */
+}
+
+.alerta.semdadosmongo {
+    background-color: #5271ff; /* Azul para informação */
+}
+
+.alerta.semmovimentosamarelo {
+    background-color: #FFCF00; /* Vermelho para urgente */
+}
+
+.alerta.semmovimentosvermelho {
+    background-color: #FF3131; /* Amarelo para importante */
+}
+
+.alerta.semtemperaturasgrave {
+    background-color: #FF3131; /* Azul para informação */
+}
+
+.alerta.semtemperaturasligeiro {
+    background-color: #FFCF00; /* Vermelho para urgente */
+}
+
+.alerta.sensordadosinvalidos {
+    background-color: #5271ff; /* Amarelo para importante */
+}
+
+.alerta.sensorsemmovimento {
+    background-color: #5271ff; /* Azul para informação */
+}
+
+.alerta.temperaturaamarelo {
+    background-color: #FFCF00; /* Vermelho para urgente */
+}
+
+.alerta.temperaturavermelho {
+    background-color: #FF3131; /* Amarelo para importante */
+}
+
+.alerta-mensagem {
+    font-size: 16px; /* Tamanho de fonte apropriado */
+    font-family: "Roboto Mono", monospace;
+}
+
+.alerta-mensagem.experienciapararevisao {
+    color: white;
+}
+
+.alerta-mensagem.fimexperiencia {
+    color: white;
+}
+
+.alerta-mensagem.fimtempoexperiencia {
+    color: white;
+}
+
+.alerta-mensagem.inicioexperiencia {
+    color: white;
+}
+
+.alerta-mensagem.outlieramarelo {
+    color: black;
+}
+
+.alerta-mensagem.outliervermelho {
+    color: white;
+}
+
+.alerta-mensagem.ratosamarelo {
+    color: black;
+}
+
+.alerta-mensagem.ratosvermelho {
+    color: white;
+}
+
+.alerta-mensagem.semdadosmongo {
+    color: white;
+}
+
+.alerta-mensagem.semmovimentosamarelo {
+    color: black;
+}
+
+.alerta-mensagem.semmovimentosvermelho {
+    color: white;
+}
+
+.alerta-mensagem.semtemperaturasgrave {
+    color: white;
+}
+
+.alerta-mensagem.semtemperaturasligeiro {
+    color: black;
+}
+
+.alerta-mensagem.sensordadosinvalidos {
+    color: white;
+}
+
+.alerta-mensagem.sensorsemmovimento {
+    color: white;
+}
+
+.alerta-mensagem.temperaturaamarelo {
+    color: black;
+}
+
+.alerta-mensagem.temperaturavermelho {
+    color: white;
+}
+
+.alerta-hora {
+    position: absolute; /* Posiciona absolutamente dentro da caixa de alerta */
+    bottom: 5px; /* Distância do fundo da caixa */
+    right: 30px; /* Distância da direita da caixa */
+    font-size: 12px; /* Tamanho menor para a fonte da data */
+    color: #737373; /* Cor mais suave para a data */
+    font-family: "Roboto Mono", monospace;
+}
+
+.alerta-hora.experienciapararevisao {
+    color: white;
+}
+
+.alerta-hora.fimexperiencia {
+    color: white;
+}
+
+.alerta-hora.fimtempoexperiencia {
+    color: white;
+}
+
+.alerta-hora.inicioexperiencia {
+    color: white;
+}
+
+.alerta-hora.outlieramarelo {
+    color: black;
+}
+
+.alerta-hora.outliervermelho {
+    color: white;
+}
+
+.alerta-hora.ratosamarelo {
+    color: black;
+}
+
+.alerta-hora.ratosvermelho {
+    color: white;
+}
+
+.alerta-hora.semdadosmongo {
+    color: white;
+}
+
+.alerta-hora.semmovimentosamarelo {
+    color: black;
+}
+
+.alerta-hora.semmovimentosvermelho {
+    color: white;
+}
+
+.alerta-hora.semtemperaturasgrave {
+    color: white;
+}
+
+.alerta-hora.semtemperaturasligeiro {
+    color: black;
+}
+
+.alerta-hora.sensordadosinvalidos {
+    color: white;
+}
+
+.alerta-hora.sensorsemmovimento {
+    color: white;
+}
+
+.alerta-hora.temperaturaamarelo {
+    color: black;
+}
+
+.alerta-hora.temperaturavermelho {
+    color: white;
+}
+
+/* Ajustes finais para garantir visibilidade e acessibilidade */
+.back-btn {
+    opacity: 0.9; /* Torna o botão levemente visível o tempo todo */
+}
+
+
+.back-btn {
+    position: fixed; /* Ou absolute, dependendo de como está estruturada a tua página */
+    bottom: 20px; /* Ajusta conforme necessário para posicionar o botão */
+    right: 20px; /* Ajusta conforme necessário para posicionar o botão */
+    width: 50px; /* Tamanho do botão */
+    height: 50px; /* Tamanho do botão */
+    background-color: #8C52FF; /* Cor de fundo do botão */
+    border: none;
+    border-radius: 50%; /* Torna o botão circular */
+    cursor: pointer;
+    opacity: 0; /* Botão é inicialmente invisível */
+    transition: opacity 0.3s ease; /* Suaviza a transição da opacidade */
+    z-index: 20; /* Garante que o botão fique acima de outros elementos */
+    background-image: url('/labrats/icons/voltar.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 60%; /* Ajusta para o tamanho desejado */
+}
+
+.back-btn:hover {
+    opacity: 1; /* Botão se torna visível quando o cursor está sobre ele */
+}
+
+/* Opcional: esconde o botão quando não estiver focado para evitar interação acidental */
+.back-btn:focus {
+    opacity: 1;
+}

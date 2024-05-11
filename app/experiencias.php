@@ -56,18 +56,18 @@ $conn->close();
                         $style = 'color: #737373;';
                         break;
                     case 'Edicao':
-                        $style = 'color: #ffde59;';
+                        $style = 'color: #FFCF00;';
                         break;
                     case 'Em processamento':
                         $style = 'color: #5271ff;';
                         break;
                     case 'Em curso':
-                        $style = 'color: #7ed957;';
+                        $style = 'color: #31FF4C;';
                         break;
                     case 'Terminada':
                     case 'Cancelada':
                     case 'Interrompida':
-                        $style = 'color: #ff5757;';
+                        $style = 'color: #FF3131;';
                         break;
                     default:
                         $style = 'color: #8C52FF;'; // Um estilo padrão para estados não especificados
