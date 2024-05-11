@@ -170,9 +170,15 @@ public class MainMongoDB {
         }
     }
 
-    public static void dropMongo(DB mongoDb){
-        mongoDb.getCollection("Sensor_Porta").drop();
-        mongoDb.getCollection("Sensor_Temperatura").drop();
+    public static void checkIfMongoDrop(DB MongoDb, ConnectToSQL connectToSQL){
+
+    }
+
+
+
+    public static void dropMongo(DB mongoDB){
+        mongoDB.getCollection("Sensor_Porta").drop();
+        mongoDB.getCollection("Sensor_Temperatura").drop();
         System.out.println("Dados Apagados no Mongo");
     }
 
