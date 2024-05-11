@@ -60,8 +60,14 @@ $conn->close();
                 <div class="alerta">
                     <p class="alerta-mensagem">
                         <?php
-                        if ($mov['Sala_Origem_ID'] == $salaId) {
+                        if ($mov['Sala_Origem_ID'] == $salaId && $mov['NumeroRatosFinal'] == 0) {
+                            echo "Saiu um rato para a Sala " . htmlspecialchars($mov['Sala_Destino_ID']) . ". Não restam ratos nesta sala.";
+                        } else if ($mov['Sala_Origem_ID'] == $salaId && $mov['NumeroRatosFinal'] == 1) {
+                            echo "Saiu um rato para a Sala " . htmlspecialchars($mov['Sala_Destino_ID']) . ". Resta " . htmlspecialchars($mov['NumeroRatosFinal']) . " rato nesta sala.";
+                        } else if ($mov['Sala_Origem_ID'] == $salaId) {
                             echo "Saiu um rato para a Sala " . htmlspecialchars($mov['Sala_Destino_ID']) . ". Restam " . htmlspecialchars($mov['NumeroRatosFinal']) . " ratos nesta sala.";
+                        } else if ($mov['NumeroRatosFinal'] == 1){
+                            echo "Entrou um rato desde a Sala " . htmlspecialchars($mov['Sala_Origem_ID']) . ". Há " . htmlspecialchars($mov['NumeroRatosFinal']) . " rato nesta sala.";
                         } else {
                             echo "Entrou um rato desde a Sala " . htmlspecialchars($mov['Sala_Origem_ID']) . ". Há " . htmlspecialchars($mov['NumeroRatosFinal']) . " ratos nesta sala.";
                         }
