@@ -10,20 +10,21 @@ if (!$userId) {
     exit();
 }
 
+// Obtém o ID da experiência a ser visualizada, que pode ser passado como parâmetro na URL
 $experienciaId = $_GET['Experiencia_ID'] ?? null;
 
 if (!$experienciaId) {
+    // Exibe uma mensagem de erro e volta para a página anterior
     echo "<script>alert('ID da experiência não fornecido.'); window.history.back();</script>";
-    exit();
 }
 
-$alertas = [];
-if ($stmt = $conn->prepare("CALL MostrarAlertasExperiencia(?)")) {
+$salas = [];
+if ($stmt = $conn->prepare("CALL MostrarLabirinto(?)")) {
     $stmt->bind_param("i", $experienciaId);
     $stmt->execute();
     $resultado = $stmt->get_result();
     while ($linha = $resultado->fetch_assoc()) {
-        $alertas[] = $linha;
+        $salas[] = $linha;
     }
     $stmt->close();
 }
@@ -37,8 +38,8 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alertas da Experiencia_<?php echo htmlspecialchars($experienciaId); ?> | LabRats</title>
-    <link rel="stylesheet" href="/labrats/css/style_alertas.css">
+    <title>Labirinto | LabRats</title>
+    <link rel="stylesheet" href="/labrats/css/style_labirinto.css">
     <link rel="icon" href="/labrats/icons/icon3.png" type="image/x-icon">
 </head>
 
@@ -47,25 +48,26 @@ $conn->close();
         <a href="/labrats/app/inicio.php">
             <img src="/labrats/icons/logo2.png" alt="Lab Rats Logo" class="logo">
         </a>
-        <h1>Alertas da Experiencia_<?php echo htmlspecialchars($experienciaId); ?></h1>
+        <h1>Labirinto</h1>
     </header>
-    <main class="alertas-container">
-        <?php if (empty($alertas)) : ?>
-            <p>Não existem alertas desta experiência.</p>
+    <div class="alertas-container">
+        <?php if (empty($salas)) : ?>
+            <p>O labirinto não está disponível.</p>
         <?php else : ?>
-            <?php foreach ($alertas as $alerta) : ?>
-                <div class="alerta <?= htmlspecialchars(strtolower($alerta['TipoAlerta'])) ?>">
-                    <p class="alerta-mensagem <?= htmlspecialchars(strtolower($alerta['TipoAlerta'])) ?>"><?php echo htmlspecialchars($alerta['Mensagem']); ?></p>
-                    <p class="alerta-hora <?= htmlspecialchars(strtolower($alerta['TipoAlerta'])) ?>">[<?php echo htmlspecialchars($alerta['Hora']); ?>]</p>
-                </div>
-            <?php endforeach; ?>
+            <div class="labirinto-container">
+                <a href="/labrats/app/sala.php?sala_id=1&experiencia_id=<?php echo htmlspecialchars($experienciaId); ?>" class="sala">1</a>
+                <?php foreach ($salas as $labirinto) : ?>
+                    <a href="/labrats/app/sala.php?sala_id=<?php echo htmlspecialchars($labirinto['Sala_Destino_ID']); ?>&experiencia_id=<?php echo htmlspecialchars($experienciaId); ?>" class="sala"><?php echo htmlspecialchars($labirinto['Sala_Destino_ID']); ?></a>
+                <?php endforeach; ?>
+            </div>
         <?php endif; ?>
-        <?php if (empty($alertas)) : ?>
+        <?php if (empty($salas)) : ?>
             <button type="button" onclick="location.href='/labrats/app/experiencias.php';" class="action-btn back-btn-empty" aria-label="Voltar"></button>
         <?php else : ?>
             <button type="button" onclick="location.href='/labrats/app/experiencias.php';" class="action-btn back-btn" aria-label="Voltar"></button>
         <?php endif; ?>
-    </main>
+    </div>
+    </div>
 </body>
 
 </html>

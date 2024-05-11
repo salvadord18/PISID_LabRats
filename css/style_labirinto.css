@@ -1,0 +1,160 @@
+body, html {
+    margin: 0;
+    font-family: "Roboto Mono", monospace;
+    background-color: #ffffff; /* Cor de fundo para todo o corpo */
+    padding-top: 80px; /* Espaço no topo para não ficar sob a barra de navegação */
+    overflow-x: hidden;;
+}
+
+.header {
+    width: 100%;
+    background-color: #8C52FF;
+    color: #ffffff;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+
+.logo {
+    margin-right: 20px; /* Espaço entre o logo e o título */
+    width: 120px;
+    height: auto;
+}
+
+.header h1 {
+    flex-grow: 1;
+    margin: 0;
+    font-size: 2em;
+    text-align: center; /* Centraliza o texto no espaço restante */
+}
+
+.header::after {
+    content: "";
+    margin-right: 20px; /* Equilibra o espaço do lado esquerdo */
+    width: 120px; /* Mesmo tamanho do logotipo */
+    flex: 0 0 auto;
+    visibility: hidden;
+}
+
+p {
+    color: #8C52FF;
+    text-align: center;
+    font-size: 1.2em;
+    margin-top: 48px;
+}
+
+label {
+    color: #8C52FF;
+    text-align: center;
+    font-size: 2em;
+}
+
+.labirinto-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 50px;
+    position: relative;
+}
+
+.sala {
+    background-color: white;
+    padding: 15px 25px;
+    margin: 10px 20px;
+    border-radius: 5px;
+    border: 5px solid #8C52FF;
+    position: relative; /* For positioning lines */
+    z-index: 1; /* Make sure boxes are above the lines */
+    height: 180px;
+    width: 180px;
+    text-decoration: none; /* Remove o sublinhado dos links */
+    display: flex; /* Usa flexbox para alinhar o conteúdo */
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    font-size: 2em; /* Ajusta o tamanho da fonte conforme necessário */
+    color: #8C52FF;
+    cursor: pointer;
+}
+
+/* Styling for lines connecting boxes */
+.line-horizontal {
+    position: absolute;
+    height: 5px;
+    background-color: #8C52FF;
+    top: 50%; /* Adjust based on actual layout */
+    z-index: 0; /* Below the boxes */
+}
+
+.line-vertical {
+    position: absolute;
+    width: 5px;
+    background-color: #8C52FF;
+    left: 50%; /* Adjust based on actual layout */
+    z-index: 0; /* Below the boxes */
+}
+
+.button-container {
+    position: fixed; /* Posicionamento fixo na página */
+    bottom: 20px; /* 20px da parte inferior da página */
+    right: 20px; /* 20px da parte direita da página */
+    display: flex; /* Usa flexbox para o layout dos botões */
+    align-items: center; /* Centraliza verticalmente */
+    gap: 10px; /* Espaço entre os botões */
+    z-index: 20; /* Garante que o botão fique acima de outros elementos */
+}
+
+/* Ajustes finais para garantir visibilidade e acessibilidade */
+.back-btn {
+    opacity: 0.9; /* Torna o botão levemente visível o tempo todo */
+}
+
+.back-btn-empty {
+    position: fixed; /* Ou absolute, dependendo de como está estruturada a tua página */
+    bottom: 20px; /* Ajusta conforme necessário para posicionar o botão */
+    right: 20px; /* Ajusta conforme necessário para posicionar o botão */
+    width: 50px; /* Tamanho do botão */
+    height: 50px; /* Tamanho do botão */
+    background-color: #8C52FF; /* Cor de fundo do botão */
+    border: none;
+    border-radius: 50%; /* Torna o botão circular */
+    cursor: pointer;
+    transition: opacity 0.3s ease; /* Suaviza a transição da opacidade */
+    z-index: 20; /* Garante que o botão fique acima de outros elementos */
+    background-image: url('/labrats/icons/voltar.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 60%; /* Ajusta para o tamanho desejado */
+}
+
+.back-btn {
+    position: fixed; /* Ou absolute, dependendo de como está estruturada a tua página */
+    bottom: 20px; /* Ajusta conforme necessário para posicionar o botão */
+    right: 20px; /* Ajusta conforme necessário para posicionar o botão */
+    width: 50px; /* Tamanho do botão */
+    height: 50px; /* Tamanho do botão */
+    background-color: #8C52FF; /* Cor de fundo do botão */
+    border: none;
+    border-radius: 50%; /* Torna o botão circular */
+    cursor: pointer;
+    opacity: 0; /* Botão é inicialmente invisível */
+    transition: opacity 0.3s ease; /* Suaviza a transição da opacidade */
+    z-index: 20; /* Garante que o botão fique acima de outros elementos */
+    background-image: url('/labrats/icons/voltar.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 60%; /* Ajusta para o tamanho desejado */
+}
+
+.back-btn:hover {
+    opacity: 1; /* Botão se torna visível quando o cursor está sobre ele */
+}
+
+/* Opcional: esconde o botão quando não estiver focado para evitar interação acidental */
+.back-btn:focus {
+    opacity: 1;
+}

@@ -2,7 +2,7 @@ body, html {
     margin: 0;
     font-family: "Roboto Mono", monospace;
     background-color: #ffffff; /* Cor de fundo para todo o corpo */
-    padding-top: 80px; /* Espaço no topo para não ficar sob a barra de navegação */
+    padding-top: 110px; /* Espaço no topo para não ficar sob a barra de navegação */
     overflow-x: hidden;;
 }
 
@@ -54,7 +54,7 @@ label {
 
 .alertas-container {
     margin: 40px auto; /* Aumenta a margem e centraliza o container */
-    padding: 20px; /* Preenchimento maior */
+    padding: -30px; /* Preenchimento maior */
     max-width: 80%; /* Define uma largura máxima para o container */
     border-radius: 20px; /* Bordas arredondadas para o container */
     position: relative;
@@ -80,150 +80,15 @@ label {
     font-size: 16px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     min-height: 80px; /* Garante espaço suficiente para conteúdo interno */
-}
-
-/* Exemplos de tipos de alerta */
-.alerta.experienciapararevisao {
-    background-color: #8C52FF; /* Vermelho para urgente */
-}
-
-.alerta.fimexperiencia {
-    background-color: #8C52FF; /* Amarelo para importante */
-}
-
-.alerta.fimtempoexperiencia {
-    background-color: #8C52FF; /* Azul para informação */
-}
-
-.alerta.inicioexperiencia {
-    background-color: #8C52FF; /* Vermelho para urgente */
-}
-
-.alerta.outlieramarelo {
-    background-color: #FFCF00; /* Amarelo para importante */
-}
-
-.alerta.outliervermelho {
-    background-color: #FF3131; /* Azul para informação */
-}
-
-.alerta.ratosamarelo {
-    background-color: #FFCF00; /* Vermelho para urgente */
-}
-
-.alerta.ratosvermelho {
-    background-color: #FF3131; /* Amarelo para importante */
-}
-
-.alerta.semdadosmongo {
-    background-color: #5271ff; /* Azul para informação */
-}
-
-.alerta.semmovimentosamarelo {
-    background-color: #FFCF00; /* Vermelho para urgente */
-}
-
-.alerta.semmovimentosvermelho {
-    background-color: #FF3131; /* Amarelo para importante */
-}
-
-.alerta.semtemperaturasgrave {
-    background-color: #FF3131; /* Azul para informação */
-}
-
-.alerta.semtemperaturasligeiro {
-    background-color: #FFCF00; /* Vermelho para urgente */
-}
-
-.alerta.sensordadosinvalidos {
-    background-color: #5271ff; /* Amarelo para importante */
-}
-
-.alerta.sensorsemmovimento {
-    background-color: #5271ff; /* Azul para informação */
-}
-
-.alerta.temperaturaamarelo {
-    background-color: #FFCF00; /* Vermelho para urgente */
-}
-
-.alerta.temperaturavermelho {
-    background-color: #FF3131; /* Amarelo para importante */
+    background-color: #8C52FF; /* Cor de fundo para o alerta */
 }
 
 .alerta-mensagem {
     position: absolute; /* Posiciona absolutamente dentro da caixa de alerta */
-    bottom: 45px; /* Distância do fundo da caixa */
-    font-size: 16px; /* Tamanho de fonte apropriado */
+    bottom: 30px; /* Distância do fundo da caixa */
+    font-size: 20px; /* Tamanho de fonte apropriado */
     font-family: "Roboto Mono", monospace;
-}
-
-.alerta-mensagem.experienciapararevisao {
-    color: white;
-}
-
-.alerta-mensagem.fimexperiencia {
-    color: white;
-}
-
-.alerta-mensagem.fimtempoexperiencia {
-    color: white;
-}
-
-.alerta-mensagem.inicioexperiencia {
-    color: white;
-}
-
-.alerta-mensagem.outlieramarelo {
-    color: black;
-}
-
-.alerta-mensagem.outliervermelho {
-    color: white;
-}
-
-.alerta-mensagem.ratosamarelo {
-    color: black;
-}
-
-.alerta-mensagem.ratosvermelho {
-    color: white;
-}
-
-.alerta-mensagem.semdadosmongo {
-    color: white;
-}
-
-.alerta-mensagem.semmovimentosamarelo {
-    color: black;
-}
-
-.alerta-mensagem.semmovimentosvermelho {
-    color: white;
-}
-
-.alerta-mensagem.semtemperaturasgrave {
-    color: white;
-}
-
-.alerta-mensagem.semtemperaturasligeiro {
-    color: black;
-}
-
-.alerta-mensagem.sensordadosinvalidos {
-    color: white;
-}
-
-.alerta-mensagem.sensorsemmovimento {
-    color: white;
-}
-
-.alerta-mensagem.temperaturaamarelo {
-    color: black;
-}
-
-.alerta-mensagem.temperaturavermelho {
-    color: white;
+    color: #ffffff; /* Cor branca para melhor contraste */
 }
 
 .alerta-hora {
@@ -231,99 +96,8 @@ label {
     bottom: 5px; /* Distância do fundo da caixa */
     right: 30px; /* Distância da direita da caixa */
     font-size: 12px; /* Tamanho menor para a fonte da data */
-    color: #737373; /* Cor mais suave para a data */
+    color: #ffffff; /* Cor mais suave para a data */
     font-family: "Roboto Mono", monospace;
-}
-
-.alerta-hora.experienciapararevisao {
-    color: white;
-}
-
-.alerta-hora.fimexperiencia {
-    color: white;
-}
-
-.alerta-hora.fimtempoexperiencia {
-    color: white;
-}
-
-.alerta-hora.inicioexperiencia {
-    color: white;
-}
-
-.alerta-hora.outlieramarelo {
-    color: black;
-}
-
-.alerta-hora.outliervermelho {
-    color: white;
-}
-
-.alerta-hora.ratosamarelo {
-    color: black;
-}
-
-.alerta-hora.ratosvermelho {
-    color: white;
-}
-
-.alerta-hora.semdadosmongo {
-    color: white;
-}
-
-.alerta-hora.semmovimentosamarelo {
-    color: black;
-}
-
-.alerta-hora.semmovimentosvermelho {
-    color: white;
-}
-
-.alerta-hora.semtemperaturasgrave {
-    color: white;
-}
-
-.alerta-hora.semtemperaturasligeiro {
-    color: black;
-}
-
-.alerta-hora.sensordadosinvalidos {
-    color: white;
-}
-
-.alerta-hora.sensorsemmovimento {
-    color: white;
-}
-
-.alerta-hora.temperaturaamarelo {
-    color: black;
-}
-
-.alerta-hora.temperaturavermelho {
-    color: white;
-}
-
-.visualizar-experiencia-btn {
-    position: absolute; /* Posicionamento absoluto em relação ao seu container `.alerta` */
-    top: 50%; /* Centraliza verticalmente */
-    right: -130px; /* Espaço do lado direito */
-    transform: translateY(-50%); /* Ajuste fino para centralização vertical */
-    width: 120px; /* Largura do botão */
-    height: 120px; /* Altura do botão */
-    background-image: url('/labrats/icons/experiencias.png');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    border: none;
-    cursor: pointer;
-}
-
-.experiencia{
-    position: absolute; /* Posicionamento absoluto em relação ao seu container `.alerta` */
-    top: 95%; /* Centraliza verticalmente */
-    right: -55px; /* Espaço do lado direito */
-    transform: translateY(-50%); /* Ajuste fino para centralização vertical */
-    cursor: pointer;
 }
 
 /* Ajustes finais para garantir visibilidade e acessibilidade */
