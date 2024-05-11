@@ -110,11 +110,13 @@ $conn->close();
                     <?php foreach ($substanciasExperiencia as $substancia) : ?>
                         <div class="substancia-container">
                             <span class="substancia-nome"><?php echo htmlspecialchars($substancia['NomeSubstancia']); ?></span>
-                            <form action="eliminar-substancia.php" method="POST">
-                                <input type="hidden" name="experiencia_id" value="<?php echo $experienciaId; ?>">
-                                <input type="hidden" name="SubstanciaExperiencia_ID" value="<?php echo htmlspecialchars($substancia['SubstanciaExperiencia_ID']); ?>">
-                                <button class="eliminar-substancia-btn"></button>
-                            </form>
+                            <?php if ($estadoExperiencia == 1) : ?>
+                                <form action="eliminar-substancia.php" method="POST">
+                                    <input type="hidden" name="experiencia_id" value="<?php echo $experienciaId; ?>">
+                                    <input type="hidden" name="SubstanciaExperiencia_ID" value="<?php echo htmlspecialchars($substancia['SubstanciaExperiencia_ID']); ?>">
+                                    <button class="eliminar-substancia-btn"></button>
+                                </form>
+                            <?php endif; ?>
                         </div>
                         <div class="rats-number-section-container">
                             <div class="rats-number-container">
@@ -152,11 +154,13 @@ $conn->close();
                     <?php foreach ($odoresExperiencia as $odor) : ?>
                         <div class="odor-container">
                             <span class="odor-nome"><?php echo htmlspecialchars($odor['NomeOdor']); ?></span>
-                            <form action="eliminar-odor.php" method="POST">
-                                <input type="hidden" name="experiencia_id" value="<?php echo $experienciaId; ?>">
-                                <input type="hidden" name="OdorExperiencia_ID" value="<?php echo htmlspecialchars($odor['OdorExperiencia_ID']); ?>">
-                                <button class="eliminar-odor-btn"></button>
-                            </form>
+                            <?php if ($estadoExperiencia == 1) : ?>
+                                <form action="eliminar-odor.php" method="POST">
+                                    <input type="hidden" name="experiencia_id" value="<?php echo $experienciaId; ?>">
+                                    <input type="hidden" name="OdorExperiencia_ID" value="<?php echo htmlspecialchars($odor['OdorExperiencia_ID']); ?>">
+                                    <button class="eliminar-odor-btn"></button>
+                                </form>
+                            <?php endif; ?>
                         </div>
                         <div class="room-section-container">
                             <div class="room-container">
