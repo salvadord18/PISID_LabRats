@@ -38,7 +38,7 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alertas da Experiencia_<?php echo htmlspecialchars($experienciaId); ?> | LabRats</title>
-    <link rel="stylesheet" href="/labrats/css/style_alertas-experiencia.css">
+    <link rel="stylesheet" href="/labrats/css/style_alertas.css">
     <link rel="icon" href="/labrats/icons/icon3.png" type="image/x-icon">
 </head>
 

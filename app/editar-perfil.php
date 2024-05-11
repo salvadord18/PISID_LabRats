@@ -80,12 +80,6 @@ $conn->close();
                         <input type="integer" id="telefone" name="telefone" value="<?php echo htmlspecialchars($user['TelefoneUtilizador'] ?? ''); ?>">
                     </div>
                 </div>
-                <!--<div class="form-row">
-                    <div class="form-field">
-                        <label for="password">Palavra-passe:</label>
-                        <input type="password" id="password" name="password" value="********">
-                    </div>
-                </div>-->
                 <div class="profile-actions">
                     <button type="submit" id="save" class="save-btn" onclick="disableConfirmExit()">GUARDAR ALTERAÇÕES</button>
                 </div>

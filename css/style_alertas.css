@@ -3,6 +3,7 @@ body, html {
     font-family: "Roboto Mono", monospace;
     background-color: #ffffff; /* Cor de fundo para todo o corpo */
     padding-top: 80px; /* Espaço no topo para não ficar sob a barra de navegação */
+    overflow-x: hidden;;
 }
 
 .header {
@@ -56,6 +57,7 @@ label {
     padding: 20px; /* Preenchimento maior */
     max-width: 80%; /* Define uma largura máxima para o container */
     border-radius: 20px; /* Bordas arredondadas para o container */
+    position: relative;
 }
 
 /* Correções adicionais para responsividade e acessibilidade */
@@ -71,16 +73,14 @@ label {
 }
 
 .alerta {
-    color: black; /* Cor do texto */
-    padding: 20px; /* Preenchimento para dar mais espaço dentro da caixa */
-    margin: 20px 0; /* Margem entre cada alerta */
-    border-radius: 50px; /* Bordas mais arredondadas */
-    font-size: 16px; /* Tamanho de fonte apropriado */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Sombra sutil para a caixa */
-    position: relative; /* Posicionamento relativo para posicionar a data */
-    min-height: 60px; /* Altura mínima para acomodar o conteúdo */
+    position: relative; /* Contexto de posicionamento para elementos absolutamente posicionados */
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 60px;
+    font-size: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-height: 80px; /* Garante espaço suficiente para conteúdo interno */
 }
-
 /* Exemplos de tipos de alerta */
 .alerta.experienciapararevisao {
     background-color: #8C52FF; /* Vermelho para urgente */
@@ -151,6 +151,8 @@ label {
 }
 
 .alerta-mensagem {
+    position: absolute; /* Posiciona absolutamente dentro da caixa de alerta */
+    bottom: 45px; /* Distância do fundo da caixa */
     font-size: 16px; /* Tamanho de fonte apropriado */
     font-family: "Roboto Mono", monospace;
 }
@@ -298,6 +300,29 @@ label {
 
 .alerta-hora.temperaturavermelho {
     color: white;
+}
+
+.visualizar-experiencia-btn {
+    position: absolute; /* Posicionamento absoluto em relação ao seu container `.alerta` */
+    top: 50%; /* Centraliza verticalmente */
+    right: -130px; /* Espaço do lado direito */
+    transform: translateY(-50%); /* Ajuste fino para centralização vertical */
+    width: 120px; /* Largura do botão */
+    height: 120px; /* Altura do botão */
+    background-image: url('/labrats/icons/experiencias.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+    cursor: pointer;
+}
+
+.experiencia{
+    position: absolute; /* Posicionamento absoluto em relação ao seu container `.alerta` */
+    top: 95%; /* Centraliza verticalmente */
+    right: -55px; /* Espaço do lado direito */
+    transform: translateY(-50%); /* Ajuste fino para centralização vertical */
+    cursor: pointer;
 }
 
 /* Ajustes finais para garantir visibilidade e acessibilidade */
