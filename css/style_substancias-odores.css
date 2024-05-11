@@ -20,6 +20,13 @@ body, html {
     z-index: 10;
 }
 
+p {
+    color: #8C52FF;
+    text-align: center;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
 .logo {
     margin-right: 20px; /* Espaço entre o logo e o título */
     width: 120px;
@@ -284,6 +291,24 @@ body, html {
     border-radius: 50%; /* Torna o botão circular */
     cursor: pointer;
     opacity: 0; /* Botão é inicialmente invisível */
+    transition: opacity 0.3s ease; /* Suaviza a transição da opacidade */
+    z-index: 20; /* Garante que o botão fique acima de outros elementos */
+    background-image: url('/labrats/icons/voltar.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 60%; /* Ajusta para o tamanho desejado */
+}
+
+.back-btn-empty {
+    position: fixed; /* Ou absolute, dependendo de como está estruturada tua página */
+    bottom: 20px; /* Ajusta conforme necessário para posicionar o botão */
+    right: 20px; /* Ajusta conforme necessário para posicionar o botão */
+    width: 50px; /* Tamanho do botão */
+    height: 50px; /* Tamanho do botão */
+    background-color: #8C52FF; /* Cor de fundo do botão */
+    border: none;
+    border-radius: 50%; /* Torna o botão circular */
+    cursor: pointer;
     transition: opacity 0.3s ease; /* Suaviza a transição da opacidade */
     z-index: 20; /* Garante que o botão fique acima de outros elementos */
     background-image: url('/labrats/icons/voltar.png');
