@@ -4,6 +4,7 @@ import MongoDB.entities.*;
 import MongoDB.entities.enums.ExperienciaStatus;
 import MongoDB.mappers.DadosPortasMongoDBMapper;
 import com.mongodb.*;
+import org.checkerframework.checker.units.qual.C;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -11,6 +12,8 @@ import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainMongoDB {
 
@@ -18,6 +21,7 @@ public class MainMongoDB {
     MongoClient myConnectionToMongo;
     ConnectToSQL connectToSQL;
     static Statement s;
+    static List<Thread> threadsList = new ArrayList<>();
 
     public static int IniciarExperiencia(ConnectToSQL connectToSQL) throws InterruptedException, SQLException {
         while (true) {
@@ -28,7 +32,7 @@ public class MainMongoDB {
             cs.execute();
 
             int resultado = cs.getInt(1);
-            if (resultado != -1){
+            if (resultado != -1) {
                 return resultado;
             }
             System.out.println("Não foi encontrada nenhuma experiencia");
@@ -41,7 +45,7 @@ public class MainMongoDB {
         String procedureCall = "{CALL GetCorredores(?)}";
         CallableStatement cs = connectToSQL.getConnectionSQL().prepareCall(procedureCall);
         cs.setInt(1, idExperiencia);
-        ResultSet resultado =  cs.executeQuery();
+        ResultSet resultado = cs.executeQuery();
 
         Experiencia experiencia = new Experiencia();
         experiencia.setId(String.valueOf(idExperiencia));
@@ -49,7 +53,7 @@ public class MainMongoDB {
         setExperienciaEmProcessamento(connectToSQL, experiencia);
         CurrentExperiencia.getInstance().setEstadoExperiencia(ExperienciaStatus.EM_PROCESSAMENTO);
 
-        while(resultado.next()) {
+        while (resultado.next()) {
             JSONArray jsonArray = new JSONArray(resultado.getString(1));
             Corredor[] corredores = new Corredor[jsonArray.length()];
             int i = 0;
@@ -76,11 +80,11 @@ public class MainMongoDB {
     public static void validaPrimeiroMovimentoValido(ConnectToSQL connectToSQL, Experiencia experiencia, DB mongoDb) throws SQLException {
         //Sala de origem inicial é sempre 1.
         //Encontra salaDestino correta
-        int salaDestino=0;
+        int salaDestino = 0;
         int aux;
         System.out.println(experiencia.getCorredores().length);
-        for(int i = 0; i < experiencia.getCorredores().length; i++){
-            if(experiencia.getCorredores()[i].getSalaOrigem().equals("1")) {
+        for (int i = 0; i < experiencia.getCorredores().length; i++) {
+            if (experiencia.getCorredores()[i].getSalaOrigem().equals("1")) {
                 salaDestino = Integer.parseInt(experiencia.getCorredores()[i].getSalaDestinoComOrigem(String.valueOf(1)));
             }
         }
@@ -91,7 +95,7 @@ public class MainMongoDB {
         var collection = mongoDb.getCollection("Sensor_Porta");
 
         int flag = 0;
-        while(flag == 0) {
+        while (flag == 0) {
             var iterator = collection.find(query).iterator();
             var mappedPortas = DadosPortasMongoDBMapper.mapList(iterator);
             for (int i = 0; i < mappedPortas.size(); i++) {
@@ -146,67 +150,40 @@ public class MainMongoDB {
         System.out.println("Experiencia " + Integer.valueOf(experiencia.getId()) + " em curso.");
     }
 
-    public static void validaIfExperienciaTerminou(ConnectToSQL connectToSQL, Experiencia experiencia) throws SQLException, InterruptedException {
-        int estadoExperiencia = 0;
-        int flag = 0;
-        while(flag == 0) {
-            String testeCallSP = "{CALL Get_EstadoExperiencia (?,?)}";
-            CallableStatement cs = connectToSQL.getConnectionSQL().prepareCall(testeCallSP);
-            cs.setInt(1, Integer.valueOf(experiencia.getId()));
-            cs.registerOutParameter(2, Types.INTEGER);
-            cs.execute();
-
-            estadoExperiencia = cs.getInt(2);
-
-
-            if(estadoExperiencia == 5){
-                System.out.println("Experiencia " + Integer.valueOf(experiencia.getId()) + " Terminada.");
-                CurrentExperiencia.getInstance().setEstadoExperiencia(ExperienciaStatus.TERMINADA);
-                //IniciarExperiencia(connectToSQL);
-                flag = 1;
-                break;
-            }
-            Thread.sleep(2000);
-        }
-    }
-
-    public static void checkIfMongoDrop(DB MongoDb, ConnectToSQL connectToSQL){
+    public static void checkIfMongoDrop(DB MongoDb, ConnectToSQL connectToSQL) {
 
     }
 
 
-
-    public static void dropMongo(DB mongoDB){
+    public static void dropMongo(DB mongoDB) {
         mongoDB.getCollection("Sensor_Porta").drop();
         mongoDB.getCollection("Sensor_Temperatura").drop();
         System.out.println("Dados Apagados no Mongo");
     }
 
-
     public static void main(String[] args) throws IOException, InterruptedException, SQLException {
-        //Esta parte foi toda para dentro do ConnectToMongo
+        // Quando a experiencia tiver no estado terminado, vai reiniciar o processo novamente
+        while (true) {
+            //Esta parte foi toda para dentro do ConnectToMongo
+            ConnectToMongo connectMongo = new ConnectToMongo();
+//            MongoClient myConnectionToMongo = connectMongo.getConnectionMongo();
+            ConnectToSQL connectToSQL = new ConnectToSQL();
+            var mongoDb = connectMongo.getDataBase();
 
-        ConnectToMongo connectMongo  = new ConnectToMongo();
-        MongoClient myConnectionToMongo = connectMongo.getConnectionMongo();
-        ConnectToSQL connectToSQL = new ConnectToSQL();
-        var mongoDb = connectMongo.getDataBase();
+            var s = connectToSQL.getConnectionSQL().createStatement();
 
-        var s = connectToSQL.getConnectionSQL().createStatement();
+            //Recebe id da experiencia que está a aguardar à mais tempo
+            int id = IniciarExperiencia(connectToSQL);
 
-        //Recebe id da experiencia que está a aguardar à mais tempo
-        int id = IniciarExperiencia(connectToSQL);
+            //Experiencia criada com id, data e array de Corredores (posições validas)
+            Experiencia experiencia = getCorredoresCurrentExperiencia(connectToSQL, id);
 
-
-        //Experiencia criada com id, data e array de Corredores (posições validas)
-        Experiencia experiencia = getCorredoresCurrentExperiencia(connectToSQL, id);
-
-        System.out.println("Hora inicial: " + experiencia.getDataHora());
-        validaPrimeiroMovimentoValido(connectToSQL, experiencia, mongoDb);
-        System.out.println("Hora final: " + experiencia.getDataHora());
+            System.out.println("Hora inicial: " + experiencia.getDataHora());
+            validaPrimeiroMovimentoValido(connectToSQL, experiencia, mongoDb);
+            System.out.println("Hora final: " + experiencia.getDataHora());
 
 
 //        dropMongo(mongoDb);
-
 
 
 //        //****  Exemplo de como ir buscar informação às tabelas e mapea-las ****
@@ -217,41 +194,41 @@ public class MainMongoDB {
 //        }
 
 
-        //Neste momento é preciso lançar as Threads
-        //Ao mesmo tempo é preciso chamar validaIfExperienciaTerminou(connectToSQL, experiencia)
-        //Esta função vai validar se a experiencia passou para o estado "Terminada"
+            //Neste momento é preciso lançar as Threads
+            var fetchTempsMongo = new ProcessarTemperatura(mongoDb);
+            var fetchDoorsMongo = new ProcessarPortas(mongoDb);
+            var threadDealWithTemperatura = new TratarDadosTemperatura(connectToSQL.getConnectionSQL(), mongoDb);
+            var threadDealWithPortas = new TratarDadosPortas(connectToSQL.getConnectionSQL(), mongoDb);
+            var threadFetchTempsToSql = new InsertMedicaoTemperaturaMysql(connectToSQL.getConnectionSQL());
+            var threadFetchPassagensToSql = new InsertMedicaoPassagem(connectToSQL.getConnectionSQL());
+            var threadCheckExperienciaStatus = new CheckExperienciaStatus(connectToSQL.getConnectionSQL());
 
-//        validaIfExperienciaTerminou(connectToSQL,experiencia);
-       // if(CurrentExperiencia.getInstance().isEstado(ExperienciaStatus.TERMINADA)){
+            fetchTempsMongo.start();
+            fetchDoorsMongo.start();
+            threadDealWithTemperatura.start();
+            threadDealWithPortas.start();
+            threadFetchTempsToSql.start();
+            threadFetchPassagensToSql.start();
+            threadCheckExperienciaStatus.start();
 
-//        }
-        var fetchTempsMongo = new ProcessarTemperatura(mongoDb);
-        var fetchDoorsMongo = new ProcessarPortas(mongoDb);
-        var threadDealWithTemperatura = new TratarDadosTemperatura(connectToSQL.getConnectionSQL(), mongoDb);
-        var threadDealWithPortas = new TratarDadosPortas(connectToSQL.getConnectionSQL(), mongoDb);
-        var threadFetchTempsToSql = new InsertMedicaoTemperaturaMysql(connectToSQL.getConnectionSQL());
-        var threadFetchPassagensToSql = new InsertMedicaoPassagem(connectToSQL.getConnectionSQL());
+            threadsList.add(fetchTempsMongo);
+            threadsList.add(fetchDoorsMongo);
+            threadsList.add(threadDealWithTemperatura);
+            threadsList.add(threadDealWithPortas);
+            threadsList.add(threadFetchTempsToSql);
+            threadsList.add(threadFetchPassagensToSql);
+            threadsList.add(threadCheckExperienciaStatus);
 
-        fetchTempsMongo.start();
-        fetchDoorsMongo.start();
-        threadDealWithTemperatura.start();
-        threadDealWithPortas.start();
-        threadFetchTempsToSql.start();
-        threadFetchPassagensToSql.start();
+            fetchTempsMongo.join();
+            fetchDoorsMongo.join();
+            threadDealWithTemperatura.join();
+            threadDealWithPortas.join();
+            threadFetchPassagensToSql.join();
+            threadFetchTempsToSql.join();
 
-        fetchTempsMongo.join();
-        fetchDoorsMongo.join();
-        threadDealWithTemperatura.join();
-        threadDealWithPortas.join();
-        threadFetchPassagensToSql.join();
-        threadFetchTempsToSql.join();
-
-        //Esta linha de codigo não pode estar aqui.
-        //Tem que estar no Java que corre no SQL. Depois de Pipa acabar
-        //SQLBackup backup = new SQLBackup(connectToSQL);
-
-
+            //Esta linha de codigo não pode estar aqui.
+            //Tem que estar no Java que corre no SQL. Depois de Pipa acabar
+            //SQLBackup backup = new SQLBackup(connectToSQL);
+        }
     }
-
-
 }

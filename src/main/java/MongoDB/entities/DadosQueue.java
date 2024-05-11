@@ -26,6 +26,7 @@ public class DadosQueue {
             try {
                 wait();
             } catch (InterruptedException ignored) {
+                System.out.println("Lista dadosTratadosPortas interrompida");
             }
         }
         return popPortasTratadas();
@@ -42,6 +43,7 @@ public class DadosQueue {
             try {
                 wait();
             } catch (InterruptedException ignored) {
+                System.out.println("Lista dadosTemperaturaMongoDB interrompida");
             }
         }
         return popData();
@@ -58,6 +60,7 @@ public class DadosQueue {
             try {
                 wait();
             } catch (InterruptedException ignored) {
+                System.out.println("Lista dadosPortasMongoDB interrompida");
             }
         }
         return popPortasMongo();

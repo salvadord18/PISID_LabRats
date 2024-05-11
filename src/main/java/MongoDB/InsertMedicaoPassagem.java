@@ -2,6 +2,7 @@ package MongoDB;
 
 import MongoDB.entities.CurrentExperiencia;
 import MongoDB.entities.DadosQueue;
+import MongoDB.entities.enums.ExperienciaStatus;
 import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
@@ -21,13 +22,13 @@ public class InsertMedicaoPassagem extends Thread {
         try {
             insertMedicaoPassagem();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println("A exceção é " + e.getMessage());
         }
 
     }
 
     public void insertMedicaoPassagem() throws SQLException {
-        while (true) {
+        while (!CurrentExperiencia.getInstance().isEstado(ExperienciaStatus.TERMINADA)) {
 
             // Vai enviar continuamente os dados
 

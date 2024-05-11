@@ -2,6 +2,7 @@ package MongoDB;
 
 import MongoDB.entities.CurrentExperiencia;
 import MongoDB.entities.DadosQueue;
+import MongoDB.entities.enums.ExperienciaStatus;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -18,13 +19,13 @@ public class InsertMedicaoTemperaturaMysql extends Thread {
         try {
             insertMedicaoTemperatura();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println("A exceção é " + e.getMessage());
         }
 
     }
 
     public void insertMedicaoTemperatura() throws SQLException {
-        while (true) {
+        while (!CurrentExperiencia.getInstance().isEstado(ExperienciaStatus.TERMINADA)) {
 
             // Vai enviar continuamente os dados
             var treatedTempsList = queue.getDadosTratadosTemperaturas();
@@ -49,7 +50,7 @@ public class InsertMedicaoTemperaturaMysql extends Thread {
             try {
                 Thread.sleep(3000);
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                break;
             }
         }
     }

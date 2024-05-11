@@ -4,6 +4,7 @@ import MongoDB.entities.Corredor;
 import MongoDB.entities.CurrentExperiencia;
 import MongoDB.entities.DadosQueue;
 import MongoDB.entities.DadosTemperaturaMongoDB;
+import MongoDB.entities.enums.ExperienciaStatus;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,7 @@ public class TratarDadosPortas extends Thread {
     }
 
     public void tratarDadosPortas() throws SQLException {
-        while (true) {
+        while (!CurrentExperiencia.getInstance().isEstado(ExperienciaStatus.TERMINADA)) {
             var portasData = queue.popPortasMongo();
             var collection = mongoDb.getCollection("Sensor_Porta");
             var salaOrigem = String.valueOf(portasData.getSalaOrigem());
@@ -59,10 +60,10 @@ public class TratarDadosPortas extends Thread {
 // ............... Numero ratos em cada sala ...................
             String SPNumRatos = "{ call Get_RatosAtuais(?,?,?) }";
             CallableStatement c = sqlDb.prepareCall(SPNumRatos);
-//            c.setInt(1, Integer.parseInt((experiencia.getExperiencia().getId())));
-//            c.setInt(2, Integer.parseInt(salaDestino));
-            c.setInt(1, 8);
-            c.setInt(2, 2);
+            c.setInt(1, Integer.parseInt((experiencia.getExperiencia().getId())));
+            c.setInt(2, Integer.parseInt(salaDestino));
+//            c.setInt(1, 8);
+//            c.setInt(2, 2);
             c.registerOutParameter(3, Types.INTEGER);
             c.execute();
 
@@ -110,7 +111,7 @@ public class TratarDadosPortas extends Thread {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                break;
             }
         }
     }

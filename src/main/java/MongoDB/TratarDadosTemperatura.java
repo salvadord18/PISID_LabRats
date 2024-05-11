@@ -4,6 +4,7 @@ import MongoDB.entities.Corredor;
 import MongoDB.entities.CurrentExperiencia;
 import MongoDB.entities.DadosQueue;
 import MongoDB.entities.DadosTemperaturaMongoDB;
+import MongoDB.entities.enums.ExperienciaStatus;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import lombok.RequiredArgsConstructor;
@@ -33,45 +34,49 @@ public class TratarDadosTemperatura extends Thread {
     }
 
     public void tratarDadosTemperatura() throws SQLException, InterruptedException {
-        while (true) {
-            var tempData = queue.popData();
-            var collection = mongoDb.getCollection("Sensor_Temperatura");
-            var experienciaId = experiencia.getExperiencia().getId();
-            // if outlier então
-            if (isOutlier(tempData)) {
-                outlierCount++;
-                int maxNumOutliers = executeSPNumberMaxOutliers();
+        try {
+            while (!CurrentExperiencia.getInstance().isEstado(ExperienciaStatus.TERMINADA) && !Thread.interrupted()) {
+                var tempData = queue.popData();
+                var collection = mongoDb.getCollection("Sensor_Temperatura");
+                var experienciaId = experiencia.getExperiencia().getId();
+                // if outlier então
+                if (isOutlier(tempData)) {
+                    outlierCount++;
+                    int maxNumOutliers = executeSPNumberMaxOutliers();
 
-                BasicDBObject idQuery = new BasicDBObject("_id", tempData.getId());
-                BasicDBObject update = new BasicDBObject("$set", new BasicDBObject("outlier", "O"));
-                collection.update(idQuery, update);
+                    BasicDBObject idQuery = new BasicDBObject("_id", tempData.getId());
+                    BasicDBObject update = new BasicDBObject("$set", new BasicDBObject("outlier", "O"));
+                    collection.update(idQuery, update);
 
-                if (outlierCount <= maxNumOutliers) {
-                    queue.pushTempsTratadas(List.of(tempData));
+                    if (outlierCount <= maxNumOutliers) {
+                        queue.pushTempsTratadas(List.of(tempData));
 
-                    String CallSP = "{ call CriarAlertaOutlierAmarelo(?,?) }";
-                    CallableStatement c = sqlDb.prepareCall(CallSP);
-                    c.setInt(1, outlierCount);
-                    c.setInt(2, Integer.parseInt(experienciaId));
-                    c.execute();
+                        String CallSP = "{ call CriarAlertaOutlierAmarelo(?,?) }";
+                        CallableStatement c = sqlDb.prepareCall(CallSP);
+                        c.setInt(1, outlierCount);
+                        c.setInt(2, Integer.parseInt(experienciaId));
+                        c.execute();
 
-                    //Thread.sleep(30000);
+                        //Thread.sleep(30000);
+                    } else {
+
+                        CallableStatement cs = null;
+                        cs = sqlDb.prepareCall("{call CriarAlertaOutlierVermelho}");
+                        cs.executeQuery();
+                        //Thread.sleep(10000);
+                    }
                 } else {
-
-                    CallableStatement cs = null;
-                    cs = sqlDb.prepareCall("{call CriarAlertaOutlierVermelho}");
-                    cs.executeQuery();
-                    //Thread.sleep(10000);
+                    queue.pushTempsTratadas(List.of(tempData));
+                    System.out.println("Não é outlier");
                 }
-            } else {
-                queue.pushTempsTratadas(List.of(tempData));
-                System.out.println("Não é outlier");
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    break;
+                }
             }
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+        } catch (Exception e) {
+            System.out.println("Thread stoped exception -> " + e.getMessage());
         }
     }
 
