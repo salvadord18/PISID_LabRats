@@ -40,7 +40,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sala <?php echo htmlspecialchars($salaId); ?> | LabRats</title>
+    <title>Sala <?php echo htmlspecialchars($salaId); ?> da Experiencia_<?php echo $experienciaId?> | LabRats</title>
     <link rel="stylesheet" href="/labrats/css/style_sala.css">
     <link rel="icon" href="/labrats/icons/icon3.png" type="image/x-icon">
 </head>
@@ -50,18 +50,24 @@ $conn->close();
         <a href="/labrats/app/inicio.php">
             <img src="/labrats/icons/logo2.png" alt="Lab Rats Logo" class="logo">
         </a>
-        <h1>Sala <?php echo htmlspecialchars($salaId); ?></h1>
+        <h1>Sala <?php echo htmlspecialchars($salaId); ?> da Experiencia_<?php echo $experienciaId?></h1>
     </header>
     <main class="alertas-container">
         <?php if (empty($movimentos)) : ?>
-            <p>Ainda não houve movimentos nesta sala.</p>
+            <p class="empty-message">Ainda não houve movimentos nesta sala.</p>
         <?php else : ?>
             <?php foreach ($movimentos as $mov) : ?>
                 <div class="alerta">
                     <p class="alerta-mensagem">
                         <?php
-                        if ($mov['Sala_Origem_ID'] == $salaId) {
+                        if ($mov['Sala_Origem_ID'] == $salaId && $mov['NumeroRatosFinal'] == 0) {
+                            echo "Saiu um rato para a Sala " . htmlspecialchars($mov['Sala_Destino_ID']) . ". Não restam ratos nesta sala.";
+                        } else if ($mov['Sala_Origem_ID'] == $salaId && $mov['NumeroRatosFinal'] == 1) {
+                            echo "Saiu um rato para a Sala " . htmlspecialchars($mov['Sala_Destino_ID']) . ". Resta " . htmlspecialchars($mov['NumeroRatosFinal']) . " rato nesta sala.";
+                        } else if ($mov['Sala_Origem_ID'] == $salaId) {
                             echo "Saiu um rato para a Sala " . htmlspecialchars($mov['Sala_Destino_ID']) . ". Restam " . htmlspecialchars($mov['NumeroRatosFinal']) . " ratos nesta sala.";
+                        } else if ($mov['NumeroRatosFinal'] == 1){
+                            echo "Entrou um rato desde a Sala " . htmlspecialchars($mov['Sala_Origem_ID']) . ". Há " . htmlspecialchars($mov['NumeroRatosFinal']) . " rato nesta sala.";
                         } else {
                             echo "Entrou um rato desde a Sala " . htmlspecialchars($mov['Sala_Origem_ID']) . ". Há " . htmlspecialchars($mov['NumeroRatosFinal']) . " ratos nesta sala.";
                         }

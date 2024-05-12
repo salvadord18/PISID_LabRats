@@ -2,7 +2,7 @@ body, html {
     margin: 0;
     font-family: "Roboto Mono", monospace;
     background-color: #ffffff; /* Cor de fundo para todo o corpo */
-    padding-top: 140px; /* Espaço no topo para não ficar sob a barra de navegação */
+    padding-top: 105px; /* Espaço no topo para não ficar sob a barra de navegação */
     overflow-x: hidden;
 }
 
@@ -25,6 +25,13 @@ p {
     text-align: center;
     font-size: 1.2em;
     margin-top: -71px;
+}
+
+.empty-message {
+    color: #8C52FF;
+    text-align: center;
+    font-size: 1.2em;
+    margin-top: 5px;
 }
 
 .logo {
@@ -57,6 +64,7 @@ p {
     display: flex;
     gap: 20px;
     justify-content: center;
+    margin-top: 70px;
 }
 
 .column {
@@ -77,7 +85,6 @@ p {
 
 .substancia-section-container {
     margin-left: 30px;
-    margin-top: -100px;
 }
 
 .substancia-container {
@@ -148,7 +155,6 @@ p {
 
 .odor-section-container {
     margin-left: 80px;
-    margin-top: -100px;
 }
 
 .odor-container {
@@ -272,7 +278,7 @@ p {
     margin-left: auto; /* Alinha o botão à direita */
     margin-right: auto; /* Alinha o botão à direita */
     font-family: "Roboto Mono", monospace;
-    margin-top: 305px; /* Espaço entre o botão e o próximo elemento */
+    margin-top: 35px; /* Espaço entre o botão e o próximo elemento */
 }
 
 .submit-btn:hover {

@@ -77,7 +77,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Substâncias e Odores | LabRats</title>
+    <title>Substâncias e Odores da Experiencia_<?php echo $experienciaId?> | LabRats</title>
     <link rel="stylesheet" href="/labrats/css/style_substancias-odores.css">
     <link rel="icon" href="/labrats/icons/icon3.png" type="image/x-icon">
 </head>
@@ -87,18 +87,18 @@ $conn->close();
         <a href="/labrats/app/inicio.php">
             <img src="/labrats/icons/logo2.png" alt="Lab Rats Logo" class="logo">
         </a>
-        <h1>Substâncias e Odores</h1>
+        <h1>Substâncias e Odores da Experiencia_<?php echo $experienciaId?></h1>
     </header>
     <?php if (empty($substanciasExperiencia && $odoresExperiencia) && $estadoExperiencia == 3) : ?>
-        <p>Esta experiência vai começar sem qualquer substância nem odor.</p>
+        <p class="empty-message">Esta experiência vai começar sem qualquer substância nem odor.</p>
     <?php elseif (empty($substanciasExperiencia && $odoresExperiencia) && $estadoExperiencia == 4) : ?>
-        <p>Esta experiência começou sem qualquer substância nem odor.</p>
+        <p class="empty-message">Esta experiência começou sem qualquer substância nem odor.</p>
     <?php elseif (empty($substanciasExperiencia && $odoresExperiencia) && $estadoExperiencia == 5) : ?>
-        <p>Esta experiência terminou sem qualquer substância nem odor.</p>
+        <p class="empty-message">Esta experiência terminou sem qualquer substância nem odor.</p>
     <?php elseif (empty($substanciasExperiencia && $odoresExperiencia) && $estadoExperiencia == 6) : ?>
-        <p>Esta experiência foi cancelada sem qualquer substância nem odor.</p>
+        <p class="empty-message">Esta experiência foi cancelada sem qualquer substância nem odor.</p>
     <?php elseif (empty($substanciasExperiencia && $odoresExperiencia) && $estadoExperiencia == 7) : ?>
-        <p>Esta experiência foi interrompida sem qualquer substância nem odor.</p>
+        <p class="empty-message">Esta experiência foi interrompida sem qualquer substância nem odor.</p>
     <?php else : ?>
         <div class="container">
             <div class="column">
@@ -195,15 +195,15 @@ $conn->close();
         <form action="/labrats/app/experiencias.php" class="form-actions" onsubmit="return confirmarGuardar();">
             <button type="submit" class="submit-btn">GUARDAR</button>
         </form>
-    <?php endif; ?>
-    <script>
+        <script>
         function confirmarGuardar() {
             alert('Substâncias e Odores guardados com sucesso!');
             return true;
         }
     </script>
+    <?php endif; ?>
     <div class="button-container">
-        <?php if (empty($substanciasExperiencia && $odoresExperiencia)) : ?>
+        <?php if (empty($substanciasExperiencia && $odoresExperiencia) && $estadoExperiencia != 1) : ?>
             <button type="button" onclick="location.href='/labrats/app/experiencias.php';" class="action-btn back-btn-empty" aria-label="Voltar"></button>
         <?php else : ?>
             <button type="button" onclick="location.href='/labrats/app/experiencias.php';" class="action-btn back-btn" aria-label="Voltar"></button>

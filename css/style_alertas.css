@@ -48,6 +48,13 @@ p {
     margin-top: -71px;
 }
 
+.empty-message {
+    color: #8C52FF;
+    text-align: center;
+    font-size: 1.2em;
+    margin-top: 5px;
+}
+
 label {
     color: #8C52FF;
 }

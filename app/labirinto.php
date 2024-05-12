@@ -38,7 +38,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Labirinto | LabRats</title>
+    <title>Labirinto da Experiencia_<?php echo $experienciaId?> | LabRats</title>
     <link rel="stylesheet" href="/labrats/css/style_labirinto.css">
     <link rel="icon" href="/labrats/icons/icon3.png" type="image/x-icon">
 </head>
@@ -48,7 +48,7 @@ $conn->close();
         <a href="/labrats/app/inicio.php">
             <img src="/labrats/icons/logo2.png" alt="Lab Rats Logo" class="logo">
         </a>
-        <h1>Labirinto</h1>
+        <h1>Labirinto da Experiencia_<?php echo $experienciaId?></h1>
     </header>
     <div class="alertas-container">
         <?php if (empty($salas)) : ?>
