@@ -9,10 +9,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import lombok.RequiredArgsConstructor;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -39,6 +36,44 @@ public class TratarDadosTemperatura extends Thread {
                 var tempData = queue.popData();
                 var collection = mongoDb.getCollection("Sensor_Temperatura");
                 var experienciaId = experiencia.getExperiencia().getId();
+
+                String tempIdeal = "{ call GetTemperaturaIdeal(?) }";
+                CallableStatement calls = sqlDb.prepareCall(tempIdeal);
+                calls.registerOutParameter(1, Types.INTEGER);
+                calls.execute();
+                int temperaturaIdeal = calls.getInt(1);
+
+                String variacaoMax = "{ call GetVariacaoTemperaturaMaxima(?) }";
+                CallableStatement call = sqlDb.prepareCall(variacaoMax);
+                call.registerOutParameter(1, Types.INTEGER);
+                call.execute();
+                int variacaoMaxTemp = call.getInt(1);
+
+                var temperaturaRangeSuperior = temperaturaIdeal + variacaoMaxTemp;
+                var temperaturaRangeInferior = temperaturaIdeal - variacaoMaxTemp;
+                var temperaturaRangeAmareloSuperior = temperaturaIdeal + (variacaoMaxTemp*0.75);
+                var temperaturaRangeAmareloInferior = temperaturaIdeal - (variacaoMaxTemp*0.75);
+                
+                Timestamp dataHora = Timestamp.valueOf(tempData.getHora());
+
+                if (tempData.getLeitura() < temperaturaRangeInferior || tempData.getLeitura() > temperaturaRangeSuperior) {
+                    String CallSP = "{ call CriarAlertaTemperaturaVermelho(?,?,?,?) }";
+                    CallableStatement c = sqlDb.prepareCall(CallSP);
+                    c.setTimestamp(1, dataHora);
+                    c.setTimestamp(2, dataHora);
+                    c.setInt(3, tempData.getSensor());
+                    c.setInt(4, Integer.parseInt(experienciaId));
+                    c.execute();
+                } else if (tempData.getLeitura() < temperaturaRangeAmareloInferior && tempData.getLeitura() > temperaturaRangeInferior
+                || tempData.getLeitura() > temperaturaRangeAmareloSuperior && tempData.getLeitura() < temperaturaRangeSuperior) {
+                    String CallSP = "{ call CriarAlertaTemperaturaAmarelo(?,?,?,?) }";
+                    CallableStatement c = sqlDb.prepareCall(CallSP);
+                    c.setTimestamp(1, dataHora);
+                    c.setTimestamp(2, dataHora);
+                    c.setInt(3, tempData.getSensor());
+                    c.setInt(4, Integer.parseInt(experienciaId));
+                    c.execute();
+                }
                 // if outlier então
                 if (isOutlier(tempData)) {
                     outlierCount++;
@@ -69,12 +104,8 @@ public class TratarDadosTemperatura extends Thread {
                     queue.pushTempsTratadas(List.of(tempData));
                     System.out.println("Não é outlier");
                 }
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    break;
-                }
             }
+
         } catch (Exception e) {
             System.out.println("Thread stoped exception -> " + e.getMessage());
         }

@@ -90,29 +90,6 @@ public class TratarDadosPortas extends Thread {
                 call.setInt(2, Integer.parseInt(salaDestino));
                 call.execute();
             }
-//................... Segundos sem movimento .......................
-
-            // por acabar
-//            int segundosSemMovimento = 0;
-//
-//            if (segundosSemMovimento >= 60 && segundosSemMovimento < 120) {
-//                //Criar alerta sem movimento amarelo
-////                String procedureCall = "{CALL CriarAlertaSemMovimentosAmarelo(?,?,?,?)}";
-////                CallableStatement c = sqlDb.prepareCall(procedureCall);
-////                Timestamp timestamp = Timestamp.valueOf(portasData.getHora());
-////                c.setTimestamp(1, timestamp);
-////                c.setTimestamp(2, timestamp);
-////                c.setInt(3, );
-//                System.out.println("SEM MOVIMENTOS AMARELO");
-//            } else if (segundosSemMovimento >= 120) {
-//                //Criar alerta sem movimentos vermelho
-//                System.out.println("SEM MOVIMENTOS VERMELHO");
-//            }
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                break;
-            }
         }
     }
 }
