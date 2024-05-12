@@ -133,7 +133,7 @@ $conn->close();
             <?php endif; ?>
         </form>
         </section>
-        <button type="button" onclick="window.history.back();" class="back-btn" aria-label="Voltar"></button>
+        <button type="button" onclick="location.href='/labrats/app/experiencias.php';" class="back-btn" aria-label="Voltar"></button>
     </main>
 </body>
 
