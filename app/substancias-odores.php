@@ -195,15 +195,15 @@ $conn->close();
         <form action="/labrats/app/experiencias.php" class="form-actions" onsubmit="return confirmarGuardar();">
             <button type="submit" class="submit-btn">GUARDAR</button>
         </form>
-    <?php endif; ?>
-    <script>
+        <script>
         function confirmarGuardar() {
             alert('Substâncias e Odores guardados com sucesso!');
             return true;
         }
     </script>
+    <?php endif; ?>
     <div class="button-container">
-        <?php if (empty($substanciasExperiencia && $odoresExperiencia)) : ?>
+        <?php if (empty($substanciasExperiencia && $odoresExperiencia) && $estadoExperiencia != 1) : ?>
             <button type="button" onclick="location.href='/labrats/app/experiencias.php';" class="action-btn back-btn-empty" aria-label="Voltar"></button>
         <?php else : ?>
             <button type="button" onclick="location.href='/labrats/app/experiencias.php';" class="action-btn back-btn" aria-label="Voltar"></button>
