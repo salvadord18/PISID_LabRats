@@ -49,7 +49,7 @@ $conn->close();
         <h1>Análise da Experiencia_<?php echo htmlspecialchars($experienciaId); ?></h1>
     </header>
     <?php if (empty($dados)) : ?>
-        <p>Ainda não é possível ver a análise desta experiência.</p>
+        <p class="empty-message">Ainda não é possível ver a análise desta experiência.</p>
     <?php else : ?>
         <main class="alertas-container">
             <div id="chartContainer" style="height: 370px; width: 100%;"></div>
@@ -74,10 +74,12 @@ $conn->close();
                         title: {
                             text: "Ratos por Sala",
                             fontColor: "#8C52FF",
+                            fontFamily: "Roboto Mono, monospace",
                         },
                         axisY: {
                             title: "Número de Ratos",
                             titleFontColor: "#8C52FF",
+                            fontFamily: "Roboto Mono, monospace",
                         },
                         data: [{
                             type: "column",

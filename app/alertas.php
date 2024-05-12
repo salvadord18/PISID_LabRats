@@ -44,7 +44,7 @@ $conn->close();
     </header>
     <div class="alertas-container">
         <?php if (empty($alertas)) : ?>
-            <p>Não existem alertas.</p>
+            <p class="empty-message">Não existem alertas.</p>
         <?php else : ?>
             <?php foreach ($alertas as $alerta) : ?>
                 <div class="alerta <?= htmlspecialchars(strtolower($alerta['TipoAlerta'])) ?>">

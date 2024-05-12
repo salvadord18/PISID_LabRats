@@ -2,7 +2,7 @@ body, html {
     margin: 0;
     font-family: "Roboto Mono", monospace;
     background-color: #ffffff; /* Cor de fundo para todo o corpo */
-    padding-top: 110px; /* Espaço no topo para não ficar sob a barra de navegação */
+    padding-top: 105px; /* Espaço no topo para não ficar sob a barra de navegação */
     overflow-x: hidden;;
 }
 
@@ -46,6 +46,13 @@ p {
     text-align: center;
     font-size: 1.2em;
     margin-top: -71px;
+}
+
+.empty-message {
+    color: #8C52FF;
+    text-align: center;
+    font-size: 1.2em;
+    margin-top: -35px;
 }
 
 label {

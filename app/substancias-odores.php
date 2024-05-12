@@ -77,7 +77,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Substâncias e Odores | LabRats</title>
+    <title>Substâncias e Odores da Experiencia_<?php echo $experienciaId?> | LabRats</title>
     <link rel="stylesheet" href="/labrats/css/style_substancias-odores.css">
     <link rel="icon" href="/labrats/icons/icon3.png" type="image/x-icon">
 </head>
@@ -87,18 +87,18 @@ $conn->close();
         <a href="/labrats/app/inicio.php">
             <img src="/labrats/icons/logo2.png" alt="Lab Rats Logo" class="logo">
         </a>
-        <h1>Substâncias e Odores</h1>
+        <h1>Substâncias e Odores da Experiencia_<?php echo $experienciaId?></h1>
     </header>
     <?php if (empty($substanciasExperiencia && $odoresExperiencia) && $estadoExperiencia == 3) : ?>
-        <p>Esta experiência vai começar sem qualquer substância nem odor.</p>
+        <p class="empty-message">Esta experiência vai começar sem qualquer substância nem odor.</p>
     <?php elseif (empty($substanciasExperiencia && $odoresExperiencia) && $estadoExperiencia == 4) : ?>
-        <p>Esta experiência começou sem qualquer substância nem odor.</p>
+        <p class="empty-message">Esta experiência começou sem qualquer substância nem odor.</p>
     <?php elseif (empty($substanciasExperiencia && $odoresExperiencia) && $estadoExperiencia == 5) : ?>
-        <p>Esta experiência terminou sem qualquer substância nem odor.</p>
+        <p class="empty-message">Esta experiência terminou sem qualquer substância nem odor.</p>
     <?php elseif (empty($substanciasExperiencia && $odoresExperiencia) && $estadoExperiencia == 6) : ?>
-        <p>Esta experiência foi cancelada sem qualquer substância nem odor.</p>
+        <p class="empty-message">Esta experiência foi cancelada sem qualquer substância nem odor.</p>
     <?php elseif (empty($substanciasExperiencia && $odoresExperiencia) && $estadoExperiencia == 7) : ?>
-        <p>Esta experiência foi interrompida sem qualquer substância nem odor.</p>
+        <p class="empty-message">Esta experiência foi interrompida sem qualquer substância nem odor.</p>
     <?php else : ?>
         <div class="container">
             <div class="column">
