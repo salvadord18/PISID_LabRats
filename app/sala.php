@@ -40,7 +40,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sala <?php echo htmlspecialchars($salaId); ?> da Experiencia_<?php echo $experienciaId?> | LabRats</title>
+    <title>Sala <?php echo htmlspecialchars($salaId); ?> da Experiencia_<?php echo $experienciaId ?> | LabRats</title>
     <link rel="stylesheet" href="/labrats/css/style_sala.css">
     <link rel="icon" href="/labrats/icons/icon3.png" type="image/x-icon">
 </head>
@@ -50,40 +50,42 @@ $conn->close();
         <a href="/labrats/app/inicio.php">
             <img src="/labrats/icons/logo2.png" alt="Lab Rats Logo" class="logo">
         </a>
-        <h1>Sala <?php echo htmlspecialchars($salaId); ?> da Experiencia_<?php echo $experienciaId?></h1>
+        <h1>Sala <?php echo htmlspecialchars($salaId); ?> da Experiencia_<?php echo $experienciaId ?></h1>
     </header>
     <main class="alertas-container">
-        <?php if (empty($movimentos)) : ?>
-            <p class="empty-message">Ainda não houve movimentos nesta sala.</p>
-        <?php else : ?>
-            <?php foreach ($movimentos as $mov) : ?>
-                <div class="alerta">
-                    <p class="alerta-mensagem">
-                        <?php
-                        if ($mov['Sala_Origem_ID'] == $salaId && $mov['NumeroRatosFinal'] == 0) {
-                            echo "Saiu um rato para a Sala " . htmlspecialchars($mov['Sala_Destino_ID']) . ". Não restam ratos nesta sala.";
-                        } else if ($mov['Sala_Origem_ID'] == $salaId && $mov['NumeroRatosFinal'] == 1) {
-                            echo "Saiu um rato para a Sala " . htmlspecialchars($mov['Sala_Destino_ID']) . ". Resta " . htmlspecialchars($mov['NumeroRatosFinal']) . " rato nesta sala.";
-                        } else if ($mov['Sala_Origem_ID'] == $salaId) {
-                            echo "Saiu um rato para a Sala " . htmlspecialchars($mov['Sala_Destino_ID']) . ". Restam " . htmlspecialchars($mov['NumeroRatosFinal']) . " ratos nesta sala.";
-                        } else if ($mov['NumeroRatosFinal'] == 1){
-                            echo "Entrou um rato desde a Sala " . htmlspecialchars($mov['Sala_Origem_ID']) . ". Há " . htmlspecialchars($mov['NumeroRatosFinal']) . " rato nesta sala.";
-                        } else {
-                            echo "Entrou um rato desde a Sala " . htmlspecialchars($mov['Sala_Origem_ID']) . ". Há " . htmlspecialchars($mov['NumeroRatosFinal']) . " ratos nesta sala.";
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                function fetchMovimentos() {
+                    $.ajax({
+                        url: '/labrats/app/get-movimentos.php?experiencia_id=<?php echo $experienciaId; ?>&sala_id=<?php echo $salaId; ?>',
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(movimentos) {
+                            var container = $('.alertas-container');
+                            container.empty();
+                            if (movimentos.length > 0) {
+                                movimentos.forEach(function(mov) {
+                                    var mensagem = mov.Sala_Origem_ID == <?php echo $salaId; ?> ?
+                                        "Saiu um rato para a Sala " + mov.Sala_Destino_ID + ". Restam " + mov.NumeroRatosFinal + " ratos nesta sala." :
+                                        "Entrou um rato desde a Sala " + mov.Sala_Origem_ID + ". Há " + mov.NumeroRatosFinal + " ratos nesta sala.";
+                                    var alertaHtml = '<div class="alerta">' +
+                                        '<p class="alerta-mensagem">' + mensagem + '</p>' +
+                                        '<p class="alerta-hora">[' + mov.Hora + ']</p>' +
+                                        '</div>' + '<div class="button-container">' + '<button type="button" onclick="window.history.back();" class="action-btn back-btn" aria-label="Voltar"></button>';
+                                    container.append(alertaHtml);
+                                });
+                            } else {
+                                container.html('<p class="empty-message">Ainda não houve movimentos nesta sala.</p>' + '<button type="button" onclick="window.history.back();" class="action-btn back-btn-empty" aria-label="Voltar"></button>');
+                            }
                         }
-                        ?>
-                    </p>
-                    <p class="alerta-hora">[<?php echo htmlspecialchars($mov['Hora']); ?>]</p>
-                </div>
-            <?php endforeach; ?>
-        <?php endif; ?>
-        <div class="button-container">
-            <?php if (empty($movimentos)) : ?>
-                <button type="button" onclick="window.history.back();" class="action-btn back-btn-empty" aria-label="Voltar"></button>
-            <?php else : ?>
-                <button type="button" onclick="window.history.back();" class="action-btn back-btn" aria-label="Voltar"></button>
-            <?php endif; ?>
-        </div>
+                    });
+                }
+
+                fetchMovimentos();
+                setInterval(fetchMovimentos, 2000); // Atualiza os dados a cada 5 segundos
+            });
+        </script>
     </main>
 </body>
 
