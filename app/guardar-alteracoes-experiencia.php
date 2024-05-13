@@ -31,7 +31,7 @@ $updateStmt->execute();
 
 // Atualizar estado para 'A aguardar'
 $estadoAguardar = 1;
-$estadoStmt = $conn->prepare("CALL AlterarEstadoExperiencia(?, ?)");
+$estadoStmt = $conn->prepare("CALL InsertEstadoExperiencia(?, ?)");
 $estadoStmt->bind_param("ii", $experienciaId, $estadoAguardar);
 $estadoStmt->execute();
 

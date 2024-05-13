@@ -91,78 +91,78 @@ label {
 
 /* Exemplos de tipos de alerta */
 .alerta.experienciapararevisao {
-    background-color: #8C52FF; /* Vermelho para urgente */
+    background-color: #8C52FF;
 }
 
 .alerta.fimexperiencia {
-    background-color: #8C52FF; /* Amarelo para importante */
+    background-color: #8C52FF;
 }
 
 .alerta.fimtempoexperiencia {
-    background-color: #8C52FF; /* Azul para informação */
+    background-color: #8C52FF;
 }
 
 .alerta.inicioexperiencia {
-    background-color: #8C52FF; /* Vermelho para urgente */
+    background-color: #8C52FF;
 }
 
 .alerta.outlieramarelo {
-    background-color: #FFCF00; /* Amarelo para importante */
+    background-color: #FFCF00;
 }
 
 .alerta.outliervermelho {
-    background-color: #FF3131; /* Azul para informação */
+    background-color: #FF3131;
 }
 
 .alerta.ratosamarelo {
-    background-color: #FFCF00; /* Vermelho para urgente */
+    background-color: #FFCF00;
 }
 
 .alerta.ratosvermelho {
-    background-color: #FF3131; /* Amarelo para importante */
+    background-color: #FF3131;
 }
 
 .alerta.semdadosmongo {
-    background-color: #5271ff; /* Azul para informação */
+    background-color: #5271ff;
 }
 
 .alerta.semmovimentosamarelo {
-    background-color: #FFCF00; /* Vermelho para urgente */
+    background-color: #FFCF00;
 }
 
 .alerta.semmovimentosvermelho {
-    background-color: #FF3131; /* Amarelo para importante */
+    background-color: #FF3131;
 }
 
 .alerta.semtemperaturasgrave {
-    background-color: #FF3131; /* Azul para informação */
+    background-color: #FF3131;
 }
 
 .alerta.semtemperaturasligeiro {
-    background-color: #FFCF00; /* Vermelho para urgente */
+    background-color: #FFCF00;
 }
 
 .alerta.sensordadosinvalidos {
-    background-color: #5271ff; /* Amarelo para importante */
+    background-color: #5271ff;
 }
 
 .alerta.sensorsemmovimento {
-    background-color: #5271ff; /* Azul para informação */
+    background-color: #5271ff;
 }
 
 .alerta.temperaturaamarelo {
-    background-color: #FFCF00; /* Vermelho para urgente */
+    background-color: #FFCF00;
 }
 
 .alerta.temperaturavermelho {
-    background-color: #FF3131; /* Amarelo para importante */
+    background-color: #FF3131;
 }
 
 .alerta-mensagem {
     position: absolute; /* Posiciona absolutamente dentro da caixa de alerta */
-    bottom: 45px; /* Distância do fundo da caixa */
-    font-size: 16px; /* Tamanho de fonte apropriado */
+    font-size: 18px; /* Tamanho de fonte apropriado */
     font-family: "Roboto Mono", monospace;
+    margin: 20px;
 }
 
 .alerta-mensagem.experienciapararevisao {
