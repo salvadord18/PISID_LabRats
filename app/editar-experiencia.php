@@ -72,31 +72,55 @@ $conn->close();
     <title>Experiencia_<?php echo htmlspecialchars($experienciaId); ?> | LabRats</title>
     <link rel="stylesheet" href="/labrats/css/style_criar-experiencia.css">
     <link rel="icon" href="/labrats/icons/icon3.png" type="image/x-icon">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            var formModified = false;
+            var form = document.querySelector('.create-experience-form');
+
+            // Detecta mudanças no formulário
+            form.addEventListener('input', function() {
+                formModified = true;
+            });
+
+            function handleBeforeUnload(e) {
+                if (formModified) {
+                    var confirmationMessage = 'Tem a certeza de que quer sair? As alterações não serão guardadas.';
+                    e.returnValue = confirmationMessage; // Para compatibilidade cross-browser
+                    return confirmationMessage;
+                }
+            }
+
+            // Adiciona o evento beforeunload ao iniciar
+            window.addEventListener('beforeunload', handleBeforeUnload);
+
+            // Ao submeter o formulário, remove o evento beforeunload
+            form.addEventListener('submit', function() {
+                window.removeEventListener('beforeunload', handleBeforeUnload);
+            });
+
+            // Redireciona para a página a-aguardar.php com confirmação
+            function confirmAndRedirect(event, targetUrl) {
+                if (formModified) {
+                    var confirmation = confirm('Tem a certeza de que quer sair? As alterações não serão guardadas.');
+                    if (!confirmation) {
+                        event.preventDefault();
+                    } else {
+                        window.location.href = targetUrl;
+                    }
+                }
+            }
+
             var backButton = document.querySelector('.back-btn');
             backButton.addEventListener('click', function(event) {
-                event.preventDefault(); // Impede a ação padrão do botão
-                window.location.href = '/labrats/app/a-aguardar.php?Experiencia_ID=<?php echo $experienciaId; ?>'; // Redireciona para ajustar o estado
+                confirmAndRedirect(event, '/labrats/app/a-aguardar.php?Experiencia_ID=<?php echo $experienciaId; ?>');
+            });
+
+            var logoLink = document.querySelector('.logo');
+            logoLink.addEventListener('click', function(event) {
+                confirmAndRedirect(event, '/labrats/app/a-aguardar2.php?Experiencia_ID=<?php echo $experienciaId; ?>');
             });
         });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            var backButton = document.querySelector('.logo');
-            backButton.addEventListener('click', function(event) {
-                event.preventDefault(); // Impede a ação padrão do botão
-                window.location.href = '/labrats/app/a-aguardar2.php?Experiencia_ID=<?php echo $experienciaId; ?>'; // Redireciona para ajustar o estado
-            });
-        });
-
-        /*window.addEventListener('beforeunload', function(e) {
-        // Coloca um aviso, mas não redireciona ou altera a localização aqui.
-        var confirmationMessage = 'Tem a certeza de que quer sair? Certifique-se de ter guardado todas as alterações.';
-        e.returnValue = confirmationMessage; // Isto é necessário para o evento.
-        return confirmationMessage; // Alguns navegadores podem usar isto para mostrar uma mensagem ao utilizador.
-        window.location.href = '/labrats/app/a-aguardar.php?Experiencia_ID=<?php echo $experienciaId; ?>'; // Redireciona para ajustar o estado
-        });
-        */
     </script>
 </head>
 
@@ -148,7 +172,7 @@ $conn->close();
             </div>
         </form>
         </section>
-        <button type="button" onclick="window.history.back();" class="back-btn" aria-label="Voltar"></button>
+        <button type="button" onclick="location.href='/labrats/app/experiencias.php';" class="back-btn" aria-label="Voltar"></button>
     </main>
 </body>
 

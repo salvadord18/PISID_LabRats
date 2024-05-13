@@ -12,8 +12,8 @@ if (!$userId || !$experienciaId) {
 
 // Mudar o estado da experiência para 'A aguardar'
 $estadoAguardar = 1; // Asumindo que o ID do estado 'A aguardar' é 1
-$updateEstadoStmt = $conn->prepare("UPDATE estadoexperiencia SET Estado_Estado_ID = ? WHERE Experiencia_Experiencia_ID = ?");
-$updateEstadoStmt->bind_param("ii", $estadoAguardar, $experienciaId);
+$updateEstadoStmt = $conn->prepare("CALL InsertEstadoExperiencia(?, ?)");
+$updateEstadoStmt->bind_param("ii", $experienciaId, $estadoAguardar);
 $updateEstadoStmt->execute();
 
 if ($updateEstadoStmt->affected_rows > 0) {
