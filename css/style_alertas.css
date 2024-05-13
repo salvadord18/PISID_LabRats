@@ -67,6 +67,14 @@ label {
     position: relative;
 }
 
+.alertas-experiencia-container {
+    margin: 40px auto; /* Aumenta a margem e centraliza o container */
+    padding: 20px; /* Preenchimento maior */
+    max-width: 80%; /* Define uma largura máxima para o container */
+    border-radius: 20px; /* Bordas arredondadas para o container */
+    position: relative;
+}
+
 /* Correções adicionais para responsividade e acessibilidade */
 @media (max-width: 768px) {
     .alerta-mensagem {

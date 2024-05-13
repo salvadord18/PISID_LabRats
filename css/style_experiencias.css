@@ -48,6 +48,13 @@ p {
     margin-bottom: 10px;
 }
 
+.empty-message {
+    color: #8C52FF;
+    text-align: center;
+    font-size: 1.2em;
+    margin-top: 5px;
+}
+
 .experiencia-container {
     width: 33.333%; /* Define a largura para um terço da largura do viewport */
     margin-left: 30px;
