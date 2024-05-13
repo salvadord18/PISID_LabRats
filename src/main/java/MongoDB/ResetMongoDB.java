@@ -6,20 +6,39 @@ import lombok.RequiredArgsConstructor;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Types;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
 public class ResetMongoDB extends Thread{
 
+    private final Connection sqlDb;
     private final DB mongoDB;
-    private Connection sqlDb;
+    private Date firstTime;
+    private Date thisTime;
 
 
     @Override
     public void run() {
-
-        //validaExperiencia();
-
+        firstTime = new Date();
+        while(true) {
+            thisTime = new Date();
+            if (thisTime.getTime() - firstTime.getTime() >= TimeUnit.DAYS.toMillis(7)) {
+                //Perform validation before executing the task
+                try {
+                    validaExperiencia();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            try {
+                Thread.sleep(TimeUnit.DAYS.toMillis(7));
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public void validaExperiencia() throws SQLException, InterruptedException {
@@ -29,7 +48,7 @@ public class ResetMongoDB extends Thread{
         int resultado = calls.getInt(1);
         if(resultado == 0){
 
-            Thread.sleep(30000);
+            Thread.sleep(30*60*1000);
             validaExperiencia();
         }
         if (resultado == 1){
@@ -42,7 +61,10 @@ public class ResetMongoDB extends Thread{
         this.mongoDB.getCollection("Sensor_Porta").drop();
         this.mongoDB.getCollection("Sensor_Temperatura").drop();
         System.out.println("Dados Apagados no Mongo");
+        firstTime = thisTime;
     }
+
+
 
 
 
