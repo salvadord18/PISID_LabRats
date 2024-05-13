@@ -1,25 +1,26 @@
 <?php
 session_start();
-include 'db.php';
+include 'db.php'; // Assegura que este ficheiro tem a tua ligação à base de dados
 
-$userId = $_SESSION['user_id'] ?? null;
+$userId = $_SESSION['user_id'] ?? null; // Obtém o ID do utilizador da sessão
+
+// Se não houver um utilizador com sessão iniciada, redirecionar para a página de login.
 if (!$userId) {
     header("Location: /labrats/app/iniciar-sessao.php");
     exit();
 }
 
 $experienciaId = $_GET['Experiencia_ID'] ?? null;
+
 if (!$experienciaId) {
     echo "<script>alert('ID da experiência não fornecido.'); window.history.back();</script>";
     exit();
 }
+
 ?>
 
 <!DOCTYPE html>
 <html lang="pt">
-<!DOCTYPE html>
-<html lang="pt">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,7 +29,6 @@ if (!$experienciaId) {
     <link rel="icon" href="/labrats/icons/icon3.png" type="image/x-icon">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
-
 <body>
     <header class="header">
         <a href="/labrats/app/inicio.php">
@@ -36,15 +36,15 @@ if (!$experienciaId) {
         </a>
         <h1>Alertas da Experiencia_<?php echo htmlspecialchars($experienciaId); ?></h1>
     </header>
-    <div class="alertas-experiencia-container" id="alertasContainer">
-        <!-- Alertas serão inseridos aqui via AJAX -->
+    <main class="alertas-experiencia-container" id="alertasContainer">
+        <!-- Os alertas serão inseridos aqui via AJAX -->
         <div id="loadingMessage" class="empty-message">A carregar alertas...</div>
-    </div>
+    </main>
     <button type="button" onclick="location.href='/labrats/app/experiencias.php';" class="action-btn back-btn" aria-label="Voltar"></button>
     <script>
         function fetchAlerts() {
             $.ajax({
-                url: '/labrats/app/get-alertas.php',
+                url: '/labrats/app/get-alertas-experiencia.php?Experiencia_ID=<?php echo $experienciaId; ?>',
                 type: 'GET',
                 dataType: 'json',
                 beforeSend: function() {
@@ -71,9 +71,9 @@ if (!$experienciaId) {
             });
         }
 
-        // Chame imediatamente para carregar ao abrir a página
+        // Chama a função imediatamente para carregar ao abrir a página
         fetchAlerts();
         setInterval(fetchAlerts, 2000);
     </script>
-    </head>
+</body>
 </html>
