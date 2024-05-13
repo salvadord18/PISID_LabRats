@@ -4,6 +4,7 @@ import MongoDB.entities.*;
 import MongoDB.entities.enums.ExperienciaStatus;
 import MongoDB.mappers.DadosPortasMongoDBMapper;
 import com.mongodb.*;
+import com.mysql.cj.x.protobuf.MysqlxSession;
 import org.checkerframework.checker.units.qual.C;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -150,9 +151,6 @@ public class MainMongoDB {
         System.out.println("Experiencia " + Integer.valueOf(experiencia.getId()) + " em curso.");
     }
 
-    public static void checkIfMongoDrop(DB MongoDb, ConnectToSQL connectToSQL) {
-
-    }
 
 
     public static void dropMongo(DB mongoDB) {
@@ -182,9 +180,11 @@ public class MainMongoDB {
             validaPrimeiroMovimentoValido(connectToSQL, experiencia, mongoDb);
             System.out.println("Hora final: " + experiencia.getDataHora());
 
-
+// limpa mongo facil
 //        dropMongo(mongoDb);
-
+            ResetMongoDB backupMongo = new ResetMongoDB(connectToSQL.getConnectionSQL(), mongoDb);
+            //Thread que faz reset a Mongo semanalmente
+            //backupMongo.start();
 
 //        //****  Exemplo de como ir buscar informação às tabelas e mapea-las ****
 //        var result = s.executeQuery("select * from experiencia;");
