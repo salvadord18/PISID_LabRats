@@ -73,7 +73,7 @@ if (!$experienciaId) {
 
         // Chame imediatamente para carregar ao abrir a página
         fetchAlerts();
-        setInterval(fetchAlerts, 5000); // Atualiza os alertas a cada 5 segundosF
+        setInterval(fetchAlerts, 2000);
     </script>
     </head>
 </html>

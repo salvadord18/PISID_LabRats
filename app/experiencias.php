@@ -21,7 +21,7 @@ if (!$userId) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
-            setInterval(fetchExperiencias, 5000); // Atualizar a cada 5 segundos
+            setInterval(fetchExperiencias, 2000);
             fetchExperiencias(); // Carrega inicialmente os dados
         });
 
@@ -55,7 +55,7 @@ if (!$userId) {
                     }
                 },
                 error: function() {
-                    console.log('Erro ao buscar experiências.');
+                    console.log('Erro ao obter experiências.');
                 }
             });
         }

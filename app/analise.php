@@ -95,7 +95,7 @@ $conn->close();
                 chart.render();
             }
 
-            setInterval(fetchData, 5000); // Polling a cada 5 segundos
+            setInterval(fetchData, 2000);
             window.onload = fetchData; // Carrega inicialmente os dados
         </script>
     </main>
