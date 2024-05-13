@@ -6,10 +6,8 @@ import MongoDB.entities.Experiencia;
 import MongoDB.entities.enums.ExperienciaStatus;
 import lombok.RequiredArgsConstructor;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
+import java.time.LocalDateTime;
 
 //Thread que vai verificar o estado da experiencia e atualiza-lo
 // Por fazer, o código ainda é apenas para teste
@@ -41,9 +39,19 @@ public class CheckExperienciaStatus extends Thread {
 
             estadoExperiencia = cs.getInt(2);
 
+            LocalDateTime currentTime = LocalDateTime.now();
+            Timestamp dataHora = Timestamp.valueOf(currentTime);
+
             if (estadoExperiencia == 5) {
                 System.out.println("Experiencia " + Integer.valueOf(experiencia.getExperiencia().getId()) + " Terminada.");
                 CurrentExperiencia.getInstance().setEstadoExperiencia(ExperienciaStatus.TERMINADA);
+
+                String fimExperiencia = "{CALL CriarAlertaFimExperiencia (?,?)}";
+                CallableStatement callableStatement = sqlDb.prepareCall(fimExperiencia);
+                callableStatement.setInt(1, Integer.valueOf(experiencia.getExperiencia().getId()));
+                callableStatement.setTimestamp(2, dataHora);
+                callableStatement.execute();
+
                 for(Thread thread : MainMongoDB.threadsList){
                     System.out.println("threads interrompidas");
                     thread.interrupt();
