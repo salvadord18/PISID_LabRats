@@ -65,6 +65,7 @@ label {
     max-width: 80%; /* Define uma largura máxima para o container */
     border-radius: 20px; /* Bordas arredondadas para o container */
     position: relative;
+    margin-right: 180px;
 }
 
 .alertas-experiencia-container {
