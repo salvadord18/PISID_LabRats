@@ -39,7 +39,7 @@
                             var alertaHtml = '<div class="alerta ' + alerta.TipoAlerta.toLowerCase() + '">' +
                                 '<p class="alerta-mensagem ' + alerta.TipoAlerta.toLowerCase() + '">' + alerta.Mensagem + '</p>' +
                                 '<p class="alerta-hora ' + alerta.TipoAlerta.toLowerCase() + '">[' + alerta.Hora + ']</p>' +
-                                '<button class="visualizar-experiencia-btn" onclick="location.href=\'/labrats/app/visualizar-experiencia.php?Experiencia_ID=' + alerta.Experiencia_Experiencia_ID + '\';"></button>' +
+                                '<button class="visualizar-experiencia-btn" onclick="location.href=\'/labrats/app/visualizar-experiencia2.php?Experiencia_ID=' + alerta.Experiencia_Experiencia_ID + '\';"></button>' +
                                 '<p class="experiencia">' + alerta.Experiencia_Experiencia_ID + '</p>' +
                                 '</div>';
                             container.append(alertaHtml);
