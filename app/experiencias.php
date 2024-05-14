@@ -46,12 +46,16 @@ if (!$userId) {
                                 '<button class="labirinto-btn" onclick="location.href=\'/labrats/app/labirinto.php?Experiencia_ID=' + experiencia.Experiencia_ID + '\';"></button>' +
                                 '<button class="alertas-btn" onclick="location.href=\'/labrats/app/alertas-experiencia.php?Experiencia_ID=' + experiencia.Experiencia_ID + '\';"></button>' +
                                 '<button class="analise-btn" onclick="location.href=\'/labrats/app/analise.php?Experiencia_ID=' + experiencia.Experiencia_ID + '\';"></button>' +
+                                '</div>' + '<div class="button-container"><button type="button" onclick="location.href=\'/labrats/app/criar-experiencia.html\';" class="action-btn create-btn" aria-label="Adicionar experiência"></button>'
+                                '<button type="button" onclick="location.href=\'/labrats/app/inicio.php\';" class="action-btn back-btn" aria-label="Voltar"></button>'
                                 '</div>';
                             container.append(experienciaHtml);
 
                         });
                     } else {
-                        container.html('<p class="empty-message">Não tem experiências criadas. Utilize o botão \'+\' no canto inferior direito para criar uma.</p>');
+                        container.html('<p class="empty-message">Não tem experiências criadas. Utilize o botão \'+\' no canto inferior direito para criar uma.</p>' +
+                        '<div class="button-container"><button type="button" onclick="location.href=\'/labrats/app/criar-experiencia.html\';" class="action-btn-empty create-btn" aria-label="Adicionar experiência"></button>' + 
+                        '<button type="button" onclick="location.href=\'/labrats/app/inicio.php\';" class="action-btn-empty back-btn" aria-label="Voltar"></button></div>');
                     }
                 },
                 error: function() {
@@ -91,10 +95,6 @@ if (!$userId) {
     <main class="experiencias-container">
         <!-- Conteúdo dinâmico será inserido aqui -->
     </main>
-    <div class="button-container">
-        <button type="button" onclick="location.href='/labrats/app/criar-experiencia.html';" class="action-btn create-btn" aria-label="Adicionar experiência"></button>
-        <button type="button" onclick="location.href='/labrats/app/inicio.php';" class="action-btn back-btn" aria-label="Voltar"></button>
-    </div>
 </body>
 
 </html>
