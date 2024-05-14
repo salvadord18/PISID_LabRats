@@ -108,6 +108,8 @@ $conn->close();
                     } else {
                         window.location.href = targetUrl;
                     }
+                } else {
+                    window.location.href = targetUrl;
                 }
             }
 
