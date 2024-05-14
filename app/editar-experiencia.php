@@ -128,7 +128,7 @@ $conn->close();
 
 <body>
     <header class="header">
-        <a class="logo" href="/labrats/app/inicio.php">
+        <a class="logo">
             <img src="/labrats/icons/logo2.png" alt="Lab Rats Logo" class="logo">
         </a>
         <h1>Experiencia_<?php echo htmlspecialchars($experienciaId); ?></h1>
