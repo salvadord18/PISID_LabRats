@@ -131,6 +131,9 @@ $conn->close();
             <?php endif; ?>
             <?php if ($nomeEstado === 'Em processamento' || 'Terminada' || 'Cancelada' || 'Interrompida') : ?>
             <?php endif; ?>
+            <?php if ($nomeEstado === 'Edicao') : ?>
+                <?php include __DIR__ . '/a-aguardar.php'; ?>
+            <?php endif; ?>
         </form>
         </section>
         <button type="button" onclick="location.href='/labrats/app/experiencias.php';" class="back-btn" aria-label="Voltar"></button>
