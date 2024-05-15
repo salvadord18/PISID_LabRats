@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['user_id'])) {
         $conn->close();
         exit();
     } catch (mysqli_sql_exception $e) {
-        echo "<script>alert('" . $e->getMessage() . "'); window.history.back();</script>";
+        echo "<script>alert('" . $e->getMessage() . "'); window.location.href='/labrats/app/editar-perfil.php';</script>";
     }
 } else {
     echo "Acesso não autorizado.";

@@ -134,6 +134,7 @@ body, html {
     margin-left: 0;
     margin-right: 0;
     font-family: "Roboto Mono", monospace;
+    margin-top: 280px; /* Espaço entre o botão e o próximo elemento */
 }
 
 .save-btn:hover {
