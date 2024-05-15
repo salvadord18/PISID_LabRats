@@ -106,21 +106,17 @@ public class CloudToMongoSensoresPortas implements MqttCallback {
 
 
     @Override
-    public void messageArrived(String topic, MqttMessage c)
-            throws Exception {
+    public void messageArrived(String topic, MqttMessage c) throws Exception {
         try {
             DBObject document_json;
             document_json = (DBObject) JSON.parse(c.toString());
             documentLabel.append(c.toString() + "\n");
-
             if (validarFormatoHora((String) document_json.get("Hora"))) {
-
                 try {
                     int SalaOrigem = Integer.parseInt(document_json.get("SalaOrigem").toString());
                     System.out.println("A Sala Origem é: " + SalaOrigem);
                     int SalaDestino = Integer.parseInt(document_json.get("SalaDestino").toString());
                     System.out.println("A Sala Destino é: " + SalaDestino);
-
                     if (SalaOrigem <= 0 || SalaDestino <= 0) {
                         // O valor de SalaOrigem ou SalaDestino não é válido
                         System.out.println("Valores inferiores ou iguais a 0 para SalaOrigem ou SalaDestino: SalaOrigem="
@@ -133,12 +129,10 @@ public class CloudToMongoSensoresPortas implements MqttCallback {
                     System.out.println("Dado inválido recebido para o campo SalaOrigem ou SalaDestino: " + "SalaOrigem=" +
                             document_json.get("SalaOrigem") + ", SalaDestino=" + document_json.get("SalaDestino"));
                 }
-
             } else {
                 // A hora não está no formato esperado
                 System.out.println("Formato inválido para o campo Hora: " + document_json.get("Hora"));
             }
-
         } catch (Exception e) {
             System.out.println(e);
         }

@@ -199,7 +199,7 @@ public class MainMongoDB {
             var fetchDoorsMongo = new ProcessarPortas(mongoDb);
             var threadDealWithTemperatura = new TratarDadosTemperatura(connectToSQL.getConnectionSQL(), mongoDb);
             var threadDealWithPortas = new TratarDadosPortas(connectToSQL.getConnectionSQL(), mongoDb);
-            var threadFetchTempsToSql = new InsertMedicaoTemperaturaMysql(connectToSQL.getConnectionSQL());
+            var threadFetchTempsToSql = new InsertMedicaoTemperatura(connectToSQL.getConnectionSQL());
             var threadFetchPassagensToSql = new InsertMedicaoPassagem(connectToSQL.getConnectionSQL());
             var threadCheckExperienciaStatus = new CheckExperienciaStatus(connectToSQL.getConnectionSQL());
 

@@ -117,9 +117,7 @@ public class CloudToMongoSensoresTemp implements MqttCallback {
         try {
             DBObject document_json;
             document_json = (DBObject) JSON.parse(c.toString());
-
             documentLabel.append(c.toString() + "\n");
-
             if (validarFormatoHora((String) document_json.get("Hora"))) {
                 int sensor = Integer.parseInt(document_json.get("Sensor").toString());
                 if (sensor == 1 || sensor == 2) {
@@ -127,7 +125,6 @@ public class CloudToMongoSensoresTemp implements MqttCallback {
                         int leitura = Integer.parseInt(document_json.get("Leitura").toString());
                         System.out.println("Leitura recebida: " + leitura);
                         mongocol.insert(document_json);
-
                     } catch (NumberFormatException e) {
                         // Dado inválido recebido para o campo Leitura
                         System.out.println("Dado inválido recebido para o campo Leitura: " + document_json.get("Leitura"));
@@ -136,13 +133,11 @@ public class CloudToMongoSensoresTemp implements MqttCallback {
                     // O valor do campo Sensor não é 1 nem 2
                     System.out.println("Valor inválido para o campo Sensor: " + sensor);
                 }
-
             } else {
                 // A hora não está no formato esperado
                 System.out.println("Formato inválido para o campo Hora: " + document_json.get("Hora"));
             }
         } catch (Exception e) {
-
         }
     }
 

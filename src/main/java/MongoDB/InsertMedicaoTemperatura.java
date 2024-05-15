@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.sql.*;
 
 @RequiredArgsConstructor
-public class InsertMedicaoTemperaturaMysql extends Thread {
+public class InsertMedicaoTemperatura extends Thread {
     private final Connection sqlDb;
     private DadosQueue queue = DadosQueue.getInstance();
     private CurrentExperiencia experiencia = CurrentExperiencia.getInstance();

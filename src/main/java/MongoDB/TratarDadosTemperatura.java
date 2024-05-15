@@ -78,11 +78,9 @@ public class TratarDadosTemperatura extends Thread {
                 if (isOutlier(tempData)) {
                     outlierCount++;
                     int maxNumOutliers = executeSPNumberMaxOutliers();
-
                     BasicDBObject idQuery = new BasicDBObject("_id", tempData.getId());
                     BasicDBObject update = new BasicDBObject("$set", new BasicDBObject("outlier", "O"));
                     collection.update(idQuery, update);
-
                     if (outlierCount <= maxNumOutliers) {
                         queue.pushTempsTratadas(List.of(tempData));
 
@@ -91,14 +89,10 @@ public class TratarDadosTemperatura extends Thread {
                         c.setInt(1, outlierCount);
                         c.setInt(2, Integer.parseInt(experienciaId));
                         c.execute();
-
-                        //Thread.sleep(30000);
                     } else {
-
                         CallableStatement cs = null;
                         cs = sqlDb.prepareCall("{call CriarAlertaOutlierVermelho}");
                         cs.executeQuery();
-                        //Thread.sleep(10000);
                     }
                 } else {
                     queue.pushTempsTratadas(List.of(tempData));
