@@ -64,7 +64,7 @@ p {
     display: flex;
     gap: 20px;
     justify-content: center;
-    margin-top: 70px;
+    margin-top: 20px;
 }
 
 .column {
@@ -81,6 +81,7 @@ p {
     color: #8C52FF;
     font-size: 1em;
     margin-left: -210px;
+    margin-top: -40px;
 }
 
 .substancia-section-container {
@@ -121,6 +122,7 @@ p {
     color: #8C52FF;
     font-size: 1em;
     text-align: center;
+    margin-top: -40px;
 }
 
 .rats-number-section-container {
@@ -151,6 +153,7 @@ p {
     color: #8C52FF;
     font-size: 1em;
     margin-left: -165px;
+    margin-top: -40px;
 }
 
 .odor-section-container {
@@ -191,6 +194,7 @@ p {
     color: #8C52FF;
     font-size: 1em;
     text-align: center; /* Centraliza o texto */
+    margin-top: -40px;
 }
 
 .room-section-container {
@@ -278,7 +282,7 @@ p {
     margin-left: auto; /* Alinha o botão à direita */
     margin-right: auto; /* Alinha o botão à direita */
     font-family: "Roboto Mono", monospace;
-    margin-top: 35px; /* Espaço entre o botão e o próximo elemento */
+    margin-top: 175px; /* Espaço entre o botão e o próximo elemento */
 }
 
 .submit-btn:hover {
