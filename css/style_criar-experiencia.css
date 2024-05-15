@@ -85,18 +85,20 @@ label {
 
 /* Estilos unificados para todos os campos de input */
 .form-field input,
-.form-field textarea {
+.form-field textarea, 
+.form-field select {
     padding: 15px;
     border: 1px solid #ccc; /* A borda pode ser removida se desejar campos sem bordas como na imagem */
     background-color: #EFEFEF; /* Cor de fundo dos campos de input */
     border-radius: 20px; /* Borda arredondada para os campos */
     font-size: 1em; /* Tamanho da fonte para os campos */
     font-family: "Roboto Mono", monospace;
+    color:#8C52FF;
 }
 
 /* Ajuste a altura da textarea se necessário */
 .form-field textarea {
-    height: 70px; /* Altura da área de texto */
+    height: 40px; /* Altura da área de texto */
     resize: none; /* Impede o redimensionamento */
 }
 
@@ -130,7 +132,7 @@ label {
 .submit-btn {
     width: 220px; /* Largura fixa para o botão */
     padding: 15px;
-    margin-top: 20px; /* Espaço acima do botão */
+    margin-top: 8px; /* Espaço acima do botão */
     background-color: #8C52FF;
     color: white;
     border: none;
@@ -149,7 +151,7 @@ label {
 .finish-btn {
     width: 220px; /* Largura fixa para o botão */
     padding: 15px;
-    margin-top: 20px; /* Espaço acima do botão */
+    margin-top: 8px; /* Espaço acima do botão */
     background-color: #FF3131;
     color: white;
     border: none;

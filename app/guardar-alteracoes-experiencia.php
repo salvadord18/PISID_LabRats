@@ -24,9 +24,10 @@ $segundosSemMovimento = $_POST['experience-seconds'] ?? 0;
 $temperaturaIdeal = $_POST['experience-temperature'] ?? 0.0;
 $variacaoTemperaturaMaxima = $_POST['experience-max-temperature'] ?? 0.0;
 $numeroOutliersMaximo = $_POST['experience-outliers'] ?? 0;
+$prioridade = $_POST['experience-priority'] ?? 0;
 
-$updateStmt = $conn->prepare("CALL AtualizarExperiencia(?, ?, ?, ?, ?, ?, ?, ?)");
-$updateStmt->bind_param("isiiiddi", $experienciaId, $descricao, $numeroRatos, $limiteRatosSala, $segundosSemMovimento, $temperaturaIdeal, $variacaoTemperaturaMaxima, $numeroOutliersMaximo);
+$updateStmt = $conn->prepare("CALL AtualizarExperiencia(?, ?, ?, ?, ?, ?, ?, ?, ?)");
+$updateStmt->bind_param("isiiiddii", $experienciaId, $descricao, $numeroRatos, $limiteRatosSala, $segundosSemMovimento, $temperaturaIdeal, $variacaoTemperaturaMaxima, $numeroOutliersMaximo, $prioridade);
 $updateStmt->execute();
 
 // Atualizar estado para 'A aguardar'

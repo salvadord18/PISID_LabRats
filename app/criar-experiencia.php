@@ -21,24 +21,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $temperaturaIdeal = $_POST['experience-temperature'];
     $variacaoTemperaturaMaxima = $_POST['experience-max-temperature'];
     $numeroOutliersMaximo = $_POST['experience-outliers'];
+    $prioridade = $_POST['experience-priority'];
 
-    $stmt = $conn->prepare("CALL CriarExperiencia(?, ?, ?, ?, ?, ?, ?, ?, ?, @new_Experiencia_ID)");
-    $stmt->bind_param("issiiiddi", $utilizadorID, $descricao, $dataHora, $numeroRatos, $limiteRatosSala, $segundosSemMovimento, $temperaturaIdeal, $variacaoTemperaturaMaxima, $numeroOutliersMaximo);
-    if ($stmt->execute()) {
-        $stmt->close();
+    try {
+        $stmt = $conn->prepare("CALL CriarExperiencia(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @new_Experiencia_ID)");
+        $stmt->bind_param("issiiiddii", $utilizadorID, $descricao, $dataHora, $numeroRatos, $limiteRatosSala, $segundosSemMovimento, $temperaturaIdeal, $variacaoTemperaturaMaxima, $numeroOutliersMaximo, $prioridade);
+        if ($stmt->execute()) {
+            $stmt->close();
 
-        // Recupera o ID da nova experiência inserida
-        $result = $conn->query("SELECT @new_Experiencia_ID AS new_Experiencia_ID");
-        $row = $result->fetch_assoc();
-        if ($row) {
-            echo "<script>alert('Experiência criada com sucesso. ID: " . $row['new_Experiencia_ID'] . "'); window.location.href='/labrats/app/experiencias.php';</script>";
+            // Recupera o ID da nova experiência inserida
+            $result = $conn->query("SELECT @new_Experiencia_ID AS new_Experiencia_ID");
+            $row = $result->fetch_assoc();
+            if ($row) {
+                echo "<script>alert('Experiência criada com sucesso. ID: " . $row['new_Experiencia_ID'] . "'); window.location.href='/labrats/app/experiencias.php';</script>";
+            } else {
+                echo "<script>alert('Erro ao obter o ID da nova experiência.'); window.history.back();</script>";
+            }
         } else {
-            echo "<script>alert('Erro ao obter o ID da nova experiência.'); window.history.back();</script>";
+            echo "<script>alert('Erro ao preparar a consulta: " . addslashes($conn->error) . "'); window.history.back();</script>";
         }
-    } else {
-        echo "<script>alert('Erro ao preparar a consulta: " . addslashes($conn->error) . "'); window.history.back();</script>";
+        $conn->close();
+    } catch (mysqli_sql_exception $e) {
+        // Em caso de erro, emite um alerta JavaScript com a mensagem de erro
+        echo "<script>alert('" . $e->getMessage() . "'); window.history.back();</script>";
     }
-    $conn->close();
 } else {
     echo "<script>alert('Acesso não autorizado'); window.location.href='/labrats/app/iniciar-sessao.php';</script>";
 }

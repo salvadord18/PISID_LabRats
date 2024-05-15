@@ -11,7 +11,7 @@ if (!$userId) {
 
 $experienciaId = $_GET['Experiencia_ID'] ?? null;
 
-$stmt = $conn->prepare("CALL VisualizarDadosExperiencia(?, @p_Descricao, @p_NumeroRatos, @p_LimiteRatosSala, @p_SegundosSemMovimento, @p_TemperaturaIdeal, @p_VariacaoTemperaturaMaxima, @p_NumeroOutliersMaximo, @p_Nome_Estado)");
+$stmt = $conn->prepare("CALL VisualizarDadosExperiencia(?, @p_Descricao, @p_NumeroRatos, @p_LimiteRatosSala, @p_SegundosSemMovimento, @p_TemperaturaIdeal, @p_VariacaoTemperaturaMaxima, @p_NumeroOutliersMaximo, @p_Prioridade, @p_Nome_Estado)");
 $stmt->bind_param("i", $experienciaId);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -24,6 +24,7 @@ if ($row = $result->fetch_assoc()) {
     $temperaturaIdeal = $row['TemperaturaIdeal'];
     $variacaoTemperaturaMaxima = $row['VariacaoTemperaturaMaxima'];
     $numeroOutliersMaximo = $row['NumeroOutliersMaximo'];
+    $prioridade = $row['Prioridade'];
     $nomeEstado = $row['Nome_Estado']; // Supondo que o SP já retorna isso
 } else {
     echo "<script>alert('Nenhuma experiência encontrada com o ID fornecido.'); window.history.back();</script>";
@@ -167,6 +168,17 @@ $conn->close();
                 <div class="form-field">
                     <label for="experience-outliers">Número máximo de outliers:</label>
                     <input type="number" id="experience-outliers" name="experience-outliers" value="<?php echo htmlspecialchars($numeroOutliersMaximo ?? ''); ?>" min="0" step="1" max="100" required>
+                </div>
+            </div>
+                <div class="form-row">
+                    <div class="form-field">
+                        <label for="experience-priority">Prioridade:</label>
+                        <select id="experience-priority" name="experience-priority">
+                            <option value="3" <?php echo ($prioridade == 3) ? 'selected' : ''; ?>>Baixa</option>
+                            <option value="2" <?php echo ($prioridade == 2) ? 'selected' : ''; ?>>Média</option>
+                            <option value="1" <?php echo ($prioridade == 1) ? 'selected' : ''; ?>>Alta</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="form-actions">
