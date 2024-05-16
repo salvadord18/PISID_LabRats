@@ -46,12 +46,12 @@ public class ResetMongoDB extends Thread{
         CallableStatement calls = this.sqlDb.prepareCall(tempIdeal);
         calls.execute();
         int resultado = calls.getInt(1);
-        if(resultado == 0){
+        if(resultado == 1){
 
             Thread.sleep(30*60*1000);
             validaExperiencia();
         }
-        if (resultado == 1){
+        if (resultado == 0){
             dropMongo();
         }
     }
