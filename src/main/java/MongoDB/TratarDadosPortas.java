@@ -44,18 +44,23 @@ public class TratarDadosPortas extends Thread {
             System.out.println("A sala destino é " + salaDestino);
 
             var corredoresSize = experiencia.getExperiencia().getCorredores().length;
+            var countDadosErrados = 0;
 
             for (int i = 0; i < corredoresSize; i++) {
                 if (experiencia.getExperiencia().getCorredores()[i].getSalaOrigem().equals(salaOrigem)
                         && experiencia.getExperiencia().getCorredores()[i].getSalaDestino().equals(salaDestino)) {
                     queue.pushPortasTratadas(List.of(portasData));
                     System.out.println("Dados corretos inseridos nas Portas Tratadas");
+                } else {
+                    countDadosErrados++;
+                    if (countDadosErrados >= 30) {
+                        String CallSP = "{ call CriarAlertaSensorDadosInvalidos(?) }";
+                        CallableStatement c = sqlDb.prepareCall(CallSP);
+                        Timestamp timestamp = Timestamp.valueOf(portasData.getHora());
+                        c.setTimestamp(1, timestamp);
+                        c.execute();
+                    }
                 }
-                String CallSP = "{ call CriarAlertaSensorDadosInvalidos(?) }";
-                CallableStatement c = sqlDb.prepareCall(CallSP);
-                Timestamp timestamp = Timestamp.valueOf(portasData.getHora());
-                c.setTimestamp(1, timestamp);
-                c.execute();
             }
 // ............... Numero ratos em cada sala ...................
             String SPNumRatos = "{ call Get_RatosAtuais(?,?,?) }";
@@ -74,10 +79,10 @@ public class TratarDadosPortas extends Thread {
             CallableStatement cbs = sqlDb.prepareCall(SPLimiteRatos);
             cbs.registerOutParameter(1, Types.INTEGER);
             cbs.execute();
-            int limiteRatosFinal =cbs.getInt(1);
+            int limiteRatosFinal = cbs.getInt(1);
 
             int limiteAmarelo = (int) (limiteRatosFinal * 0.75);
-            if(numeroAtualRatos <= limiteAmarelo){
+            if (numeroAtualRatos <= limiteAmarelo) {
                 String SPRatosAtuais = "{ call CriarAlertaRatosAmarelo(?,?) }";
                 CallableStatement call = sqlDb.prepareCall(SPRatosAtuais);
                 call.setInt(1, Integer.parseInt((experiencia.getExperiencia().getId())));
