@@ -120,11 +120,21 @@ public class MainMongoDB {
 
                     setExperienciaEmCurso(connectToSQL, experiencia);
 
-                    String inicioExperiencia = "{CALL CriarAlertaInicioExperiencia (?)}";
-                    CallableStatement callableStatement = connectToSQL.getConnectionSQL().prepareCall(inicioExperiencia);
+                    Timestamp dataDaMedicao = Timestamp.valueOf(dataMongo);
+
+                    String SPInsertPassagem = "{ call Insert_MedicaoPassagem(?,?,?,?) }";
+                    CallableStatement cs = connectToSQL.getConnectionSQL().prepareCall(SPInsertPassagem);
+                    cs.setInt(1, Integer.parseInt(experiencia.getId()));
+                    cs.setInt(2, Integer.parseInt(salaOrigemValue));
+                    cs.setInt(3, salaDestino);
+                    cs.setTimestamp(4, dataDaMedicao);
+                    cs.execute();
+
+                    String fimExperiencia = "{CALL CriarAlertaInicioExperiencia (?)}";
+                    CallableStatement callableStatement = connectToSQL.getConnectionSQL().prepareCall(fimExperiencia);
                     callableStatement.setInt(1, Integer.valueOf(experiencia.getId()));
                     callableStatement.execute();
-                    System.out.println("Alerta experiencia em curso");
+                    System.out.println("Alerta Inicio Experiencia");
 
                     //Depois do SP que passa o estado da experiencia para em execução, faz set do estado da experiencia
                     // no java, para execucao
