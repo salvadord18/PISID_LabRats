@@ -120,6 +120,11 @@ public class MainMongoDB {
 
                     setExperienciaEmCurso(connectToSQL, experiencia);
 
+                    String inicioExperiencia = "{CALL CriarAlertaInicioExperiencia (?)}";
+                    CallableStatement callableStatement = connectToSQL.getConnectionSQL().prepareCall(inicioExperiencia);
+                    callableStatement.setInt(1, Integer.valueOf(experiencia.getId()));
+                    callableStatement.execute();
+
                     //Depois do SP que passa o estado da experiencia para em execução, faz set do estado da experiencia
                     // no java, para execucao
                     CurrentExperiencia.getInstance().setEstadoExperiencia(ExperienciaStatus.EM_CURSO);

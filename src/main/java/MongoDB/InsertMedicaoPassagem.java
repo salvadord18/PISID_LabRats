@@ -42,6 +42,7 @@ public class InsertMedicaoPassagem extends Thread {
             var salaOrigem = treatedPassagem.getSalaOrigem();
             var salaDestino = treatedPassagem.getSalaDestino();
 
+            System.out.println("INSERIU MEDICAO PASSAGEM");
             String SPInsertPassagem = "{ call Insert_MedicaoPassagem(?,?,?,?) }";
             CallableStatement cs = sqlDb.prepareCall(SPInsertPassagem);
             cs.setInt(1, experienciaId);

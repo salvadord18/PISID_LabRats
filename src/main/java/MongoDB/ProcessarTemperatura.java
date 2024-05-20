@@ -36,7 +36,7 @@ public class ProcessarTemperatura extends Thread {
 
             DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
 
-            System.out.println("BATATA " + CurrentExperiencia.getInstance().getExperiencia().getDataHora());
+            System.out.println("Hora da current experiencia " + CurrentExperiencia.getInstance().getExperiencia().getDataHora());
             LocalDateTime dataExperiencia = LocalDateTime.parse(CurrentExperiencia.getInstance().getExperiencia().getDataHora(), formatter1);
 //            System.out.println(dataExperiencia);
             // só vai atualizar os dados em que a sua data seja maior que a data da experiencia
