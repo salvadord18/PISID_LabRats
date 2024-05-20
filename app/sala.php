@@ -66,13 +66,23 @@ $conn->close();
                             container.empty();
                             if (movimentos.length > 0) {
                                 movimentos.forEach(function(mov) {
-                                    var mensagem = mov.Sala_Origem_ID == <?php echo $salaId; ?> ?
-                                        "Saiu um rato para a Sala " + mov.Sala_Destino_ID + ". Restam " + mov.NumeroRatosFinal + " ratos nesta sala." :
-                                        "Entrou um rato desde a Sala " + mov.Sala_Origem_ID + ". Há " + mov.NumeroRatosFinal + " ratos nesta sala.";
+                                    var mensagem;
+                                    if (mov.Sala_Origem_ID == <?php echo $salaId; ?>) {
+                                        mensagem = "Saiu um rato para a Sala " + mov.Sala_Destino_ID + ". " +
+                                            (mov.NumeroRatosFinal == 1 ? "Resta " : "Restam ") +
+                                            mov.NumeroRatosFinal + " rato" + (mov.NumeroRatosFinal == 1 ? "" : "s") + " nesta sala.";
+                                    } else {
+                                        mensagem = "Entrou um rato desde a Sala " + mov.Sala_Origem_ID + ". " +
+                                            (mov.NumeroRatosFinal == 1 ? "Há " : "Há ") +
+                                            mov.NumeroRatosFinal + " rato" + (mov.NumeroRatosFinal == 1 ? "" : "s") + " nesta sala.";
+                                    }
+
                                     var alertaHtml = '<div class="alerta">' +
                                         '<p class="alerta-mensagem">' + mensagem + '</p>' +
                                         '<p class="alerta-hora">[' + mov.Hora + ']</p>' +
-                                        '</div>' + '<div class="button-container">' + '<button type="button" onclick="window.history.back();" class="action-btn back-btn" aria-label="Voltar"></button>';
+                                        '</div>' +
+                                        '<div class="button-container">' +
+                                        '<button type="button" onclick="window.history.back();" class="action-btn back-btn" aria-label="Voltar"></button>';
                                     container.append(alertaHtml);
                                 });
                             } else {
