@@ -19,12 +19,18 @@ public class InsertMedicaoPassagem extends Thread {
 
     @Override
     public void run() {
+        handler();
+    }
+
+    private void handler(){
         try {
             insertMedicaoPassagem();
         } catch (SQLException e) {
             System.out.println("A exceção é " + e.getMessage());
+            if(!CurrentExperiencia.getInstance().isEstado(ExperienciaStatus.TERMINADA)){
+                handler();
+            }
         }
-
     }
 
     public void insertMedicaoPassagem() throws SQLException {
