@@ -96,6 +96,7 @@ label {
     font-size: 16px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     min-height: 80px; /* Garante espaço suficiente para conteúdo interno */
+    background-color: #8C52FF;
 }
 
 /* Exemplos de tipos de alerta */
@@ -115,11 +116,11 @@ label {
     background-color: #8C52FF;
 }
 
-.alerta.outlieramarelo {
+.alerta.alertaoutlieramarelo {
     background-color: #FFCF00;
 }
 
-.alerta.outliervermelho {
+.alerta.alertaoutliervermelho {
     background-color: #FF3131;
 }
 
@@ -190,11 +191,11 @@ label {
     color: white;
 }
 
-.alerta-mensagem.outlieramarelo {
+.alerta-mensagem.alertaoutlieramarelo {
     color: black;
 }
 
-.alerta-mensagem.outliervermelho {
+.alerta-mensagem.alertaoutliervermelho {
     color: white;
 }
 
@@ -247,7 +248,7 @@ label {
     bottom: 5px; /* Distância do fundo da caixa */
     right: 30px; /* Distância da direita da caixa */
     font-size: 12px; /* Tamanho menor para a fonte da data */
-    color: #737373; /* Cor mais suave para a data */
+    color: white;
     font-family: "Roboto Mono", monospace;
 }
 
@@ -267,11 +268,11 @@ label {
     color: white;
 }
 
-.alerta-hora.outlieramarelo {
+.alerta-hora.alertaoutlieramarelo {
     color: black;
 }
 
-.alerta-hora.outliervermelho {
+.alerta-hora.alertaoutliervermelho {
     color: white;
 }
 

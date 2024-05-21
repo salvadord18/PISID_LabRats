@@ -19,14 +19,19 @@ if (!$experienciaId) {
 }
 
 $salas = [];
-if ($stmt = $conn->prepare("CALL MostrarLabirinto(?)")) {
-    $stmt->bind_param("i", $experienciaId);
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-    while ($linha = $resultado->fetch_assoc()) {
-        $salas[] = $linha;
+try {
+    if ($stmt = $conn->prepare("CALL MostrarLabirinto(?)")) {
+        $stmt->bind_param("i", $experienciaId);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        while ($linha = $resultado->fetch_assoc()) {
+            $salas[] = $linha;
+        }
+        $stmt->close();
     }
-    $stmt->close();
+} catch (mysqli_sql_exception $e) {
+    // Em caso de erro, emite um alerta JavaScript com a mensagem de erro
+    echo "<script>alert('" . $e->getMessage() . "'); window.history.back();</script>";
 }
 
 $conn->close();
@@ -38,7 +43,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Labirinto da Experiencia_<?php echo $experienciaId?> | LabRats</title>
+    <title>Labirinto da Experiencia_<?php echo $experienciaId ?> | LabRats</title>
     <link rel="stylesheet" href="/labrats/css/style_labirinto.css">
     <link rel="icon" href="/labrats/icons/icon3.png" type="image/x-icon">
 </head>
@@ -48,7 +53,7 @@ $conn->close();
         <a href="/labrats/app/inicio.php">
             <img src="/labrats/icons/logo2.png" alt="Lab Rats Logo" class="logo">
         </a>
-        <h1>Labirinto da Experiencia_<?php echo $experienciaId?></h1>
+        <h1>Labirinto da Experiencia_<?php echo $experienciaId ?></h1>
     </header>
     <div class="alertas-container">
         <?php if (empty($salas)) : ?>
