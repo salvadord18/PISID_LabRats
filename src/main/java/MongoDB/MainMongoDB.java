@@ -92,7 +92,7 @@ public class MainMongoDB {
                 try (ResultSet resultado = cs.executeQuery()) {
                     if (resultado.next()) {
                         JSONArray jsonArray = new JSONArray(resultado.getString(1));
-                        if (jsonArray.length() >= 1) {
+                        if (jsonArray.length() > 1) {
                             Corredor[] corredores = new Corredor[jsonArray.length()];
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
