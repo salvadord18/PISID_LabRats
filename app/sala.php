@@ -76,7 +76,7 @@ $conn->close();
                                                 mov.NumeroRatosFinal + " rato" + (mov.NumeroRatosFinal == 1 ? "" : "s") + " nesta sala.";
                                         }
                                     } else {
-                                        if (mov.NumeroRatosFinal === null) {
+                                        if (mov.NumeroRatosFinal === null || mov.NumeroRatosFinal === 0) {
                                             mensagem = "Tinha entrado um rato desde a Sala " + mov.Sala_Origem_ID + " mas entretanto já não restam ratos nesta sala.";
                                         } else {
                                             mensagem = "Entrou um rato desde a Sala " + mov.Sala_Origem_ID + ". " +
