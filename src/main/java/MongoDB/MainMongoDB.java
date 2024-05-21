@@ -41,39 +41,84 @@ public class MainMongoDB {
         }
     }
 
-    public static Experiencia getCorredoresCurrentExperiencia(ConnectToSQL connectToSQL, int idExperiencia) throws SQLException {
+    public static Experiencia getCorredoresCurrentExperiencia(ConnectToSQL connectToSQL, int idExperiencia) throws SQLException, InterruptedException {
 
+//        String procedureCall = "{CALL GetCorredores(?)}";
+//        CallableStatement cs = connectToSQL.getConnectionSQL().prepareCall(procedureCall);
+//        cs.setInt(1, idExperiencia);
+//        ResultSet resultado = cs.executeQuery();
+//
+//        Experiencia experiencia = new Experiencia();
+//        experiencia.setId(String.valueOf(idExperiencia));
+//
+//        setExperienciaEmProcessamento(connectToSQL, experiencia);
+//        CurrentExperiencia.getInstance().setEstadoExperiencia(ExperienciaStatus.EM_PROCESSAMENTO);
+//
+//        while (resultado.next()) {
+//            JSONArray jsonArray = new JSONArray(resultado.getString(1));
+//            Corredor[] corredores = new Corredor[jsonArray.length()];
+//            int i = 0;
+//
+//            for (; i < jsonArray.length(); i++) {
+//                JSONObject jsonObject = jsonArray.getJSONObject(i);
+//                Corredor corredor = new Corredor();
+//                corredor.setSalaOrigem(jsonObject.getString("Sala_Origem_ID"));
+//                corredor.setSalaDestino(jsonObject.getString("Sala_Destino_ID"));
+//                corredores[i] = corredor;
+//
+//            }
+//            LocalDateTime currentDate = LocalDateTime.now();
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
+//
+//            experiencia.setDataHora(currentDate.format(formatter));
+//            experiencia.setId(String.valueOf(idExperiencia));
+//            experiencia.setCorredores(corredores);
+//
+//        }
+//        return experiencia;
         String procedureCall = "{CALL GetCorredores(?)}";
-        CallableStatement cs = connectToSQL.getConnectionSQL().prepareCall(procedureCall);
-        cs.setInt(1, idExperiencia);
-        ResultSet resultado = cs.executeQuery();
-
         Experiencia experiencia = new Experiencia();
         experiencia.setId(String.valueOf(idExperiencia));
 
         setExperienciaEmProcessamento(connectToSQL, experiencia);
         CurrentExperiencia.getInstance().setEstadoExperiencia(ExperienciaStatus.EM_PROCESSAMENTO);
 
-        while (resultado.next()) {
-            JSONArray jsonArray = new JSONArray(resultado.getString(1));
-            Corredor[] corredores = new Corredor[jsonArray.length()];
-            int i = 0;
+        boolean hasResult = false;
+        int retryDelay = 5000; // tempo de espera entre as tentativas (em milissegundos)
 
-            for (; i < jsonArray.length(); i++) {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                Corredor corredor = new Corredor();
-                corredor.setSalaOrigem(jsonObject.getString("Sala_Origem_ID"));
-                corredor.setSalaDestino(jsonObject.getString("Sala_Destino_ID"));
-                corredores[i] = corredor;
+        while (!hasResult) {
+            try (CallableStatement cs = connectToSQL.getConnectionSQL().prepareCall(procedureCall)) {
+                cs.setInt(1, idExperiencia);
+                try (ResultSet resultado = cs.executeQuery()) {
+                    if (resultado.next()) {
+                        JSONArray jsonArray = new JSONArray(resultado.getString(1));
+                        if (jsonArray.length() >= 1) {
+                            Corredor[] corredores = new Corredor[jsonArray.length()];
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                Corredor corredor = new Corredor();
+                                corredor.setSalaOrigem(jsonObject.getString("Sala_Origem_ID"));
+                                corredor.setSalaDestino(jsonObject.getString("Sala_Destino_ID"));
+                                corredores[i] = corredor;
+                            }
+                            LocalDateTime currentDate = LocalDateTime.now();
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
 
+                            experiencia.setDataHora(currentDate.format(formatter));
+                            experiencia.setId(String.valueOf(idExperiencia));
+                            experiencia.setCorredores(corredores);
+
+                            hasResult = true; // Sinaliza que temos um resultado válido
+                        }
+                    }
+                }
+            } catch (SQLException e) {
+                // Trate a exceção conforme necessário, talvez registre e rethrow ou apenas rethrow
+                System.out.println("Ainda não há corredores");
             }
-            LocalDateTime currentDate = LocalDateTime.now();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
-
-            experiencia.setDataHora(currentDate.format(formatter));
-            experiencia.setId(String.valueOf(idExperiencia));
-            experiencia.setCorredores(corredores);
-
+            if (!hasResult) {
+                Thread.sleep(retryDelay); // Aguarda antes da próxima tentativa
+            }
         }
         return experiencia;
     }

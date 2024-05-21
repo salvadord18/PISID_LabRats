@@ -28,8 +28,14 @@ public class InsertMedicaoTemperatura extends Thread {
         while (!CurrentExperiencia.getInstance().isEstado(ExperienciaStatus.TERMINADA)) {
 
             // Vai enviar continuamente os dados
+//            var treatedTemp = queue.popTempsTratadas();
             var treatedTempsList = queue.getDadosTratadosTemperaturas();
             var experienciaId = Integer.parseInt(experiencia.getExperiencia().getId());
+
+//            var leitura = treatedTemp.getLeitura();
+//            var sensor = treatedTemp.getSensor();
+//            var horaMedicao = treatedTemp.getHora();
+//            Timestamp dataTemperatura = Timestamp.valueOf(horaMedicao);
 
             for (int i = 0; i < treatedTempsList.size(); i++) {
                 var treatedTemp = treatedTempsList.get(i);
@@ -46,6 +52,11 @@ public class InsertMedicaoTemperatura extends Thread {
                 cs.setBigDecimal(3, BigDecimal.valueOf(leitura));
                 cs.setInt(4, sensor);
                 cs.execute();
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
             try {
                 Thread.sleep(3000);

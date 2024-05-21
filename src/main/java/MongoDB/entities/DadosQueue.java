@@ -31,8 +31,8 @@ public class DadosQueue {
         }
         return popPortasTratadas();
     }
-    public synchronized void pushData(Collection<DadosTemperaturaMongoDB> data) {
-        dadosTemperaturaMongoDB.addAll(data);
+    public synchronized void pushData(DadosTemperaturaMongoDB data) {
+        dadosTemperaturaMongoDB.add(data);
         notifyAll();
     }
 

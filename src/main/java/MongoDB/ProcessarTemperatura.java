@@ -32,22 +32,23 @@ public class ProcessarTemperatura extends Thread {
             var iterator = collection.find(query).iterator();
             var mappedTemps = DadosTemperaturaMongoDBMapper.mapList(iterator);
 
-            queue.pushData(mappedTemps);
-
             DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
 
             System.out.println("Hora da current experiencia " + CurrentExperiencia.getInstance().getExperiencia().getDataHora());
             LocalDateTime dataExperiencia = LocalDateTime.parse(CurrentExperiencia.getInstance().getExperiencia().getDataHora(), formatter1);
 //            System.out.println(dataExperiencia);
+
             // só vai atualizar os dados em que a sua data seja maior que a data da experiencia
             var tempsToProcess = new ArrayList<ObjectId>();
             for (int i = 0; i < mappedTemps.size(); i++) {
-                var dataDadosMongo = mappedTemps.get(i).getHora();
+                var temperaturaToProcess = mappedTemps.get(i);
+                var dataDadosMongo = temperaturaToProcess.getHora();
 
                 LocalDateTime dataTemperatura = LocalDateTime.parse(dataDadosMongo, formatter1);
 //                System.out.println("data temperatura --> " + dataTemperatura);
                 if (dataTemperatura.isAfter(dataExperiencia)) {
-                    tempsToProcess.add(mappedTemps.get(i).getId());
+                    tempsToProcess.add(temperaturaToProcess.getId());
+                    queue.pushData(temperaturaToProcess);
                 }
             }
             BasicDBObject idQuery = new BasicDBObject("_id", new BasicDBObject("$in", tempsToProcess));
@@ -62,8 +63,5 @@ public class ProcessarTemperatura extends Thread {
             }
         }
         System.out.println("Processei temperatura");
-
     }
-
-
 }
