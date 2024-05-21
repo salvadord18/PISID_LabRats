@@ -68,7 +68,7 @@ $conn->close();
                                 movimentos.forEach(function(mov) {
                                     var mensagem;
                                     if (mov.Sala_Origem_ID == <?php echo $salaId; ?>) {
-                                        if (mov.NumeroRatosFinal === null) {
+                                        if (mov.NumeroRatosFinal === null || mov.NumeroRatosFinal === 0) {
                                             mensagem = "Saiu um rato para a Sala " + mov.Sala_Destino_ID + ". Não restam ratos nesta sala.";
                                         } else {
                                             mensagem = "Saiu um rato para a Sala " + mov.Sala_Destino_ID + ". " +
