@@ -68,13 +68,21 @@ $conn->close();
                                 movimentos.forEach(function(mov) {
                                     var mensagem;
                                     if (mov.Sala_Origem_ID == <?php echo $salaId; ?>) {
-                                        mensagem = "Saiu um rato para a Sala " + mov.Sala_Destino_ID + ". " +
-                                            (mov.NumeroRatosFinal == 1 ? "Resta " : "Restam ") +
-                                            mov.NumeroRatosFinal + " rato" + (mov.NumeroRatosFinal == 1 ? "" : "s") + " nesta sala.";
+                                        if (mov.NumeroRatosFinal === null || mov.NumeroRatosFinal === 0) {
+                                            mensagem = "Saiu um rato para a Sala " + mov.Sala_Destino_ID + ". Não restam ratos nesta sala.";
+                                        } else {
+                                            mensagem = "Saiu um rato para a Sala " + mov.Sala_Destino_ID + ". " +
+                                                (mov.NumeroRatosFinal == 1 ? "Resta " : "Restam ") +
+                                                mov.NumeroRatosFinal + " rato" + (mov.NumeroRatosFinal == 1 ? "" : "s") + " nesta sala.";
+                                        }
                                     } else {
-                                        mensagem = "Entrou um rato desde a Sala " + mov.Sala_Origem_ID + ". " +
-                                            (mov.NumeroRatosFinal == 1 ? "Há " : "Há ") +
-                                            mov.NumeroRatosFinal + " rato" + (mov.NumeroRatosFinal == 1 ? "" : "s") + " nesta sala.";
+                                        if (mov.NumeroRatosFinal === null || mov.NumeroRatosFinal === 0) {
+                                            mensagem = "Tinha entrado um rato desde a Sala " + mov.Sala_Origem_ID + " mas entretanto já não restam ratos nesta sala.";
+                                        } else {
+                                            mensagem = "Entrou um rato desde a Sala " + mov.Sala_Origem_ID + ". " +
+                                                (mov.NumeroRatosFinal == 1 ? "Há " : "Há ") +
+                                                mov.NumeroRatosFinal + " rato" + (mov.NumeroRatosFinal == 1 ? "" : "s") + " nesta sala.";
+                                        }
                                     }
 
                                     var alertaHtml = '<div class="alerta">' +
