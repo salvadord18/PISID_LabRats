@@ -21,6 +21,12 @@ public class TratarDadosTemperatura extends Thread {
     private DadosQueue queue = DadosQueue.getInstance();
     private CurrentExperiencia experiencia = CurrentExperiencia.getInstance();
 
+    private long lastAlertTimeTemperatura = System.currentTimeMillis();
+    private long lastAlertTimeOutlier = System.currentTimeMillis();
+    private long alertVermelhoTime = 10;
+    private long alertAmareloTime = 30;
+
+
     @Override
     public void run() {
         try {
@@ -53,10 +59,11 @@ public class TratarDadosTemperatura extends Thread {
                 var temperaturaRangeInferior = temperaturaIdeal - variacaoMaxTemp;
                 var temperaturaRangeAmareloSuperior = temperaturaIdeal + (variacaoMaxTemp*0.75);
                 var temperaturaRangeAmareloInferior = temperaturaIdeal - (variacaoMaxTemp*0.75);
-                
+
                 Timestamp dataHora = Timestamp.valueOf(tempData.getHora());
 
                 if (tempData.getLeitura() < temperaturaRangeInferior || tempData.getLeitura() > temperaturaRangeSuperior) {
+                    if(canSendAlert(alertVermelhoTime, lastAlertTimeTemperatura)){
                     String CallSP = "{ call CriarAlertaTemperaturaVermelho(?,?,?,?) }";
                     CallableStatement c = sqlDb.prepareCall(CallSP);
                     c.setTimestamp(1, dataHora);
@@ -64,15 +71,20 @@ public class TratarDadosTemperatura extends Thread {
                     c.setInt(3, tempData.getSensor());
                     c.setInt(4, Integer.parseInt(experienciaId));
                     c.execute();
+                        System.out.println("Alerta Vermelho Tempeartura");
+                    }
                 } else if (tempData.getLeitura() < temperaturaRangeAmareloInferior && tempData.getLeitura() > temperaturaRangeInferior
                 || tempData.getLeitura() > temperaturaRangeAmareloSuperior && tempData.getLeitura() < temperaturaRangeSuperior) {
-                    String CallSP = "{ call CriarAlertaTemperaturaAmarelo(?,?,?,?) }";
-                    CallableStatement c = sqlDb.prepareCall(CallSP);
-                    c.setTimestamp(1, dataHora);
-                    c.setTimestamp(2, dataHora);
-                    c.setInt(3, tempData.getSensor());
-                    c.setInt(4, Integer.parseInt(experienciaId));
-                    c.execute();
+                    if(canSendAlert(alertAmareloTime, lastAlertTimeTemperatura)) {
+                        String CallSP = "{ call CriarAlertaTemperaturaAmarelo(?,?,?,?) }";
+                        CallableStatement c = sqlDb.prepareCall(CallSP);
+                        c.setTimestamp(1, dataHora);
+                        c.setTimestamp(2, dataHora);
+                        c.setInt(3, tempData.getSensor());
+                        c.setInt(4, Integer.parseInt(experienciaId));
+                        c.execute();
+                        System.out.println("Alerta Amarelo Temperatura");
+                    }
                 }
                 // if outlier então
                 if (isOutlier(tempData)) {
@@ -83,16 +95,21 @@ public class TratarDadosTemperatura extends Thread {
                     collection.update(idQuery, update);
                     if (outlierCount <= maxNumOutliers) {
                         queue.pushTempsTratadas(List.of(tempData));
-
+                        if(canSendAlert(alertAmareloTime, lastAlertTimeOutlier)){
                         String CallSP = "{ call CriarAlertaOutlierAmarelo(?,?) }";
                         CallableStatement c = sqlDb.prepareCall(CallSP);
                         c.setInt(1, outlierCount);
                         c.setInt(2, Integer.parseInt(experienciaId));
                         c.execute();
+                            System.out.println("Alerta Amarelo Outlier");
+                    }
                     } else {
-                        CallableStatement cs = null;
-                        cs = sqlDb.prepareCall("{call CriarAlertaOutlierVermelho}");
-                        cs.executeQuery();
+                        if(canSendAlert(alertVermelhoTime, lastAlertTimeOutlier)) {
+                            CallableStatement cs = null;
+                            cs = sqlDb.prepareCall("{call CriarAlertaOutlierVermelho}");
+                            cs.executeQuery();
+                            System.out.println("Alerta Vermelho Outlier");
+                        }
                     }
                 } else {
                     queue.pushTempsTratadas(List.of(tempData));
@@ -103,6 +120,20 @@ public class TratarDadosTemperatura extends Thread {
         } catch (InterruptedException e) {
             System.out.println("Thread TratarDadosTemperatura interrompida");
         }
+    }
+
+
+    private boolean canSendAlert(long alert, long lastAlertTime) {
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastAlertTime >= alert) {
+            if (lastAlertTime == lastAlertTimeTemperatura) {
+                lastAlertTimeTemperatura = currentTime;
+            } else {
+                lastAlertTimeOutlier = currentTime;
+            }
+            return true;
+        }
+        return false;
     }
 
     public boolean isOutlier(DadosTemperaturaMongoDB dadosTemperaturaMongoDB) {
