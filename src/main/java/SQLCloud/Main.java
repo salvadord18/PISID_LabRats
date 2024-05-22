@@ -28,7 +28,7 @@ public class Main {
          String JDBC_URL = "jdbc:mariadb://" + IP_ADDRESS + ":" + PORT + "/" + DATABASE_NAME + "?useSSL=false"; // String de conexão JDBC
 
         String IP_ADDRESS1 = "127.0.0.1";
-        String DATABASE_NAME1 = "pisid25";
+        String DATABASE_NAME1 = "pisid26";
         String USERNAME1 = "root";
         String PASSWORD1 = "123";
         String PORT1 = "3306";
@@ -42,11 +42,9 @@ public class Main {
 
             if (existeExperiencia == 1) {
                 // Obtém o número da experiência em processamento
-
                 int experiencia = GetExperienciaEmProcessamento(JDBC_URL1, USERNAME1, PASSWORD1);
                 boolean hasCorredores = GetCorredoresExperiencia(JDBC_URL1, USERNAME1, PASSWORD1, experiencia);
-
-                if (!hasCorredores) {
+                if (!hasCorredores &  experiencia != -1) {
                     // Insere corredores com indicação da experiência
                     List<Corredor> corredoresToSend = CorredorMapper.fetchCorredores(JDBC_URL, USERNAME, PASSWORD);
                     DatabaseTransfer.sendCorredores(corredoresToSend, JDBC_URL1, USERNAME1, PASSWORD1, experiencia);
@@ -71,6 +69,8 @@ public class Main {
             }
         }
     }
+
+
 
     private static int GetExisteExperienciaADecorrer(String jdbcUrl, String username, String password) {
         try (Connection conn = DriverManager.getConnection(jdbcUrl, username, password);
