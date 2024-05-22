@@ -133,6 +133,8 @@ public class TratarDadosTemperatura extends Thread {
             }
             return true;
         }
+        long time = (currentTime - lastAlertTime);
+        System.out.println("Não pode enviar alerta" + time);
         return false;
     }
 
