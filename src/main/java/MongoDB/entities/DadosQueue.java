@@ -19,49 +19,39 @@ public class DadosQueue {
         notifyAll();
     }
 
-    public synchronized DadosPortasMongoDB popPortasTratadas() {
+    public synchronized DadosPortasMongoDB popPortasTratadas() throws InterruptedException {
         if (dadosTratadosPortas.size() > 0) {
             return dadosTratadosPortas.remove(0);
         } else {
-            try {
-                wait();
-            } catch (InterruptedException ignored) {
-                System.out.println("Lista dadosTratadosPortas interrompida");
-            }
+            wait();
         }
         return popPortasTratadas();
     }
+
     public synchronized void pushData(DadosTemperaturaMongoDB data) {
         dadosTemperaturaMongoDB.add(data);
         notifyAll();
     }
 
-    public synchronized DadosTemperaturaMongoDB popData() {
+    public synchronized DadosTemperaturaMongoDB popData() throws InterruptedException {
         if (dadosTemperaturaMongoDB.size() > 0) {
             return dadosTemperaturaMongoDB.remove(0);
         } else {
-            try {
-                wait();
-            } catch (InterruptedException ignored) {
-                System.out.println("Lista dadosTemperaturaMongoDB interrompida");
-            }
+            wait();
         }
         return popData();
     }
+
     public synchronized void pushPortasMongo(Collection<DadosPortasMongoDB> data) {
         dadosPortasMongoDB.addAll(data);
         notifyAll();
     }
 
-    public synchronized DadosPortasMongoDB popPortasMongo() {
+    public synchronized DadosPortasMongoDB popPortasMongo() throws InterruptedException {
         if (dadosPortasMongoDB.size() > 0) {
             return dadosPortasMongoDB.remove(0);
         } else {
-            try {
-                wait();
-            } catch (InterruptedException ignored) {
-                System.out.println("Lista dadosPortasMongoDB interrompida");
-            }
+            wait();
         }
         return popPortasMongo();
     }
@@ -71,23 +61,20 @@ public class DadosQueue {
         notifyAll();
     }
 
-    public synchronized DadosTemperaturaMongoDB popTempsTratadas() {
+    public synchronized DadosTemperaturaMongoDB popTempsTratadas() throws InterruptedException {
         if (dadosTratadosTemperaturas.size() > 0) {
             return dadosTratadosTemperaturas.remove(0);
         } else {
-            try {
-                wait();
-            } catch (InterruptedException ignored) {
-            }
+            wait();
         }
         return popTempsTratadas();
     }
 
-    public synchronized ArrayList<DadosTemperaturaMongoDB> getDadosTratadosTemperaturas(){
+    public synchronized ArrayList<DadosTemperaturaMongoDB> getDadosTratadosTemperaturas() {
         return dadosTratadosTemperaturas;
     }
 
-    public synchronized ArrayList<DadosPortasMongoDB> getDadosTratadosPortas(){
+    public synchronized ArrayList<DadosPortasMongoDB> getDadosTratadosPortas() {
         return dadosTratadosPortas;
     }
 

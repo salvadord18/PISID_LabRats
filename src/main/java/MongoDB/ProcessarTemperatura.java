@@ -24,44 +24,49 @@ public class ProcessarTemperatura extends Thread {
 
     @Override
     public void run() {
-        // Vai correr enquanto o estado da experiencia estiver em execucao
-        while (CurrentExperiencia.getInstance().isEstado(ExperienciaStatus.EM_CURSO)) {
+        try{
 
-            BasicDBObject query = new BasicDBObject("catch", new BasicDBObject("$exists", false));
-            var collection = mongoDb.getCollection("Sensor_Temperatura");
-            var iterator = collection.find(query).iterator();
-            var mappedTemps = DadosTemperaturaMongoDBMapper.mapList(iterator);
+            // Vai correr enquanto o estado da experiencia estiver em execucao
+            while (CurrentExperiencia.getInstance().isEstado(ExperienciaStatus.EM_CURSO)) {
 
-            DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
+                BasicDBObject query = new BasicDBObject("catch", new BasicDBObject("$exists", false));
+                var collection = mongoDb.getCollection("Sensor_Temperatura");
+                var iterator = collection.find(query).iterator();
+                var mappedTemps = DadosTemperaturaMongoDBMapper.mapList(iterator);
 
-            System.out.println("Hora da current experiencia " + CurrentExperiencia.getInstance().getExperiencia().getDataHora());
-            LocalDateTime dataExperiencia = LocalDateTime.parse(CurrentExperiencia.getInstance().getExperiencia().getDataHora(), formatter1);
+                DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
+
+                System.out.println("Hora da current experiencia " + CurrentExperiencia.getInstance().getExperiencia().getDataHora());
+                LocalDateTime dataExperiencia = LocalDateTime.parse(CurrentExperiencia.getInstance().getExperiencia().getDataHora(), formatter1);
 //            System.out.println(dataExperiencia);
 
-            // só vai atualizar os dados em que a sua data seja maior que a data da experiencia
-            var tempsToProcess = new ArrayList<ObjectId>();
-            for (int i = 0; i < mappedTemps.size(); i++) {
-                var temperaturaToProcess = mappedTemps.get(i);
-                var dataDadosMongo = temperaturaToProcess.getHora();
+                // só vai atualizar os dados em que a sua data seja maior que a data da experiencia
+                var tempsToProcess = new ArrayList<ObjectId>();
+                for (int i = 0; i < mappedTemps.size(); i++) {
+                    var temperaturaToProcess = mappedTemps.get(i);
+                    var dataDadosMongo = temperaturaToProcess.getHora();
 
-                LocalDateTime dataTemperatura = LocalDateTime.parse(dataDadosMongo, formatter1);
+                    LocalDateTime dataTemperatura = LocalDateTime.parse(dataDadosMongo, formatter1);
 //                System.out.println("data temperatura --> " + dataTemperatura);
-                if (dataTemperatura.isAfter(dataExperiencia)) {
-                    tempsToProcess.add(temperaturaToProcess.getId());
-                    queue.pushData(temperaturaToProcess);
+                    if (dataTemperatura.isAfter(dataExperiencia)) {
+                        tempsToProcess.add(temperaturaToProcess.getId());
+                        queue.pushData(temperaturaToProcess);
+                    }
+                }
+                BasicDBObject idQuery = new BasicDBObject("_id", new BasicDBObject("$in", tempsToProcess));
+                BasicDBObject update = new BasicDBObject("$set", new BasicDBObject("catch", "P"));
+
+                collection.updateMulti(idQuery, update);
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    break;
                 }
             }
-            BasicDBObject idQuery = new BasicDBObject("_id", new BasicDBObject("$in", tempsToProcess));
-            BasicDBObject update = new BasicDBObject("$set", new BasicDBObject("catch", "P"));
-
-            collection.updateMulti(idQuery, update);
-
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-               break;
-            }
+            System.out.println("Processei temperatura");
+        }catch (Exception e){
+            System.out.println("Excecao na thread ProcessarTemperatura " + e.getMessage());
         }
-        System.out.println("Processei temperatura");
     }
 }

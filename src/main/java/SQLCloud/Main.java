@@ -20,9 +20,9 @@ public class Main {
         //  String PORT = "3306";
 
         String IP_ADDRESS = "127.0.0.1";
-        String DATABASE_NAME = "pisid2024";
+        String DATABASE_NAME = "pisid24";
         String USERNAME = "root";
-        String PASSWORD = "123";
+        String PASSWORD = "";
         String PORT = "3306";
 
          String JDBC_URL = "jdbc:mariadb://" + IP_ADDRESS + ":" + PORT + "/" + DATABASE_NAME + "?useSSL=false"; // String de conexão JDBC
@@ -30,7 +30,7 @@ public class Main {
         String IP_ADDRESS1 = "127.0.0.1";
         String DATABASE_NAME1 = "pisid26";
         String USERNAME1 = "root";
-        String PASSWORD1 = "123";
+        String PASSWORD1 = "";
         String PORT1 = "3306";
 
         String JDBC_URL1 = "jdbc:mariadb://" + IP_ADDRESS1 + ":" + PORT1 + "/" + DATABASE_NAME1 + "?useSSL=false"; // String de conexão JDBC

@@ -100,8 +100,8 @@ public class TratarDadosTemperatura extends Thread {
                 }
             }
 
-        } catch (Exception e) {
-            System.out.println("Thread stoped exception -> " + e.getMessage());
+        } catch (InterruptedException e) {
+            System.out.println("Thread TratarDadosTemperatura interrompida");
         }
     }
 

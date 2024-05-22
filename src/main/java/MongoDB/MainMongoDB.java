@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class MainMongoDB {
 
@@ -226,6 +227,7 @@ public class MainMongoDB {
             //Esta parte foi toda para dentro do ConnectToMongo
             ConnectToMongo connectMongo = new ConnectToMongo();
 //            MongoClient myConnectionToMongo = connectMongo.getConnectionMongo();
+            Supplier<ConnectToSQL> supplier = ConnectToSQL.getSuplier();
             ConnectToSQL connectToSQL = new ConnectToSQL();
             var mongoDb = connectMongo.getDataBase();
 
@@ -258,11 +260,11 @@ public class MainMongoDB {
             //Neste momento é preciso lançar as Threads
             var fetchTempsMongo = new ProcessarTemperatura(mongoDb);
             var fetchDoorsMongo = new ProcessarPortas(mongoDb);
-            var threadDealWithTemperatura = new TratarDadosTemperatura(connectToSQL.getConnectionSQL(), mongoDb);
-            var threadDealWithPortas = new TratarDadosPortas(connectToSQL.getConnectionSQL(), mongoDb);
-            var threadFetchTempsToSql = new InsertMedicaoTemperatura(connectToSQL.getConnectionSQL());
-            var threadFetchPassagensToSql = new InsertMedicaoPassagem(connectToSQL.getConnectionSQL());
-            var threadCheckExperienciaStatus = new CheckExperienciaStatus(connectToSQL.getConnectionSQL());
+            var threadDealWithTemperatura = new TratarDadosTemperatura(supplier.get().getConnectionSQL(), mongoDb);
+            var threadDealWithPortas = new TratarDadosPortas(supplier.get().getConnectionSQL(), mongoDb);
+            var threadFetchTempsToSql = new InsertMedicaoTemperatura(supplier.get().getConnectionSQL());
+            var threadFetchPassagensToSql = new InsertMedicaoPassagem(supplier.get().getConnectionSQL());
+            var threadCheckExperienciaStatus = new CheckExperienciaStatus(supplier.get().getConnectionSQL());
 
             fetchTempsMongo.start();
             fetchDoorsMongo.start();
@@ -278,7 +280,7 @@ public class MainMongoDB {
             threadsList.add(threadDealWithPortas);
             threadsList.add(threadFetchTempsToSql);
             threadsList.add(threadFetchPassagensToSql);
-            threadsList.add(threadCheckExperienciaStatus);
+//            threadsList.add(threadCheckExperienciaStatus);
 
             fetchTempsMongo.join();
             fetchDoorsMongo.join();

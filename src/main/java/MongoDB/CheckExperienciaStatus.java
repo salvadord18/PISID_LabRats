@@ -31,6 +31,7 @@ public class CheckExperienciaStatus extends Thread {
     public void validaIfExperienciaTerminou() throws SQLException, InterruptedException {
         int estadoExperiencia = 0;
         while (true) {
+            System.out.println("Ainda não executou o Get_EstadoExperiencia");
             String testeCallSP = "{CALL Get_EstadoExperiencia (?,?)}";
             CallableStatement cs = sqlDb.prepareCall(testeCallSP);
             cs.setInt(1, Integer.valueOf(experiencia.getExperiencia().getId()));
@@ -38,11 +39,12 @@ public class CheckExperienciaStatus extends Thread {
             cs.execute();
 
             estadoExperiencia = cs.getInt(2);
+            System.out.println("O estado da experiencia é " + estadoExperiencia);
 
             LocalDateTime currentTime = LocalDateTime.now();
             Timestamp dataHora = Timestamp.valueOf(currentTime);
 
-            if (estadoExperiencia == 5) {
+            if (estadoExperiencia == 5 || estadoExperiencia == 7) {
                 System.out.println("Experiencia " + Integer.valueOf(experiencia.getExperiencia().getId()) + " Terminada.");
                 CurrentExperiencia.getInstance().setEstadoExperiencia(ExperienciaStatus.TERMINADA);
 
@@ -58,7 +60,7 @@ public class CheckExperienciaStatus extends Thread {
                 }
                 break;
             }
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         }
     }
 }
