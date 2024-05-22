@@ -1,6 +1,5 @@
 package MongoDB;
 
-import MongoDB.entities.Corredor;
 import MongoDB.entities.CurrentExperiencia;
 import MongoDB.entities.DadosQueue;
 import MongoDB.entities.DadosTemperaturaMongoDB;
@@ -10,6 +9,7 @@ import com.mongodb.DB;
 import lombok.RequiredArgsConstructor;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -21,8 +21,9 @@ public class TratarDadosTemperatura extends Thread {
     private DadosQueue queue = DadosQueue.getInstance();
     private CurrentExperiencia experiencia = CurrentExperiencia.getInstance();
 
-    private long lastAlertTimeTemperatura = System.currentTimeMillis();
-    private long lastAlertTimeOutlier = System.currentTimeMillis();
+    private LocalDateTime lastAlertTimeTemperatura = LocalDateTime.MIN;
+
+    private LocalDateTime lastAlertTimeOutlier = LocalDateTime.MIN;
     private long alertVermelhoTime = 10;
     private long alertAmareloTime = 30;
 
@@ -61,9 +62,12 @@ public class TratarDadosTemperatura extends Thread {
                 var temperaturaRangeAmareloInferior = temperaturaIdeal - (variacaoMaxTemp*0.75);
 
                 Timestamp dataHora = Timestamp.valueOf(tempData.getHora());
+                LocalDateTime now = LocalDateTime.now();
 
                 if (tempData.getLeitura() < temperaturaRangeInferior || tempData.getLeitura() > temperaturaRangeSuperior) {
-                    if(canSendAlert(alertVermelhoTime, lastAlertTimeTemperatura)){
+                    if (lastAlertTimeTemperatura.plusSeconds(10).isBefore(now)) {
+                        lastAlertTimeTemperatura = now;
+                        System.out.println("AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
                     String CallSP = "{ call CriarAlertaTemperaturaVermelho(?,?,?,?) }";
                     CallableStatement c = sqlDb.prepareCall(CallSP);
                     c.setTimestamp(1, dataHora);
@@ -75,7 +79,8 @@ public class TratarDadosTemperatura extends Thread {
                     }
                 } else if (tempData.getLeitura() < temperaturaRangeAmareloInferior && tempData.getLeitura() > temperaturaRangeInferior
                 || tempData.getLeitura() > temperaturaRangeAmareloSuperior && tempData.getLeitura() < temperaturaRangeSuperior) {
-                    if(canSendAlert(alertAmareloTime, lastAlertTimeTemperatura)) {
+                    if (lastAlertTimeTemperatura.plusSeconds(30).isBefore(now)) {
+                        lastAlertTimeTemperatura = now;
                         String CallSP = "{ call CriarAlertaTemperaturaAmarelo(?,?,?,?) }";
                         CallableStatement c = sqlDb.prepareCall(CallSP);
                         c.setTimestamp(1, dataHora);
@@ -95,7 +100,8 @@ public class TratarDadosTemperatura extends Thread {
                     collection.update(idQuery, update);
                     if (outlierCount <= maxNumOutliers) {
                         queue.pushTempsTratadas(List.of(tempData));
-                        if(canSendAlert(alertAmareloTime, lastAlertTimeOutlier)){
+                        if (lastAlertTimeOutlier.plusSeconds(30).isBefore(now)) {
+                            lastAlertTimeOutlier = now;
                         String CallSP = "{ call CriarAlertaOutlierAmarelo(?,?) }";
                         CallableStatement c = sqlDb.prepareCall(CallSP);
                         c.setInt(1, outlierCount);
@@ -104,7 +110,8 @@ public class TratarDadosTemperatura extends Thread {
                             System.out.println("Alerta Amarelo Outlier");
                     }
                     } else {
-                        if(canSendAlert(alertVermelhoTime, lastAlertTimeOutlier)) {
+                        if (lastAlertTimeOutlier.plusSeconds(10).isBefore(now)) {
+                            lastAlertTimeOutlier = now;
                             CallableStatement cs = null;
                             cs = sqlDb.prepareCall("{call CriarAlertaOutlierVermelho}");
                             cs.executeQuery();
@@ -123,20 +130,7 @@ public class TratarDadosTemperatura extends Thread {
     }
 
 
-    private boolean canSendAlert(long alert, long lastAlertTime) {
-        long currentTime = System.currentTimeMillis();
-        if (currentTime - lastAlertTime >= alert) {
-            if (lastAlertTime == lastAlertTimeTemperatura) {
-                lastAlertTimeTemperatura = currentTime;
-            } else {
-                lastAlertTimeOutlier = currentTime;
-            }
-            return true;
-        }
-        long time = (currentTime - lastAlertTime);
-        System.out.println("Não pode enviar alerta" + time);
-        return false;
-    }
+
 
     public boolean isOutlier(DadosTemperaturaMongoDB dadosTemperaturaMongoDB) {
         InterquartileRange interquartileRange = new InterquartileRange();
