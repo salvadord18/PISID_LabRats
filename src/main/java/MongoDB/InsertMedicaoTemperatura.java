@@ -44,7 +44,7 @@ public class InsertMedicaoTemperatura extends Thread {
                 Timestamp dataTemperatura = Timestamp.valueOf(horaMedicao);
                 double leitura = treatedTemp.getLeitura();
                 var sensor = treatedTemp.getSensor();
-
+                System.out.println("INSERIU MEDICAO Temperatura");
                 String SPInsertTemp = "{ call Insert_MedicaoTemperatura(?,?,?,?) }";
                 CallableStatement cs = sqlDb.prepareCall(SPInsertTemp);
                 cs.setInt(1, experienciaId);
@@ -52,6 +52,7 @@ public class InsertMedicaoTemperatura extends Thread {
                 cs.setBigDecimal(3, BigDecimal.valueOf(leitura));
                 cs.setInt(4, sensor);
                 cs.execute();
+
                 try {
                     Thread.sleep(5000);
                 } catch (InterruptedException e) {

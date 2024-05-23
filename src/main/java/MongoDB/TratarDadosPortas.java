@@ -22,6 +22,7 @@ public class TratarDadosPortas extends Thread {
     private final DB mongoDb;
     private DadosQueue queue = DadosQueue.getInstance();
     private CurrentExperiencia experiencia = CurrentExperiencia.getInstance();
+    private LocalDateTime lastAlertTime = LocalDateTime.MIN;
 
     @Override
     public void run() {
@@ -42,8 +43,8 @@ public class TratarDadosPortas extends Thread {
                 var salaOrigem = String.valueOf(portasData.getSalaOrigem());
                 var salaDestino = String.valueOf(portasData.getSalaDestino());
 
-                System.out.println("A sala origem é " + salaOrigem);
-                System.out.println("A sala destino é " + salaDestino);
+                // System.out.println("A sala origem é " + salaOrigem);
+                // System.out.println("A sala destino é " + salaDestino);
 
                 var corredoresSize = experiencia.getExperiencia().getCorredores().length;
                 var countDadosErrados = 0;
@@ -63,6 +64,7 @@ public class TratarDadosPortas extends Thread {
                             c.execute();
                         }
                     }
+
                 }
 // ............... Numero ratos em cada sala ...................
                 String SPNumRatos = "{ call Get_RatosAtuais(?,?,?) }";
@@ -74,8 +76,8 @@ public class TratarDadosPortas extends Thread {
                 c.registerOutParameter(3, Types.INTEGER);
                 c.execute();
 
-                int numeroAtualRatos = c.getInt(3);
 
+                int numeroAtualRatos = c.getInt(3);
                 //Chamar SP para limiteRatosFinal
                 String SPLimiteRatos = "{ call GetLimiteRatosSala(?) }";
                 CallableStatement cbs = sqlDb.prepareCall(SPLimiteRatos);
@@ -83,19 +85,31 @@ public class TratarDadosPortas extends Thread {
                 cbs.execute();
                 int limiteRatosFinal = cbs.getInt(1);
 
+                LocalDateTime now = LocalDateTime.now();
+
                 int limiteAmarelo = (int) (limiteRatosFinal * 0.75);
                 if (numeroAtualRatos <= limiteAmarelo) {
-                    String SPRatosAtuais = "{ call CriarAlertaRatosAmarelo(?,?) }";
-                    CallableStatement call = sqlDb.prepareCall(SPRatosAtuais);
-                    call.setInt(1, Integer.parseInt((experiencia.getExperiencia().getId())));
-                    call.setInt(2, Integer.parseInt(salaDestino));
-                    call.execute();
+                    if (lastAlertTime.plusSeconds(30).isBefore(now)) {
+                        if (Integer.parseInt(salaDestino) != 1 ){
+                            lastAlertTime = now;
+                        String SPRatosAtuais = "{ call CriarAlertaRatosAmarelo(?,?) }";
+                        CallableStatement call = sqlDb.prepareCall(SPRatosAtuais);
+                        call.setInt(1, Integer.parseInt((experiencia.getExperiencia().getId())));
+                        call.setInt(2, Integer.parseInt(salaDestino));
+                        call.execute();
+                        }
+                    }
                 } else if (numeroAtualRatos >= limiteRatosFinal) {
-                    String SPRatosAtuais = "{ call CriarAlertaRatosVermelho(?,?) }";
-                    CallableStatement call = sqlDb.prepareCall(SPRatosAtuais);
-                    call.setInt(1, Integer.parseInt((experiencia.getExperiencia().getId())));
-                    call.setInt(2, Integer.parseInt(salaDestino));
-                    call.execute();
+                    if (lastAlertTime.plusSeconds(10).isBefore(now)) {
+                        if (Integer.parseInt(salaDestino) != 1 ){
+                            lastAlertTime = now;
+                        String SPRatosAtuais = "{ call CriarAlertaRatosVermelho(?,?) }";
+                        CallableStatement call = sqlDb.prepareCall(SPRatosAtuais);
+                        call.setInt(1, Integer.parseInt((experiencia.getExperiencia().getId())));
+                        call.setInt(2, Integer.parseInt(salaDestino));
+                        call.execute();
+                        }
+                    }
                 }
             }
         }catch (InterruptedException e){
