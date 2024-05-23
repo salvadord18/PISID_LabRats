@@ -73,7 +73,7 @@ if (!$experienciaId) {
 
         // Chama a função imediatamente para carregar ao abrir a página
         fetchAlerts();
-        setInterval(fetchAlerts, 2000);
+        setInterval(fetchAlerts, 3000);
     </script>
 </body>
 </html>

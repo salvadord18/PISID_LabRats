@@ -101,7 +101,7 @@ $conn->close();
                 }
 
                 fetchMovimentos();
-                setInterval(fetchMovimentos, 2000); // Atualiza os dados a cada 5 segundos
+                setInterval(fetchMovimentos, 3000);
             });
         </script>
     </main>

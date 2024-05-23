@@ -95,7 +95,7 @@ $conn->close();
                 chart.render();
             }
 
-            setInterval(fetchData, 2000);
+            setInterval(fetchData, 3000);
             window.onload = fetchData; // Carrega inicialmente os dados
         </script>
     </main>
