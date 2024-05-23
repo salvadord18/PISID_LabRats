@@ -27,6 +27,11 @@ public class InsertMedicaoPassagem extends Thread {
             insertMedicaoPassagem();
         } catch (SQLException e) {
             System.out.println("A exceção é " + e.getMessage());
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
             if (!CurrentExperiencia.getInstance().isEstado(ExperienciaStatus.TERMINADA)) {
                 handler();
             }
@@ -58,7 +63,7 @@ public class InsertMedicaoPassagem extends Thread {
                 cs.setTimestamp(4, dataHora);
                 cs.execute();
             }
-        }catch (Exception e){
+        }catch (InterruptedException e){
             System.out.println("Excecao na thread InserMedicaoPassagem " + e.getMessage());
         }
     }
